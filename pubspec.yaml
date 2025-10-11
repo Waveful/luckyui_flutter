@@ -1,5 +1,5 @@
 name: luckyui
-description: "A new Flutter package project."
+description: "Official LuckyUI design system for Flutter."
 version: 0.0.1
 homepage:
 
@@ -11,10 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # Hugeicons is the main library of icons.
-  hugeicons:
-    hosted: https://onepub.dev/api/kdpxxpsdav/
-    version: ^1.1.0
+  hugeicons: 1.1.1
 
 dev_dependencies:
   flutter_test:

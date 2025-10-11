@@ -6,9 +6,11 @@ import 'package:luckyui/theme/lucky_tokens.dart';
 class LuckySearchBar extends StatelessWidget {
 
   final String hintText;
+  final LuckyIconData? icon;
   const LuckySearchBar({
     super.key,
     required this.hintText,
+    this.icon,
   });
 
   @override
@@ -23,7 +25,7 @@ class LuckySearchBar extends StatelessWidget {
       child: Row(
         children: [
           LuckyIcon(
-            icon: LuckySolidIcons.search02,
+            nativeIcon: Icons.search_rounded,
             size: iconMd,
             color: context.luckyColors.n500,
           ),

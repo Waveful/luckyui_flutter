@@ -87,6 +87,7 @@ class LuckyModal extends StatelessWidget {
   final double? height;
   final String? title;
   final String? body;
+  final LuckyIconData? closeIcon;
   final Widget? child;
   const LuckyModal({
     super.key,
@@ -94,6 +95,7 @@ class LuckyModal extends StatelessWidget {
     this.height,
     this.title,
     this.body,
+    this.closeIcon,
     this.child,
   });
 
@@ -126,7 +128,7 @@ class LuckyModal extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(right: spaceMd, top: spaceMd),
                   child: LuckyIconButton(
-                    icon: LuckySolidIcons.cancel01,
+                    nativeIcon: Icons.close_rounded,
                     size: iconLg,
                     color: context.luckyColors.n600,
                     onTap: () => Navigator.pop(context),  // Close modal.

@@ -327,25 +327,25 @@ class _LuckyShowcaseState extends State<LuckyShowcase> with TickerProviderStateM
                         spacing: spaceXs,
                         children: [
                           LuckyIcon(
-                            icon: LuckySolidIcons.image01,
+                            icon: LuckyStrokeIcons.image01,
                           ),
                           LuckyIcon(
-                            icon: LuckySolidIcons.camera01,
+                            icon: LuckyStrokeIcons.camera01,
                           ),
                           LuckyIcon(
-                            icon: LuckySolidIcons.video01,
+                            icon: LuckyStrokeIcons.video01,
                           ),
                           LuckyIcon(
-                            icon: LuckySolidIcons.favourite,
+                            icon: LuckyStrokeIcons.favourite,
                           ),
                           LuckyIcon(
-                            icon: LuckySolidIcons.comment01,
+                            icon: LuckyStrokeIcons.comment01,
                           ),
                           LuckyIcon(
-                            icon: LuckySolidIcons.link04,
+                            icon: LuckyStrokeIcons.link04,
                           ),
                           LuckyIcon(
-                            icon: LuckySolidIcons.add01,
+                            icon: LuckyStrokeIcons.add01,
                           ),
                         ],
                       ),   
@@ -399,31 +399,31 @@ class _LuckyShowcaseState extends State<LuckyShowcase> with TickerProviderStateM
                         spacing: spaceXs,
                         children: [
                           LuckyIconButton(
-                            icon: LuckySolidIcons.image01,
+                            icon: LuckyStrokeIcons.image01,
                             onTap: () {},
                           ),
                           LuckyIconButton(
-                            icon: LuckySolidIcons.camera01,
+                            icon: LuckyStrokeIcons.camera01,
                             onTap: () {},
                           ),
                           LuckyIconButton(
-                            icon: LuckySolidIcons.video01,
+                            icon: LuckyStrokeIcons.video01,
                             onTap: () {},
                           ),
                           LuckyIconButton(
-                            icon: LuckySolidIcons.favourite,
+                            icon: LuckyStrokeIcons.favourite,
                             onTap: () {},
                           ),
                           LuckyIconButton(
-                            icon: LuckySolidIcons.comment01,
+                            icon: LuckyStrokeIcons.comment01,
                             onTap: () {},
                           ),
                           LuckyIconButton(
-                            icon: LuckySolidIcons.link04,
+                            icon: LuckyStrokeIcons.link04,
                             onTap: () {},
                           ),
                           LuckyIconButton(
-                            icon: LuckySolidIcons.add01,
+                            icon: LuckyStrokeIcons.add01,
                             onTap: () {},
                           ),
                         ],
@@ -443,10 +443,10 @@ class _LuckyShowcaseState extends State<LuckyShowcase> with TickerProviderStateM
                       ),
                       LuckyDivider(),
                       LuckyBadge(
-                        icon: LuckySolidIcons.checkmarkBadge01,
+                        icon: LuckyStrokeIcons.checkmarkBadge01,
                       ),
                       LuckyBadge(
-                        icon: LuckySolidIcons.checkmarkBadge01,
+                        icon: LuckyStrokeIcons.checkmarkBadge01,
                         text: "Verified",
                       ),
                     ],
@@ -543,15 +543,15 @@ class _LuckyShowcaseState extends State<LuckyShowcase> with TickerProviderStateM
                       LuckyTabBar(
                         tabController: _tabController3,
                         tabs: const [
-                          LuckyTabData(label: "Explore", icon: LuckySolidIcons.discoverSquare),
-                          LuckyTabData(label: "For You", icon: LuckySolidIcons.sparkles),
+                          LuckyTabData(label: "Explore", icon: LuckyStrokeIcons.discoverSquare),
+                          LuckyTabData(label: "For You", icon: LuckyStrokeIcons.sparkles),
                         ],
                       ),
                       LuckyTabBar(
                         tabController: _tabController4,
                         tabs: const [
-                          LuckyTabData(icon: LuckySolidIcons.discoverSquare),
-                          LuckyTabData(icon: LuckySolidIcons.sparkles),
+                          LuckyTabData(icon: LuckyStrokeIcons.discoverSquare),
+                          LuckyTabData(icon: LuckyStrokeIcons.sparkles),
                         ],
                       ),
                       LuckyTabBar(
@@ -595,11 +595,11 @@ class _LuckyShowcaseState extends State<LuckyShowcase> with TickerProviderStateM
                       LuckyFilters(
                         controller: _filtersController3,
                         filters: const [
-                          LuckyFilterData(text: "Superlikes", icon: LuckySolidIcons.favourite),
-                          LuckyFilterData(text: "Comments", icon: LuckySolidIcons.comment01),
-                          LuckyFilterData(text: "Followers", icon: LuckySolidIcons.userMultiple02),
-                          LuckyFilterData(text: "Likes", icon: LuckySolidIcons.favourite),
-                          LuckyFilterData(text: "Badges", icon: LuckySolidIcons.starCircle),
+                          LuckyFilterData(text: "Superlikes", icon: LuckyStrokeIcons.favourite),
+                          LuckyFilterData(text: "Comments", icon: LuckyStrokeIcons.comment01),
+                          LuckyFilterData(text: "Followers", icon: LuckyStrokeIcons.userMultiple02),
+                          LuckyFilterData(text: "Likes", icon: LuckyStrokeIcons.favourite),
+                          LuckyFilterData(text: "Badges", icon: LuckyStrokeIcons.starCircle),
                         ],
                       ),
                     ],
@@ -819,29 +819,29 @@ class _LuckyShowcaseState extends State<LuckyShowcase> with TickerProviderStateM
                       items: [
                         LuckyNavBarItemData(
                           icon: LuckyStrokeIcons.home09,
-                          selectedIcon: LuckySolidIcons.home09,
+                          selectedIcon: LuckyStrokeIcons.home09,
                           text: "Home",
                           onTap: () {},
                         ),
                         LuckyNavBarItemData(
                           icon: LuckyStrokeIcons.discoverCircle,
-                          selectedIcon: LuckySolidIcons.discoverCircle,
+                          selectedIcon: LuckyStrokeIcons.discoverCircle,
                           text: "Explore",
                           onTap: () {},
                         ),
                         LuckyNavBarItemData(
-                          icon: LuckySolidIcons.add01,
+                          icon: LuckyStrokeIcons.add01,
                           onTap: () {},
                         ),
                         LuckyNavBarItemData(
                           icon: LuckyStrokeIcons.message01,
-                          selectedIcon: LuckySolidIcons.message01,
+                          selectedIcon: LuckyStrokeIcons.message01,
                           text: "Inbox",
                           onTap: () {},
                         ),
                         LuckyNavBarItemData(
                           icon: LuckyStrokeIcons.userCircle,
-                          selectedIcon: LuckySolidIcons.userCircle,
+                          selectedIcon: LuckyStrokeIcons.userCircle,
                           text: "Profile",
                           onTap: () {},
                         ),
@@ -932,17 +932,17 @@ class _LuckyShowcaseState extends State<LuckyShowcase> with TickerProviderStateM
                           LuckyListItems(
                             items: [
                               LuckyListItemData(
-                                icon: LuckySolidIcons.home09,
+                                icon: LuckyStrokeIcons.home09,
                                 text: "Home",
                                 onTap: () {},
                               ),
                               LuckyListItemData(
-                                icon: LuckySolidIcons.discoverCircle,
+                                icon: LuckyStrokeIcons.discoverCircle,
                                 text: "Explore",
                                 onTap: () {},
                               ),
                               LuckyListItemData(
-                                icon: LuckySolidIcons.userCircle,
+                                icon: LuckyStrokeIcons.userCircle,
                                 text: "Profile",
                                 onTap: () {},
                               ),
@@ -963,7 +963,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase> with TickerProviderStateM
                 spacing: spaceSm,
                 children: [
                   LuckyIcon(
-                    icon: widget.themeMode == ThemeMode.light ? LuckyStrokeIcons.moon02 : LuckySolidIcons.moon02,
+                    icon: widget.themeMode == ThemeMode.light ? LuckyStrokeIcons.moon02 : LuckyStrokeIcons.moon02,
                   ),
                   LuckySwitch(
                     initialValue: widget.themeMode == ThemeMode.light,
@@ -973,7 +973,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase> with TickerProviderStateM
                     },
                   ),
                   LuckyIcon(
-                    icon: widget.themeMode == ThemeMode.light ? LuckySolidIcons.sun03 : LuckyStrokeIcons.sun03,
+                    icon: widget.themeMode == ThemeMode.light ? LuckyStrokeIcons.sun03 : LuckyStrokeIcons.sun03,
                   ),
                 ],
               ),

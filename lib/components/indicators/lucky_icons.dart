@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hugeicons/hugeicons_full.dart';
-import 'package:hugeicons/styles/solid_rounded.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:hugeicons/styles/stroke_rounded.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
-
-typedef LuckySolidIcons = HugeIconsSolidRounded;
 
 typedef LuckyStrokeIcons = HugeIconsStrokeRounded;
 
