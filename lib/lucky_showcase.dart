@@ -25,6 +25,8 @@ import 'package:luckyui/components/typography/lucky_small_body.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
+import 'components/indicators/lucky_pull_to_refresh.dart';
+
 class LuckyShowcasePage extends StatefulWidget {
   const LuckyShowcasePage({super.key});
 
@@ -166,6 +168,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase> with TickerProviderStateM
                     LuckyFilterData(text: "App Bar"),
                     LuckyFilterData(text: "List Items"),
                     LuckyFilterData(text: "Radios"),
+                    LuckyFilterData(text: "Pull To Refresh"),
                   ],
                 ),
                 const SizedBox(height: spaceMd),
@@ -930,6 +933,43 @@ class _LuckyShowcaseState extends State<LuckyShowcase> with TickerProviderStateM
                                 LuckyRadioData(text: "South East Asia"),
                                 LuckyRadioData(text: "Oceania"),
                               ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                if (_filtersController1.selectedIndex == 20)
+                 Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: spaceMd,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: spaceMd,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          spacing: spaceMd,
+                          children: [
+                            const LuckyHeading(text: "Radios"),
+                            const LuckyDivider(),
+                            LuckyPullToRefresh(
+                              onRefresh: () async {
+                                // Test loading time.
+                                await Future.delayed(const Duration(seconds: 2));
+                                return;
+                              },
+                              child: ListView(
+                                shrinkWrap: true,
+                                children: [
+                                  LuckyHeading(text: "Pull!"),
+                                  SizedBox(height: 1000),
+                                ],
+                              ),
                             ),
                           ],
                         ),
