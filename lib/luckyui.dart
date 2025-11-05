@@ -27,6 +27,7 @@ export 'components/navigation/lucky_tab_bar.dart';
 
 export 'components/typography/lucky_body.dart';
 export 'components/typography/lucky_heading.dart';
+export 'components/typography/lucky_markdown.dart';
 export 'components/typography/lucky_small_body.dart';
 
 export 'components/lucky_divider.dart';

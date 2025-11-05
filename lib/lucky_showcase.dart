@@ -21,6 +21,7 @@ import 'package:luckyui/components/navigation/lucky_navbar.dart';
 import 'package:luckyui/components/navigation/lucky_tab_bar.dart';
 import 'package:luckyui/components/typography/lucky_body.dart';
 import 'package:luckyui/components/typography/lucky_heading.dart';
+import 'package:luckyui/components/typography/lucky_markdown.dart';
 import 'package:luckyui/components/typography/lucky_small_body.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
@@ -93,7 +94,8 @@ class LuckyShowcase extends StatefulWidget {
   State<LuckyShowcase> createState() => _LuckyShowcaseState();
 }
 
-class _LuckyShowcaseState extends State<LuckyShowcase> with TickerProviderStateMixin {
+class _LuckyShowcaseState extends State<LuckyShowcase>
+    with TickerProviderStateMixin {
   late TabController _tabController1;
   late TabController _tabController2;
   late TabController _tabController3;
@@ -169,6 +171,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase> with TickerProviderStateM
                     LuckyFilterData(text: "List Items"),
                     LuckyFilterData(text: "Radios"),
                     LuckyFilterData(text: "Pull To Refresh"),
+                    LuckyFilterData(text: "Markdown"),
                   ],
                 ),
                 const SizedBox(height: spaceMd),
@@ -940,7 +943,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase> with TickerProviderStateM
                     ],
                   ),
                 if (_filtersController1.selectedIndex == 20)
-                 Column(
+                  Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -960,7 +963,9 @@ class _LuckyShowcaseState extends State<LuckyShowcase> with TickerProviderStateM
                             LuckyPullToRefresh(
                               onRefresh: () async {
                                 // Test loading time.
-                                await Future.delayed(const Duration(seconds: 2));
+                                await Future.delayed(
+                                  const Duration(seconds: 2),
+                                );
                                 return;
                               },
                               child: ListView(
@@ -970,6 +975,33 @@ class _LuckyShowcaseState extends State<LuckyShowcase> with TickerProviderStateM
                                   SizedBox(height: 1000),
                                 ],
                               ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                if (_filtersController1.selectedIndex == 21)
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: spaceMd,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: spaceMd,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          spacing: spaceMd,
+                          children: [
+                            const LuckyHeading(text: "Markdown"),
+                            const LuckyDivider(),
+                            LuckyMarkdown(
+                              text:
+                                  "### Heading 3\nNormal text.\n**Bold text**.\n*Italic text.*\n~~Strikethrough text.~~\n`Inline code text.`\n> Blockquote text.\n---\nDivider\n\nLink text [@Waveful](https://waveful.me/Waveful)\n- List item 1\n- List item 2\n- [x] TO DO\n- [ ] TO NOT DO\n| Column 1 | Column 2 |\n|-----------|-----------|\n| Row 1     | Data 1    |\n| Row 2     | Data 2    |\n\n![Quack](https://i.ibb.co/svnq8hg5/quacky.png)",
                             ),
                           ],
                         ),
