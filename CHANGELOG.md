@@ -1,6 +1,10 @@
+## 0.0.3
+New components:
+- Markdown text
+
 ## 0.0.2
 
-New components :
+New components:
 - Pull To Refresh
 - Scrollable Tab Bar
 
