@@ -1,25 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:luckyui/luckyui.dart';
 
+/// A data class to represent a radio with a text.
 class LuckyRadioData {
+  /// The text to display in the radio.
   final String text;
+
+  /// Creates a new [LuckyRadioData] data class.
   const LuckyRadioData({required this.text});
 }
 
+/// A controller to manage the selected radio.
 class LuckyRadioController extends ChangeNotifier {
   int _selectedIndex = 0;
 
+  /// The index of the selected radio.
   int get selectedIndex => _selectedIndex;
 
+  /// Selects a radio.
   void selectRadio(int index) {
     _selectedIndex = index;
     notifyListeners();
   }
 }
 
+/// A widget that displays a list of radios.
 class LuckyRadios extends StatefulWidget {
+  /// The controller to manage the selected radio.
   final LuckyRadioController controller;
+
+  /// The list of radios to display.
   final List<LuckyRadioData> radios;
+
+  /// Creates a new [LuckyRadios] widget.
   const LuckyRadios({
     super.key,
     required this.controller,
@@ -52,10 +65,18 @@ class _LuckyRadiosState extends State<LuckyRadios> {
   }
 }
 
+/// A widget that displays a radio with a text.
 class LuckyRadio extends StatelessWidget {
+  /// The radio to display.
   final LuckyRadioData radio;
+
+  /// Whether the radio is selected.
   final bool selected;
+
+  /// The callback to be called when the radio is tapped.
   final VoidCallback onTap;
+
+  /// Creates a new [LuckyRadio] widget.
   const LuckyRadio({
     super.key,
     required this.selected,

@@ -7,12 +7,28 @@ import 'package:luckyui/components/typography/lucky_heading.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
+/// An enumeration of modal sizes.
 enum LuckyModalSizeEnum {
-  sm, md, lg, xl, x2l, x4l, full
+  /// [sm] - A small modal with a width of 25% of the screen width.
+  sm,
+  /// [md] - A medium modal with a width of 40% of the screen width.
+  md,
+  /// [lg] - A large modal with a width of 55% of the screen width.
+  lg,
+  /// [xl] - A extra large modal with a width of 70% of the screen width.
+  xl,
+  /// [x2l] - A extra large modal with a width of 85% of the screen width.
+  x2l,
+  /// [x4l] - A extra large modal with a width of 95% of the screen width.
+  x4l,
+  /// [full] - A full screen modal.
+  full,
 }
 
+/// An extension on [LuckyModalSizeEnum] to get specific configurations.
 extension LuckyModalSizeEnumExtension on LuckyModalSizeEnum {
 
+  /// The width of the modal.
   double width(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
 
@@ -34,6 +50,7 @@ extension LuckyModalSizeEnumExtension on LuckyModalSizeEnum {
     }
   }
 
+  /// The height of the modal.
   double height(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
 
@@ -44,8 +61,10 @@ extension LuckyModalSizeEnumExtension on LuckyModalSizeEnum {
   }
 }
 
+/// A widget that displays a modal.
 class LuckyModal extends StatelessWidget {
 
+  /// Shows a popup modal.
   static Future<T?> showPopup<T>({
     required BuildContext context,
     required LuckyModalSizeEnum size,
@@ -64,6 +83,7 @@ class LuckyModal extends StatelessWidget {
       );
   }
 
+  /// Shows a confirmation modal.
   static Future<T?> showConfirmation<T>({
     required BuildContext context,
     required String title,
@@ -83,12 +103,25 @@ class LuckyModal extends StatelessWidget {
       );
   }
 
+  /// The width of the modal.
   final double width;
+
+  /// The height of the modal.
   final double? height;
+
+  /// The title of the modal.
   final String? title;
+
+  /// The body of the modal.
   final String? body;
+
+  /// The icon to display in the close button.
   final LuckyIconData? closeIcon;
+
+  /// The child to display in the modal.
   final Widget? child;
+
+  /// Creates a new [LuckyModal] widget.
   const LuckyModal({
     super.key,
     required this.width,
@@ -99,6 +132,7 @@ class LuckyModal extends StatelessWidget {
     this.child,
   });
 
+  /// Whether the modal is a confirmation modal.
   bool get isConfirmation => title != null || body != null;
 
   @override

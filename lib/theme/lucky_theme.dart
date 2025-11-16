@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 import 'lucky_colors.dart';
 import 'lucky_tokens.dart';
 
+/// A class that represents the theme of LuckyUI.
 class LuckyTheme {
   
+  /// The primary color.
   static const Color primaryColor = blue;
+  /// The secondary color.
   static const Color secondaryColor = secondaryBlue;
+  /// The accent color.
   static const Color accentColor = accentBlue;
+  /// The error color.
   static const Color errorColor = red;
 
+  /// The light theme.
   static ThemeData lightTheme() {
     final ColorScheme lightScheme = ColorScheme.fromSeed(
       seedColor: primaryColor,
@@ -57,6 +63,7 @@ class LuckyTheme {
     );
   }
 
+  /// The dark theme.
   static ThemeData darkTheme() {
     final ColorScheme darkScheme = ColorScheme.fromSeed(
       seedColor: primaryColor,

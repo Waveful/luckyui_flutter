@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
+/// A widget that displays a progress bar.
 class LuckyProgressBar extends StatelessWidget {
 
+  /// The current value of the progress bar.
   final int current;
+
+  /// The total value of the progress bar.
   final int total;
+
+  /// The text to display in the progress bar for the current value.
   final String currentText;
+
+  /// The text to display in the progress bar for the total value.
   final String totalText;
+
+  /// Creates a new [LuckyProgressBar] widget.
   const LuckyProgressBar({
     super.key,
     required this.current,
@@ -15,7 +25,10 @@ class LuckyProgressBar extends StatelessWidget {
     this.totalText = "",
   });
 
+  /// The progress of the progress bar.
   double get progress => current / total;
+
+  /// Whether the text should be shown in the progress bar.
   bool get showText => currentText.isNotEmpty && totalText.isNotEmpty;
 
   static const double _heightLarge = 24;

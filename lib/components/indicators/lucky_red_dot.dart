@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
+/// A widget that displays a red dot with a counter.
 class LuckyRedDot extends StatelessWidget {
 
+  /// The counter of the red dot.
   final int counter;
+
+  /// Creates a new [LuckyRedDot] widget.
   const LuckyRedDot({
     super.key,
     required this.counter,

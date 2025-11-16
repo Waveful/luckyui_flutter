@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:luckyui/luckyui.dart';
 
+/// A widget that displays a pull to refresh indicator.
 class LuckyPullToRefresh extends StatelessWidget {
+
+  /// The child widget to display.
   final Widget child;
+
+  /// The callback to be called when the pull to refresh is triggered.
   final Future<void> Function() onRefresh;
+
+  /// Whether to include the safe area in the pull to refresh indicator.
   final bool safeArea;
+
+  /// Creates a new [LuckyPullToRefresh] widget.
   const LuckyPullToRefresh({
     super.key,
     required this.child,

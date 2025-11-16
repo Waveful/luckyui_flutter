@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
+/// A widget that animates the scale of a child widget when tapped.
 class LuckyTapAnimation extends StatefulWidget {
 
+  /// The callback to be called when the widget is tapped.
   final VoidCallback? onTap;
+
+  /// A notifier to control the animation state.
   final ValueNotifier<bool>? animationNotifier;
+
+  /// The scale to apply when the widget is pressed.
   final double? pressedScale;
+
+  /// The child widget to be animated.
   final Widget child;
+
+  /// Creates a new [LuckyTapAnimation] widget.
   const LuckyTapAnimation({
     super.key,
     this.onTap,

@@ -3,10 +3,16 @@ import 'package:luckyui/animations/lucky_tap_animation.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
+/// A widget that displays a switch.
 class LuckySwitch extends StatefulWidget {
 
+  /// The initial value of the switch.
   final bool initialValue;
+
+  /// The callback to be called when the switch is changed.
   final Function(bool) onChanged;
+
+  /// Creates a new [LuckySwitch] widget.
   const LuckySwitch({
     super.key,
     required this.initialValue,

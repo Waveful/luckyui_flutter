@@ -5,12 +5,22 @@ import 'package:luckyui/components/typography/lucky_small_body.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
+/// A data class that represents a navbar item.
 class LuckyNavBarItemData {
 
+  /// The icon of the navbar item.
   final LuckyIconData icon;
+
+  /// The selected icon of the navbar item.
   final LuckyIconData? selectedIcon;
+
+  /// The text of the navbar item.
   final String? text;
+
+  /// The callback to be called when the navbar item is tapped.
   final VoidCallback onTap;
+
+  /// Whether the navbar item is a special item.
   const LuckyNavBarItemData({
     required this.icon,
     this.selectedIcon,
@@ -18,25 +28,35 @@ class LuckyNavBarItemData {
     required this.onTap,
   });
 
+  /// Whether the navbar item is a special item.
   bool get specialItem => selectedIcon == null && text == null;
 }
 
+/// A controller that manages the selected navbar item.
 class LuckyNavBarController extends ChangeNotifier {
 
   int _selectedIndex = 0;
 
+  /// The index of the selected navbar item.
   int get selectedIndex => _selectedIndex;
 
+  /// Changes the index of the selected navbar item.
   void changeIndex(int index) {
     _selectedIndex = index;
     notifyListeners();
   }
 }
 
+/// A widget that displays a navbar.
 class LuckyNavBar extends StatefulWidget {
 
+  /// The controller that manages the selected navbar item.
   final LuckyNavBarController controller;
+
+  /// The list of navbar items to display.
   final List<LuckyNavBarItemData> items;
+
+  /// Creates a new [LuckyNavBar] widget.
   const LuckyNavBar({
     super.key,
     required this.controller,
@@ -92,10 +112,16 @@ class _LuckyNavBarState extends State<LuckyNavBar> {
   }
 }
 
+/// A widget that displays a main navbar item.
 class LuckyNavBarMainItem extends StatelessWidget {
-  
+
+  /// The icon of the main navbar item.
   final LuckyIconData icon;
+
+  /// The callback to be called when the main navbar item is tapped.
   final VoidCallback onTap;
+
+  /// Creates a new [LuckyNavBarMainItem] widget.
   const LuckyNavBarMainItem({
     super.key,
     required this.icon,
@@ -137,13 +163,25 @@ class LuckyNavBarMainItem extends StatelessWidget {
   }
 }
 
+/// A widget that displays a navbar item.
 class LuckyNavBarItem extends StatelessWidget {
 
+  /// The icon of the navbar item.
   final LuckyIconData icon;
+
+  /// The selected icon of the navbar item.
   final LuckyIconData selectedIcon;
+
+  /// The text of the navbar item.
   final String text;
+
+  /// The callback to be called when the navbar item is tapped.
   final VoidCallback onTap;
+
+  /// Whether the navbar item is selected.
   final bool selected;
+
+  /// Creates a new [LuckyNavBarItem] widget.
   const LuckyNavBarItem({
     super.key,
     required this.icon,

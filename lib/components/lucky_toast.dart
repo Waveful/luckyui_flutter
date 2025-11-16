@@ -5,11 +5,31 @@ import 'package:luckyui/components/typography/lucky_heading.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
-enum LuckyToastAlignmentEnum { bottom, top }
+/// An enumeration of toast alignment.
+enum LuckyToastAlignmentEnum { 
+  /// [bottom] - The toast will be displayed at the bottom of the screen.
+  bottom,
+  
+  /// [top] - The toast will be displayed at the top of the screen.
+  top,
+}
 
-enum LuckyToastTypeEnum { success, warning, error }
+/// An enumeration of toast types.
+enum LuckyToastTypeEnum { 
+  /// [success] - The toast will be displayed for 4 seconds.
+  success,
+  
+  /// [warning] - The toast will be displayed for 6 seconds.
+  warning,
+  
+  /// [error] - The toast will be displayed for 8 seconds.
+  error,
+}
 
+/// An extension on [LuckyToastTypeEnum] to get specific configurations.
 extension LuckyToastTypeEnumExtension on LuckyToastTypeEnum {
+
+  /// The duration of the toast.
   Duration get duration => switch (this) {
     LuckyToastTypeEnum.success => const Duration(seconds: 4),
     LuckyToastTypeEnum.warning => const Duration(seconds: 6),
@@ -17,15 +37,26 @@ extension LuckyToastTypeEnumExtension on LuckyToastTypeEnum {
   };
 }
 
+/// A widget that displays a toast message.
 class LuckyToastMessenger extends StatefulWidget {
+
+  /// Creates a new [LuckyToastMessenger] widget.
   const LuckyToastMessenger({super.key});
 
+  /// The state of the toast messenger.
   static late LuckyToastMessengerState _state;
+
+  /// Shows a toast message.
   static void showToast(
+    /// The text to display in the toast.
     String text, {
+    /// The title to display in the toast.
     String? title,
+    /// The callback to be called when the toast is tapped.
     VoidCallback? onTap,
+    /// The type of the toast.
     LuckyToastTypeEnum type = LuckyToastTypeEnum.success,
+    /// The alignment of the toast.
     LuckyToastAlignmentEnum alignment = LuckyToastAlignmentEnum.bottom,
   }) {
     _state._showToast(text, title, onTap, type.duration, alignment);
@@ -35,6 +66,7 @@ class LuckyToastMessenger extends StatefulWidget {
   State<LuckyToastMessenger> createState() => LuckyToastMessengerState();
 }
 
+/// The state of the [LuckyToastMessenger] widget.
 class LuckyToastMessengerState extends State<LuckyToastMessenger> {
   bool _snackbarVisible = false;
   String _text = "";
@@ -42,6 +74,7 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
   LuckyToastAlignmentEnum _alignment = LuckyToastAlignmentEnum.bottom;
   VoidCallback? _onTap;
 
+  /// Whether the toast is aligned at the bottom of the screen.
   bool get isBottom => _alignment == LuckyToastAlignmentEnum.bottom;
 
   @override

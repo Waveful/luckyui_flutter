@@ -5,33 +5,50 @@ import 'package:luckyui/components/typography/lucky_body.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
+/// A data class that represents a filter.
 class LuckyFilterData {
   
+  /// The text of the filter.
   final String text;
+
+  /// The icon of the filter.
   final LuckyIconData? icon;
+
+  /// Creates a new [LuckyFilterData] data class.
   const LuckyFilterData({
     required this.text,
     this.icon,
   });
 }
 
+/// A controller that manages the selected filter.
 class LuckyFiltersController extends ChangeNotifier {
 
   int _selectedIndex = 0;
 
+  /// The index of the selected filter.
   int get selectedIndex => _selectedIndex;
 
+  /// Selects a filter.
   void selectFilter(int index) {
     _selectedIndex = index;
     notifyListeners();
   }
 }
 
+/// A widget that displays a list of filters.
 class LuckyFilters extends StatefulWidget {
 
+  /// The controller that manages the selected filter.
   final LuckyFiltersController controller;
+
+  /// The list of filters to display.
   final List<LuckyFilterData> filters;
+
+  /// The spacing between the filters.
   final double spacing;
+
+  /// Creates a new [LuckyFilters] widget.
   const LuckyFilters({
     super.key,
     required this.controller,
@@ -78,12 +95,22 @@ class _LuckyFiltersState extends State<LuckyFilters> {
   }
 }
 
+/// A widget that displays a filter with an icon and a text.
 class LuckyFilter extends StatelessWidget {
 
+  /// Whether the filter is selected.
   final bool selected;
+
+  /// The icon of the filter.
   final LuckyIconData? icon;
+
+  /// The text of the filter.
   final String text;
+
+  /// The callback to be called when the filter is tapped.
   final VoidCallback onTap;
+
+  /// Creates a new [LuckyFilter] widget.
   const LuckyFilter({
     super.key,
     required this.selected,

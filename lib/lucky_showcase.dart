@@ -28,7 +28,10 @@ import 'package:luckyui/theme/lucky_tokens.dart';
 
 import 'components/indicators/lucky_pull_to_refresh.dart';
 
+/// A widget that displays the LuckyUI showcase.
 class LuckyShowcasePage extends StatefulWidget {
+
+  /// Creates a new [LuckyShowcasePage] widget.
   const LuckyShowcasePage({super.key});
 
   @override
@@ -81,9 +84,16 @@ class _LuckyShowcasePageState extends State<LuckyShowcasePage> {
   }
 }
 
+/// A widget that displays the LuckyUI showcase.
 class LuckyShowcase extends StatefulWidget {
+
+  /// The theme mode of the showcase.
   final ThemeMode themeMode;
+
+  /// The callback to be called when the theme mode is changed.
   final Function(ThemeMode) onThemeModeChanged;
+
+  /// Creates a new [LuckyShowcase] widget.
   const LuckyShowcase({
     super.key,
     required this.themeMode,

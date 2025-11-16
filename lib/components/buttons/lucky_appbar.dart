@@ -5,13 +5,25 @@ import 'package:luckyui/components/typography/lucky_heading.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
+/// A widget that displays a toolbar with actions.
 class LuckyActionsAppBar extends StatelessWidget implements PreferredSizeWidget {
 
+  /// The text for the negative action.
   final String negativeText;
+
+  /// The callback to be called when the negative action is tapped.
   final VoidCallback? onNegativeAction;
+
+  /// The text for the primary action.
   final String primaryText;
+
+  /// The callback to be called when the primary action is tapped.
   final VoidCallback? onPrimaryAction;
+
+  /// The background color of the app bar.
   final Color? backgroundColor;
+
+  /// Creates a new [LuckyActionsAppBar] widget.
   const LuckyActionsAppBar({
     super.key,
     this.backgroundColor,
@@ -53,11 +65,19 @@ class LuckyActionsAppBar extends StatelessWidget implements PreferredSizeWidget 
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
+/// A widget that displays a toolbar with a title.
 class LuckyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
+  /// The title to display in the app bar.
   final String? title;
+
+  /// Whether to center the title.
   final bool centerTitle;
+
+  /// The background color of the app bar.
   final Color? backgroundColor;
+
+  /// Creates a new [LuckyAppBar] widget.
   const LuckyAppBar({
     super.key,
     this.title,

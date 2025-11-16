@@ -5,12 +5,22 @@ import 'package:luckyui/components/typography/lucky_body.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
+/// A widget that displays a tab bar.
 class LuckyTabBar extends StatefulWidget {
 
+  /// The controller that manages the selected tab.
   final TabController tabController;
+
+  /// The list of tabs to display.
   final List<LuckyTabData> tabs;
+
+  /// The insets of the tab bar.
   final EdgeInsetsGeometry insets;
+
+  /// Whether the tab bar is scrollable.
   final bool isScrollable;
+
+  /// Creates a new [LuckyTabBar] widget.
   const LuckyTabBar({
     super.key,
     required this.tabController,
@@ -109,12 +119,22 @@ class _LuckyTabBarState extends State<LuckyTabBar> {
   }
 }
 
+/// A data class that represents a tab.
 class LuckyTabData {
   
+  /// The icon of the tab.
   final LuckyIconData? icon;
+
+  /// The label of the tab.
   final String? label;
+
+  /// Whether to show a red dot.
   final bool showRedDot;
+
+  /// The counter of the tab.
   final int counter;
+
+  /// Creates a new [LuckyTabData] data class.
   const LuckyTabData({
     this.icon,
     this.label,

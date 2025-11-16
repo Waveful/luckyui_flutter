@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
+/// A widget that displays a bottom sheet.
 class LuckyBottomSheet extends StatelessWidget {
 
+  /// Shows a bottom sheet.
   static Future<T?> show<T>({
     required BuildContext context,
     required List<Widget> children,
@@ -27,8 +29,13 @@ class LuckyBottomSheet extends StatelessWidget {
     );
   }
 
+  /// The children to display in the bottom sheet.
   final List<Widget> children;
+
+  /// The padding of the bottom sheet.
   final EdgeInsetsGeometry padding;
+
+  /// Creates a new [LuckyBottomSheet] widget.
   const LuckyBottomSheet({
     super.key,
     required this.children,

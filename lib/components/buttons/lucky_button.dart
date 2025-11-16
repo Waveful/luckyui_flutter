@@ -3,13 +3,33 @@ import 'package:luckyui/animations/lucky_tap_animation.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
-enum LuckyButtonStyleEnum { primary, primaryAlternative, secondary }
+/// An enumeration of button styles.
+enum LuckyButtonStyleEnum { 
+  /// [primary] - A primary button with a blue background and white text.
+  primary,
+  
+  /// [primaryAlternative] - A primary alternative button with a onSurface background and surface text.
+  primaryAlternative,
+  
+  /// [secondary] - A secondary button with a surface background, onSurface text and a border.
+  secondary
+}
 
+/// A widget that displays a button with a text.
 class LuckyButton extends StatelessWidget {
+  /// The text to display in the button.
   final String text;
+
+  /// The callback to be called when the button is tapped.
   final VoidCallback onTap;
+
+  /// Whether the button is disabled.
   final bool disabled;
+
+  /// The style of the button.
   final LuckyButtonStyleEnum style;
+
+  /// Creates a new [LuckyButton] widget.
   const LuckyButton({
     super.key,
     required this.text,

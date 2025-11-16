@@ -3,10 +3,16 @@ import 'package:luckyui/components/indicators/lucky_icons.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
+/// A widget that displays a search bar.
 class LuckySearchBar extends StatelessWidget {
 
+  /// The hint text to display in the search bar.
   final String hintText;
+
+  /// The icon to display in the search bar.
   final LuckyIconData? icon;
+
+  /// Creates a new [LuckySearchBar] widget.
   const LuckySearchBar({
     super.key,
     required this.hintText,
