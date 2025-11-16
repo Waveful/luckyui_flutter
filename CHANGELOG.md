@@ -1,3 +1,6 @@
+## 0.0.5
+Implement missing parameters for various components.
+
 ## 0.0.4
 Added documentation for public facing API members.
 
