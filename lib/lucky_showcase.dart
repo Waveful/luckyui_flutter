@@ -11,6 +11,7 @@ import 'package:luckyui/components/fields/lucky_text_field.dart';
 import 'package:luckyui/components/fields/lucky_search_bar.dart';
 import 'package:luckyui/components/indicators/lucky_badge.dart';
 import 'package:luckyui/components/indicators/lucky_icons.dart';
+import 'package:luckyui/components/indicators/lucky_loading.dart';
 import 'package:luckyui/components/indicators/lucky_progress_bar.dart';
 import 'package:luckyui/components/indicators/lucky_pull_to_refresh.dart';
 import 'package:luckyui/components/lucky_divider.dart';
@@ -162,7 +163,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                     LuckyFilterData(text: "App Bar"),
                     LuckyFilterData(text: "List Items"),
                     LuckyFilterData(text: "Radios"),
-                    LuckyFilterData(text: "Pull To Refresh"),
+                    LuckyFilterData(text: "Loading"),
                     LuckyFilterData(text: "Markdown"),
                   ],
                 ),
@@ -981,7 +982,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           spacing: spaceMd,
                           children: [
-                            const LuckyHeading(text: "Radios"),
+                            const LuckyHeading(text: "Loading"),                        
                             const LuckyDivider(),
                             LuckyPullToRefresh(
                               onRefresh: () async {
@@ -995,10 +996,12 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                                 shrinkWrap: true,
                                 children: [
                                   LuckyHeading(text: "Pull!"),
-                                  SizedBox(height: 1000),
+                                  SizedBox(height: 200),
                                 ],
                               ),
                             ),
+                            LuckyHeading(text: "Indicator"),
+                            LuckyLoading(),
                           ],
                         ),
                       ),

@@ -17,6 +17,7 @@ export 'components/fields/lucky_text_field.dart';
 
 export 'components/indicators/lucky_badge.dart';
 export 'components/indicators/lucky_icons.dart';
+export 'components/indicators/lucky_loading.dart';
 export 'components/indicators/lucky_progress_bar.dart';
 export 'components/indicators/lucky_pull_to_refresh.dart';
 export 'components/indicators/lucky_red_dot.dart';
