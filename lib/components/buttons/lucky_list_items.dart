@@ -70,7 +70,7 @@ class LuckyListItem extends StatelessWidget {
             LuckyIcon(icon: icon, size: iconLg),
             const SizedBox(width: spaceMd),
             Expanded(
-              child: LuckyBody(text: text, fontWeight: mediumFontWeight),
+              child: LuckyBody(text: text, fontWeight: semiBoldFontWeight),
             ),
             if (showTrailingArrow)
               const LuckyIcon(
