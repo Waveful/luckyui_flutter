@@ -1,3 +1,12 @@
+## 0.0.6
+New components:
+- Loading indicator
+- Card
+
+Others:
+- Implement missing parameters for various components
+- Fix multiple layout issues in Toasts
+
 ## 0.0.5
 Implement missing parameters for various components.
 
@@ -9,7 +18,6 @@ New components:
 - Markdown text
 
 ## 0.0.2
-
 New components:
 - Pull To Refresh
 - Scrollable Tab Bar
