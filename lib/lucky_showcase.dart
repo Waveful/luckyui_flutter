@@ -151,7 +151,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                     LuckyFilterData(text: "Icon Button"),
                     LuckyFilterData(text: "Badge"),
                     LuckyFilterData(text: "Text Button"),
-                    LuckyFilterData(text: "Forms"),
+                    LuckyFilterData(text: "Text Fields"),
                     LuckyFilterData(text: "Search Bar"),
                     LuckyFilterData(text: "Tabs"),
                     LuckyFilterData(text: "Filters"),
@@ -402,7 +402,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: spaceMd,
                       children: [
-                        LuckyHeading(text: "Forms"),
+                        LuckyHeading(text: "Text Fields"),
                         LuckyDivider(),
                         LuckyTextField(
                           controller: TextEditingController(),
