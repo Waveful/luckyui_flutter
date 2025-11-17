@@ -9,6 +9,7 @@ import 'package:luckyui/components/buttons/lucky_switch.dart';
 import 'package:luckyui/components/buttons/lucky_text_button.dart';
 import 'package:luckyui/components/fields/lucky_text_field.dart';
 import 'package:luckyui/components/fields/lucky_search_bar.dart';
+import 'package:luckyui/components/indicators/lucky_avatar.dart';
 import 'package:luckyui/components/indicators/lucky_badge.dart';
 import 'package:luckyui/components/indicators/lucky_icons.dart';
 import 'package:luckyui/components/indicators/lucky_loading.dart';
@@ -167,6 +168,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                     LuckyFilterData(text: "Loading"),
                     LuckyFilterData(text: "Markdown"),
                     LuckyFilterData(text: "Card"),
+                    LuckyFilterData(text: "Avatar"),
                   ],
                 ),
                 const SizedBox(height: spaceMd),
@@ -984,7 +986,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           spacing: spaceMd,
                           children: [
-                            const LuckyHeading(text: "Loading"),                        
+                            const LuckyHeading(text: "Loading"),
                             const LuckyDivider(),
                             LuckyPullToRefresh(
                               onRefresh: () async {
@@ -1036,7 +1038,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                       ),
                     ],
                   ),
-                  if (_filtersController1.selectedIndex == 22)
+                if (_filtersController1.selectedIndex == 22)
                   Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -1076,6 +1078,52 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                                   ),
                                 ],
                               ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                if (_filtersController1.selectedIndex == 23)
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: spaceMd,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: spaceMd,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          spacing: spaceMd,
+                          children: [
+                            const LuckyHeading(text: "Avatar"),
+                            const LuckyDivider(),
+                            Row(
+                              children: [
+                                LuckyAvatar(
+                                  image: AssetImage(
+                                    'assets/lucky_sticker.png',
+                                    package: 'luckyui',
+                                  ),
+                                  onTap: () {},
+                                  size: space6xl,
+                                ),
+                                const SizedBox(width: spaceMd),
+                                LuckyAvatar(
+                                  letter: "SM",
+                                  onTap: () {},
+                                  size: space5xl,
+                                ),
+                                const SizedBox(width: spaceMd),
+                                LuckyAvatar(
+                                  onTap: () {},
+                                  size: space4xl,
+                                ),
+                              ],
                             ),
                           ],
                         ),
