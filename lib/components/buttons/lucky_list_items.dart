@@ -72,11 +72,6 @@ class LuckyListItem extends StatelessWidget {
             Expanded(
               child: LuckyBody(text: text, fontWeight: mediumFontWeight),
             ),
-            const LuckyIcon(
-              nativeIcon: Icons.arrow_forward_ios_rounded,
-              size: iconMd,
-              color: gray500,
-            ),
             if (showTrailingArrow)
               const LuckyIcon(
                 nativeIcon: Icons.arrow_forward_ios_rounded,
