@@ -24,7 +24,7 @@ LuckyUI is a complete design system that offers a cohesive set of components, th
 - `LuckyAppBar` - Consistent app bar implementation
 
 #### Form & Input Components
-- `LuckyForm` - Form wrapper with validation support
+- `LuckyTextField` - Text field wrapper with validation support
 - `LuckySearchBar` - Search input with built-in functionality
 - `LuckyListItems` - Standardized list item components
 
@@ -144,16 +144,12 @@ LuckyTextButton(
 ### Forms
 
 ```dart
-LuckyForm(
-  child: Column(
-    children: [
-      LuckySearchBar(
-        hintText: 'Search...',
-        onChanged: (value) {},
-      ),
-      // Other form fields
-    ],
-  ),
+LuckyTextField(
+  controller: TextEditingController(),
+  heading: "Username",
+  description: "Enter your username",
+  hintText: "@username",
+  style: LuckyTextFieldStyleEnum.standard,
 )
 ```
 

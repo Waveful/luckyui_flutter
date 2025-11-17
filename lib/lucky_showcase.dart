@@ -7,7 +7,7 @@ import 'package:luckyui/components/buttons/lucky_list_items.dart';
 import 'package:luckyui/components/buttons/lucky_radios.dart';
 import 'package:luckyui/components/buttons/lucky_switch.dart';
 import 'package:luckyui/components/buttons/lucky_text_button.dart';
-import 'package:luckyui/components/fields/lucky_form.dart';
+import 'package:luckyui/components/fields/lucky_text_field.dart';
 import 'package:luckyui/components/fields/lucky_search_bar.dart';
 import 'package:luckyui/components/indicators/lucky_badge.dart';
 import 'package:luckyui/components/indicators/lucky_icons.dart';
@@ -425,21 +425,21 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                       children: [
                         LuckyHeading(text: "Forms"),
                         LuckyDivider(),
-                        LuckyForm(
+                        LuckyTextField(
                           controller: TextEditingController(),
                           heading: "Username",
                           description:
                               "Enter your username, so people can find you on Waveful!",
                           hintText: "@username",
-                          style: LuckyFormStyleEnum.standard,
+                          style: LuckyTextFieldStyleEnum.standard,
                         ),
                         SizedBox(),
-                        LuckyForm(
+                        LuckyTextField(
                           controller: TextEditingController(),
                           heading: "Bio",
                           description: "Tell your followers who you are!",
                           hintText: "I am mother from Atlanta...",
-                          style: LuckyFormStyleEnum.big,
+                          style: LuckyTextFieldStyleEnum.big,
                         ),
                       ],
                     ),

@@ -12,8 +12,8 @@ export 'components/buttons/lucky_radios.dart';
 export 'components/buttons/lucky_switch.dart';
 export 'components/buttons/lucky_text_button.dart';
 
-export 'components/fields/lucky_form.dart';
 export 'components/fields/lucky_search_bar.dart';
+export 'components/fields/lucky_text_field.dart';
 
 export 'components/indicators/lucky_badge.dart';
 export 'components/indicators/lucky_icons.dart';
