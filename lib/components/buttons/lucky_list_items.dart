@@ -38,7 +38,10 @@ class LuckyListItems extends StatelessWidget {
 /// A widget that displays a list item with an icon and a text.
 class LuckyListItem extends StatelessWidget {
   /// The icon to display in the list item.
-  final LuckyIconData icon;
+  final LuckyIconData? icon;
+
+  /// The native icon data to display in the list item. Only one of [icon] or [nativeIcon] should be provided.
+  final IconData? nativeIcon;
 
   /// The text to display in the list item.
   final String text;
@@ -52,11 +55,12 @@ class LuckyListItem extends StatelessWidget {
   /// Creates a new [LuckyListItem] widget.
   const LuckyListItem({
     super.key,
-    required this.icon,
+    this.icon,
+    this.nativeIcon,
     required this.text,
     required this.onTap,
     this.showTrailingArrow = true,
-  });
+  }) : assert(icon != null || nativeIcon != null);
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +71,11 @@ class LuckyListItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: spaceXs),
         child: Row(
           children: [
-            LuckyIcon(icon: icon, size: iconLg),
+            LuckyIcon(
+              icon: icon,
+              nativeIcon: nativeIcon,
+              size: iconLg,
+            ),
             const SizedBox(width: spaceMd),
             Expanded(
               child: LuckyBody(text: text, fontWeight: semiBoldFontWeight),
@@ -88,7 +96,10 @@ class LuckyListItem extends StatelessWidget {
 /// A data class to represent a list item with an icon and a text.
 class LuckyListItemData {
   /// The icon to display in the list item.
-  final LuckyIconData icon;
+  final LuckyIconData? icon;
+
+  /// The native icon data to display in the list item.. Only one of [icon] or [nativeIcon] should be provided.
+  final IconData? nativeIcon;
 
   /// The text to display in the list item.
   final String text;
@@ -101,9 +112,10 @@ class LuckyListItemData {
 
   /// Creates a new [LuckyListItemData] data class.
   const LuckyListItemData({
-    required this.icon,
+    this.icon,
+    this.nativeIcon,
     required this.text,
     required this.onTap,
     this.showTrailingArrow = true,
-  });
+  }) : assert(icon != null || nativeIcon != null);
 }
