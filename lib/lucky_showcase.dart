@@ -1057,6 +1057,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                             LuckyCard(
                               title: "Account",
                               child: LuckyListItems(
+                                scrollable: false,
                                 items: [
                                   LuckyListItemData(
                                     icon: LuckyStrokeIcons.profile,

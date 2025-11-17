@@ -10,14 +10,22 @@ class LuckyListItems extends StatelessWidget {
   /// The list of items to display in the list.
   final List<LuckyListItemData> items;
 
+  /// Whether the list items are scrollable.
+  final bool scrollable;
+
   /// Creates a new [LuckyListItems] widget.
-  const LuckyListItems({super.key, required this.items});
+  const LuckyListItems({
+    super.key,
+    required this.items,
+    this.scrollable = true,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: items.length * 2 - 1, // Account for dividers
       shrinkWrap: true,
+      physics: scrollable ? null : const NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
         if (index.isOdd) {
           return const LuckyDivider(spacing: spaceSm);
