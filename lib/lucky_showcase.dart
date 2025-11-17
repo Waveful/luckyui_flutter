@@ -207,6 +207,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                           child: Image.asset(
                             "assets/lucky_ui_logo.png",
                             width: MediaQuery.of(context).size.width * 0.6,
+                            package: 'luckyui',
                           ),
                         ),
                         const Column(
