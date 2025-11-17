@@ -60,6 +60,7 @@ class _LuckyFiltersState extends State<LuckyFilters> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      key: PageStorageKey<int>(widget.controller.selectedIndex), // Prevent losing state when inside another scroll view.
       scrollDirection: Axis.horizontal,
       padding: EdgeInsets.symmetric(horizontal: widget.spacing),
       child: Row(
