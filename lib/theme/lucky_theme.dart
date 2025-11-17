@@ -18,7 +18,7 @@ class LuckyTheme {
   static const Color errorColor = red;
 
   /// The light theme.
-  static ThemeData lightTheme() {
+  static ThemeData get lightTheme {
     final ColorScheme lightScheme =
         ColorScheme.fromSeed(
           seedColor: primaryColor,
@@ -37,6 +37,7 @@ class LuckyTheme {
       useMaterial3: false,
       colorScheme: lightScheme,
       textSelectionTheme: _textSelectionTheme,
+      scaffoldBackgroundColor: lightScheme.surface,
       extensions: const [LuckyColors.light],
       // AppBar theme
       appBarTheme: AppBarThemeData(
@@ -67,7 +68,7 @@ class LuckyTheme {
   }
 
   /// The dark theme.
-  static ThemeData darkTheme() {
+  static ThemeData get darkTheme {
     final ColorScheme darkScheme =
         ColorScheme.fromSeed(
           seedColor: primaryColor,
@@ -86,6 +87,7 @@ class LuckyTheme {
       useMaterial3: false,
       colorScheme: darkScheme,
       textSelectionTheme: _textSelectionTheme,
+      scaffoldBackgroundColor: darkScheme.surface,
       extensions: const [LuckyColors.dark],
       // AppBar theme
       appBarTheme: AppBarThemeData(

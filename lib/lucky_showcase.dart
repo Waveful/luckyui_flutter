@@ -25,6 +25,7 @@ import 'package:luckyui/components/typography/lucky_heading.dart';
 import 'package:luckyui/components/typography/lucky_markdown.dart';
 import 'package:luckyui/components/typography/lucky_small_body.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
+import 'package:luckyui/theme/lucky_theme.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
 /// A widget that displays the LuckyUI showcase.
@@ -41,35 +42,10 @@ class _LuckyShowcasePageState extends State<LuckyShowcasePage> {
 
   @override
   Widget build(BuildContext context) {
-    const Color seed = blue;
-    final ColorScheme lightScheme = ColorScheme.fromSeed(
-      seedColor: seed,
-      brightness: Brightness.light,
-    );
-    final ColorScheme darkScheme = ColorScheme.fromSeed(
-      seedColor: seed,
-      brightness: Brightness.dark,
-    );
-    const TextSelectionThemeData textSelectionTheme = TextSelectionThemeData(
-      selectionColor: blue300,
-      selectionHandleColor: blue,
-      cursorColor: blue,
-    );
-
     return MaterialApp(
       themeMode: _themeMode,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: lightScheme,
-        textSelectionTheme: textSelectionTheme,
-        extensions: const [LuckyColors.light],
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorScheme: darkScheme,
-        textSelectionTheme: textSelectionTheme,
-        extensions: const [LuckyColors.dark],
-      ),
+      theme: LuckyTheme.lightTheme,
+      darkTheme: LuckyTheme.darkTheme,
       home: CupertinoTheme(
         data: const CupertinoThemeData(primaryColor: blue),
         child: LuckyShowcase(
