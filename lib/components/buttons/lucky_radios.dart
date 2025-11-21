@@ -32,11 +32,15 @@ class LuckyRadios extends StatefulWidget {
   /// The list of radios to display.
   final List<LuckyRadioData> radios;
 
+  /// Whether the list view should be shrink wrapped.
+  final bool shrinkWrap;
+
   /// Creates a new [LuckyRadios] widget.
   const LuckyRadios({
     super.key,
     required this.controller,
     required this.radios,
+    this.shrinkWrap = false,
   });
 
   @override
@@ -48,7 +52,7 @@ class _LuckyRadiosState extends State<LuckyRadios> {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: widget.radios.length,
-      shrinkWrap: true,
+      shrinkWrap: widget.shrinkWrap,
       itemBuilder: (BuildContext context, int index) {
         return LuckyRadio(
           radio: widget.radios[index],

@@ -933,6 +933,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                             const LuckyHeading(text: "List Items"),
                             const LuckyDivider(),
                             LuckyListItems(
+                              shrinkWrap: true,
                               items: [
                                 LuckyListItemData(
                                   icon: LuckyStrokeIcons.home09,
@@ -976,6 +977,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                             const LuckyDivider(),
                             LuckyRadios(
                               controller: _radioController,
+                              shrinkWrap: true,
                               radios: const [
                                 LuckyRadioData(text: "North America"),
                                 LuckyRadioData(text: "South America"),
@@ -1084,6 +1086,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                               title: "Account",
                               child: LuckyListItems(
                                 scrollable: false,
+                                shrinkWrap: true,
                                 items: [
                                   LuckyListItemData(
                                     icon: LuckyStrokeIcons.profile,
