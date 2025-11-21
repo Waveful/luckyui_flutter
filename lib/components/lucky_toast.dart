@@ -58,6 +58,15 @@ class LuckyToastMessenger extends StatefulWidget {
     /// The title to display in the toast.
     String? title,
 
+    /// The widget to display in the toast.
+    Widget? widget,
+
+    /// The height of the widget. Mandatory if widget is provided to compute the toast height.
+    double? widgetHeight,
+
+    /// The width of the widget. Mandatory if widget is provided to compute the toast height.
+    double? widgetWidth,
+
     /// The callback to be called when the toast is tapped.
     VoidCallback? onTap,
 
@@ -67,10 +76,17 @@ class LuckyToastMessenger extends StatefulWidget {
     /// The alignment of the toast.
     LuckyToastAlignmentEnum alignment = LuckyToastAlignmentEnum.bottom,
   }) {
+    if(widget != null && (widgetHeight == null || widgetWidth == null)) {
+      throw Exception("Widget height and width are mandatory if widget is provided.");
+    }
+
     if (alignment == LuckyToastAlignmentEnum.top) {
       _states["notification"]?._showToast(
         text,
         title,
+        widget,
+        widgetHeight,
+        widgetWidth,
         onTap,
         type.duration,
         alignment,
@@ -79,6 +95,9 @@ class LuckyToastMessenger extends StatefulWidget {
       _states["toast"]?._showToast(
         text,
         title,
+        widget,
+        widgetHeight,
+        widgetWidth,
         onTap,
         type.duration,
         alignment,
@@ -95,6 +114,9 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
   bool _snackbarVisible = false;
   String _text = "";
   String? _title;
+  Widget? _widget;
+  double? _widgetHeight;
+  double? _widgetWidth;
   late LuckyToastAlignmentEnum _alignment;
   VoidCallback? _onTap;
 
@@ -114,7 +136,7 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
 
   @override
   Widget build(BuildContext context) {
-    final double maxWidth = MediaQuery.of(context).size.width - spaceSm * 2;
+    final double maxWidth = MediaQuery.of(context).size.width - (spaceSm * 2) - (_widgetWidth ?? 0);
     final TextPainter bodyTextPainter = TextPainter(
       textDirection: TextDirection.ltr,
       text: TextSpan(
@@ -141,8 +163,8 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
     final double titleTextHeight = titleTextPainter.size.height;
 
     final double snackbarHeight =
-        bodyTextHeight +
-        (_title != null ? titleTextHeight : 0.0) +
+        (bodyTextHeight +
+        (_title != null ? titleTextHeight : 0.0).clamp(_widgetHeight ?? 0, double.infinity)) +
         (spaceSm * 2) +
         (spaceMd * 2);
     final double screenHeight = MediaQuery.of(context).size.height;
@@ -197,17 +219,25 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
                     horizontal: spaceMd,
                     vertical: spaceSm,
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
                     children: [
-                      if (_title != null)
-                        LuckyHeading(
-                          text: _title!,
-                          fontSize: textLg,
-                          lineHeight: lineHeightLg,
+                      if (_widget != null)
+                        _widget!,
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (_title != null)
+                              LuckyHeading(
+                                text: _title!,
+                                fontSize: textLg,
+                                lineHeight: lineHeightLg,
+                              ),
+                            LuckyBody(text: _text),
+                          ],
                         ),
-                      LuckyBody(text: _text),
+                      ),
                     ],
                   ),
                 ),
@@ -222,6 +252,9 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
   Future<void> _showToast(
     String text,
     String? title,
+    Widget? widget,
+    double? widgetHeight,
+    double? widgetWidth,
     VoidCallback? onTap,
     Duration duration,
     LuckyToastAlignmentEnum alignment,
@@ -241,6 +274,9 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
         _snackbarVisible = true;
         _text = text;
         _title = title;
+        _widget = widget;
+        _widgetHeight = widgetHeight;
+        _widgetWidth = widgetWidth;
         _onTap = onTap;
         _alignment = alignment;
       });

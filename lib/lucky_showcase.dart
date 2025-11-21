@@ -664,6 +664,30 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                           },
                           style: LuckyButtonStyleEnum.primaryAlternative,
                         ),
+                        LuckyButton(
+                          text: "Notification and Widget",
+                          onTap: () {
+                            LuckyToastMessenger.showToast(
+                              "@username left a Superlike on your post!",
+                              type: LuckyToastTypeEnum.success,
+                              alignment: LuckyToastAlignmentEnum.top,
+                              widget: Padding(
+                                padding: const EdgeInsets.only(right: spaceSm),
+                                child: LuckyAvatar(
+                                  image: AssetImage(
+                                    'assets/lucky_sticker.png',
+                                    package: 'luckyui',
+                                  ),
+                                  size: space2xl,
+                                ),
+                              ),
+                              widgetHeight: space2xl,
+                              widgetWidth: space2xl + spaceSm,
+                              onTap: () {},
+                            );
+                          },
+                          style: LuckyButtonStyleEnum.primaryAlternative,
+                        ),
                       ],
                     ),
                   ),
