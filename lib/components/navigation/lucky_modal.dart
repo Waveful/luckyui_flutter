@@ -75,15 +75,19 @@ class LuckyModal extends StatelessWidget {
 
     /// When true, the modal height wraps its content instead of using a fixed height.
     bool wrapContent = false,
+
+    /// When false, the modal cannot be dismissed by tapping outside or using the close button.
+    bool barrierDismissible = true,
   }) {
     return showDialog<T?>(
       context: context,
       barrierColor: black.withAlpha(200),
-      barrierDismissible: true,
+      barrierDismissible: barrierDismissible,
       useSafeArea: size == LuckyModalSizeEnum.full ? false : true,
       builder: (BuildContext context) => LuckyModal(
         width: size.width(context),
         height: wrapContent ? null : size.height(context),
+        showCloseButton: barrierDismissible,
         child: child,
       ),
     );
@@ -124,6 +128,9 @@ class LuckyModal extends StatelessWidget {
   /// The child to display in the modal.
   final Widget? child;
 
+  /// Whether to show the close button. Defaults to true.
+  final bool showCloseButton;
+
   /// Creates a new [LuckyModal] widget.
   const LuckyModal({
     super.key,
@@ -132,6 +139,7 @@ class LuckyModal extends StatelessWidget {
     this.title,
     this.body,
     this.child,
+    this.showCloseButton = true,
   });
 
   /// Whether the modal is a confirmation modal.
@@ -167,7 +175,7 @@ class LuckyModal extends StatelessWidget {
             children: [
               if (width == MediaQuery.of(context).size.width)
                 SizedBox(height: MediaQuery.of(context).padding.top),
-              if (!isConfirmation)
+              if (!isConfirmation && showCloseButton)
                 Align(
                   alignment: Alignment.centerRight,
                   child: Padding(
