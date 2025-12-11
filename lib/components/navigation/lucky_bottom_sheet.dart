@@ -105,7 +105,6 @@ class LuckyBottomSheet extends StatelessWidget {
 /// A widget that displays a draggable bottom sheet.
 /// This is not modal and it's intended to be embedded inside the widget tree.
 class LuckyDraggableBottomSheet extends StatelessWidget {
-
   /// The scroll controller of the bottom sheet.
   final DraggableScrollableController scrollController;
 
@@ -117,7 +116,7 @@ class LuckyDraggableBottomSheet extends StatelessWidget {
 
   /// The border radius of the bottom sheet.
   final BorderRadiusGeometry? borderRadius;
-  
+
   /// The child of the bottom sheet.
   final Widget child;
 
