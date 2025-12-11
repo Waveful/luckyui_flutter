@@ -268,6 +268,12 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                           text: "Picker",
                           style: LuckyButtonStyleEnum.picker,
                         ),
+                        LuckyButton(
+                          onTap: () {},
+                          text: "Primary with Icon",
+                          icon: LuckyStrokeIcons.image01,
+                          style: LuckyButtonStyleEnum.primary,
+                        ),
                       ],
                     ),
                   ),

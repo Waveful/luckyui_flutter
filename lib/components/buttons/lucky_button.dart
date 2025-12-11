@@ -30,6 +30,15 @@ class LuckyButton extends StatelessWidget {
   /// The size of the text.
   final double textSize;
 
+  /// The icon to display in the button.
+  final LuckyIconData? icon;
+
+  /// The native icon to display in the button. Only one of [icon] or [nativeIcon] should be provided.
+  final IconData? nativeIcon;
+
+  /// The size of the icon.
+  final double iconSize;
+
   /// The callback to be called when the button is tapped.
   final VoidCallback onTap;
 
@@ -46,6 +55,7 @@ class LuckyButton extends StatelessWidget {
   final BorderRadius? borderRadius;
 
   /// Custom height for the button.
+  /// Specify only if the widget context needs it.
   final double? height;
 
   /// Creates a new [LuckyButton] widget.
@@ -53,6 +63,9 @@ class LuckyButton extends StatelessWidget {
     super.key,
     required this.text,
     this.textSize = textBase,
+    this.icon,
+    this.nativeIcon,
+    this.iconSize = iconMd,
     required this.onTap,
     this.disabled = false,
     this.expanded = true,
@@ -93,7 +106,9 @@ class LuckyButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: disabled ? disabledColor : enabledColor,
           borderRadius: borderRadius ?? radius4xl,
-          border: style == LuckyButtonStyleEnum.secondary || style == LuckyButtonStyleEnum.picker
+          border:
+              style == LuckyButtonStyleEnum.secondary ||
+                  style == LuckyButtonStyleEnum.picker
               ? Border.all(color: context.luckyColors.n150)
               : Border.all(color: Colors.transparent),
         ),
@@ -101,6 +116,16 @@ class LuckyButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            if (icon != null || nativeIcon != null)
+              Padding(
+                padding: const EdgeInsets.only(right: spaceSm),
+                child: LuckyIcon(
+                  icon: icon,
+                  nativeIcon: nativeIcon,
+                  size: iconSize,
+                  color: textColor,
+                ),
+              ),
             Text(
               text,
               style: TextStyle(
