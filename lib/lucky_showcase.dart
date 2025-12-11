@@ -184,7 +184,6 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                     LuckyFilterData(text: "Card"),
                     LuckyFilterData(text: "Avatar"),
                     LuckyFilterData(text: "Segmented Tabs"),
-                    LuckyFilterData(text: "Picker"),
                   ],
                 ),
                 const SizedBox(height: spaceMd),
