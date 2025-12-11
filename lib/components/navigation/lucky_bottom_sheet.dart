@@ -101,3 +101,59 @@ class LuckyBottomSheet extends StatelessWidget {
     );
   }
 }
+
+/// A widget that displays a draggable bottom sheet.
+/// This is not modal and it's intended to be embedded inside the widget tree.
+class LuckyDraggableBottomSheet extends StatelessWidget {
+
+  /// The scroll controller of the bottom sheet.
+  final DraggableScrollableController scrollController;
+
+  /// The initial child size of the bottom sheet.
+  final double initialChildSize;
+
+  /// The max child size of the bottom sheet.
+  final double maxChildSize;
+
+  /// The border radius of the bottom sheet.
+  final BorderRadiusGeometry? borderRadius;
+  
+  /// The child of the bottom sheet.
+  final Widget child;
+
+  /// Creates a new [LuckyDraggableBottomSheet] widget.
+  const LuckyDraggableBottomSheet({
+    super.key,
+    required this.scrollController,
+    required this.initialChildSize,
+    required this.maxChildSize,
+    this.borderRadius,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DraggableScrollableSheet(
+      controller: scrollController,
+      initialChildSize: initialChildSize,
+      minChildSize: 0.0, // Allow dragging down to dismiss
+      maxChildSize: maxChildSize,
+      snap: true,
+      snapSizes: [0.0, maxChildSize], // Snap to closed or open
+      builder: (context, scrollController) {
+        return Container(
+          decoration: BoxDecoration(
+            color: context.luckyColors.surfaceTint,
+            borderRadius:
+                borderRadius ??
+                radius4xl.copyWith(
+                  bottomLeft: Radius.zero,
+                  bottomRight: Radius.zero,
+                ),
+          ),
+          child: child,
+        );
+      },
+    );
+  }
+}

@@ -732,7 +732,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                               ],
                             );
                           },
-                        ),
+                        ),               
                       ],
                     ),
                   ),
