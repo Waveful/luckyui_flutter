@@ -14,7 +14,7 @@ class LuckyBottomSheet extends StatelessWidget {
   /// (defaults to [LuckyColors.surfaceTint]).
   ///
   /// Set [borderRadius] to override the default border radius
-  /// (defaults to [radius3xl]).
+  /// (defaults to [radius4xl]).
   static Future<T?> show<T>({
     required BuildContext context,
     required List<Widget> children,
@@ -36,7 +36,7 @@ class LuckyBottomSheet extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius:
             borderRadius ??
-            radius3xl.copyWith(
+            radius4xl.copyWith(
               bottomLeft: Radius.zero,
               bottomRight: Radius.zero,
             ),
