@@ -27,6 +27,7 @@ class LuckyColors extends ThemeExtension<LuckyColors> {
     required this.n900,
     required this.n950,
     required this.onSurface,
+    required this.onSurfaceVariant,
     required this.surfaceTint,
     required this.primaryColor,
     required this.primaryColor300,
@@ -96,6 +97,9 @@ class LuckyColors extends ThemeExtension<LuckyColors> {
   /// The onSurface color.
   final Color onSurface;
 
+  /// The onSurface variant color.
+  final Color onSurfaceVariant;
+
   /// The surfaceTint color.
   final Color surfaceTint;
 
@@ -131,6 +135,7 @@ class LuckyColors extends ThemeExtension<LuckyColors> {
     n900: gray900,
     n950: gray950,
     onSurface: black,
+    onSurfaceVariant: gray100,
     surfaceTint: white,
     primaryColor: blue,
     primaryColor300: blue300,
@@ -160,6 +165,7 @@ class LuckyColors extends ThemeExtension<LuckyColors> {
     n900: gray100,
     n950: gray50,
     onSurface: white,
+    onSurfaceVariant: gray800,
     surfaceTint: gray900,
     primaryColor: blue,
     primaryColor300: blue300,
@@ -189,6 +195,7 @@ class LuckyColors extends ThemeExtension<LuckyColors> {
     Color? n900,
     Color? n950,
     Color? onSurface,
+    Color? onSurfaceVariant,
     Color? surfaceTint,
     Color? primaryColor,
     Color? primaryColor300,
@@ -216,6 +223,7 @@ class LuckyColors extends ThemeExtension<LuckyColors> {
       n900: n900 ?? this.n900,
       n950: n950 ?? this.n950,
       onSurface: onSurface ?? this.onSurface,
+      onSurfaceVariant: onSurfaceVariant ?? this.onSurfaceVariant,
       surfaceTint: surfaceTint ?? this.surfaceTint,
       primaryColor: primaryColor ?? this.primaryColor,
       primaryColor300: primaryColor300 ?? this.primaryColor300,
@@ -248,6 +256,7 @@ class LuckyColors extends ThemeExtension<LuckyColors> {
       n900: Color.lerp(n900, other.n900, t)!,
       n950: Color.lerp(n950, other.n950, t)!,
       onSurface: Color.lerp(onSurface, other.onSurface, t)!,
+      onSurfaceVariant: Color.lerp(onSurfaceVariant, other.onSurfaceVariant, t)!,
       surfaceTint: Color.lerp(surfaceTint, other.surfaceTint, t)!,
       primaryColor: Color.lerp(primaryColor, other.primaryColor, t)!,
       primaryColor300: Color.lerp(primaryColor300, other.primaryColor300, t)!,

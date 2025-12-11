@@ -16,7 +16,7 @@ class LuckyDivider extends StatelessWidget {
       height: 0.5,
       margin: EdgeInsets.symmetric(vertical: spacing),
       decoration: BoxDecoration(
-        color: context.luckyColors.n100,
+        color: context.luckyColors.onSurfaceVariant,
         borderRadius: radiusSm,
       ),
     );
