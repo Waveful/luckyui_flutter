@@ -1,3 +1,11 @@
+## 1.0.5
+New components:
+- Segmented tabs
+
+Others:
+- Implement missing parameters for various components
+- Fix multiple theming issues
+
 ## 1.0.4
 Others:
 - Implement missing parameters for various components
