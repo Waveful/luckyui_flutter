@@ -29,6 +29,10 @@ class LuckyFiltersController extends ChangeNotifier {
     _selectedIndex = index;
     notifyListeners();
   }
+
+  /// Creates a new [LuckyFiltersController] controller.
+  LuckyFiltersController({int initialIndex = 0})
+    : _selectedIndex = initialIndex;
 }
 
 /// A widget that displays a list of filters.
@@ -58,6 +62,18 @@ class _LuckyFiltersState extends State<LuckyFilters> {
   int get selectedIndex => widget.controller.selectedIndex;
 
   @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_updateState);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_updateState);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       key: PageStorageKey<int>(
@@ -76,8 +92,7 @@ class _LuckyFiltersState extends State<LuckyFilters> {
                 selected: index == selectedIndex,
                 icon: filter.icon,
                 text: filter.text,
-                onTap: () =>
-                    setState(() => widget.controller.selectFilter(index)),
+                onTap: () => widget.controller.selectFilter(index),
               ),
               if (index < widget.filters.length - 1)
                 const SizedBox(width: spaceSm),
@@ -86,6 +101,12 @@ class _LuckyFiltersState extends State<LuckyFilters> {
         }),
       ),
     );
+  }
+
+  void _updateState() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 }
 

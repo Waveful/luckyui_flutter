@@ -22,6 +22,9 @@ class LuckyRadioController extends ChangeNotifier {
     _selectedIndex = index;
     notifyListeners();
   }
+
+  /// Creates a new [LuckyRadioController] controller.
+  LuckyRadioController({int initialIndex = 0}) : _selectedIndex = initialIndex;
 }
 
 /// A widget that displays a list of radios.
@@ -48,6 +51,19 @@ class LuckyRadios extends StatefulWidget {
 }
 
 class _LuckyRadiosState extends State<LuckyRadios> {
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_updateState);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_updateState);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -65,7 +81,12 @@ class _LuckyRadiosState extends State<LuckyRadios> {
 
   void _onRadioTap(int index) {
     widget.controller.selectRadio(index);
-    setState(() {});
+  }
+
+  void _updateState() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 }
 

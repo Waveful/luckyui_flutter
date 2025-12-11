@@ -52,6 +52,9 @@ class LuckyNavBarController extends ChangeNotifier {
     _selectedIndex = index;
     notifyListeners();
   }
+
+  /// Creates a new [LuckyNavBarController] controller.
+  LuckyNavBarController({int initialIndex = 0}) : _selectedIndex = initialIndex;
 }
 
 /// Enum for navbar types.
@@ -94,6 +97,18 @@ class _LuckyNavBarState extends State<LuckyNavBar> {
   int get _selectedIndex => widget.controller.selectedIndex;
 
   @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_updateState);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_updateState);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final double bottomPadding = MediaQuery.of(context).padding.bottom;
     return Container(
@@ -118,11 +133,7 @@ class _LuckyNavBarState extends State<LuckyNavBar> {
                   text: item.text!,
                   counter: item.counter,
                   onTap: () {
-                    setState(
-                      () => widget.controller.changeIndex(
-                        widget.items.indexOf(item),
-                      ),
-                    );
+                    widget.controller.changeIndex(widget.items.indexOf(item));
                     item.onTap();
                   },
                   onLongPress: item.onLongPress,
@@ -134,6 +145,12 @@ class _LuckyNavBarState extends State<LuckyNavBar> {
         ),
       ),
     );
+  }
+
+  void _updateState() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 }
 

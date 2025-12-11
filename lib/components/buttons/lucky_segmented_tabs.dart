@@ -33,6 +33,9 @@ class LuckySegmentedTabsController extends ChangeNotifier {
     _selectedIndex = index;
     notifyListeners();
   }
+
+  /// Creates a new [LuckySegmentedTabsController] controller.
+  LuckySegmentedTabsController({int initialIndex = 0}) : _selectedIndex = initialIndex;
 }
 
 /// A widget that displays a segmented tabs.
@@ -55,6 +58,19 @@ class LuckySegmentedTabs extends StatefulWidget {
 }
 
 class _LuckySegmentedTabsState extends State<LuckySegmentedTabs> {
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_updateState);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_updateState);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -80,7 +96,12 @@ class _LuckySegmentedTabsState extends State<LuckySegmentedTabs> {
 
   void _onTabTap(int index) {
     widget.controller.selectTab(index);
-    setState(() {});
+  }
+
+  void _updateState() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 }
 
