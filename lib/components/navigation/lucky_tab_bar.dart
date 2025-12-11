@@ -73,6 +73,7 @@ class _LuckyTabBarState extends State<LuckyTabBar> {
         final Widget? iconWidget = entry.icon != null
             ? LuckyIcon(
                 icon: entry.icon,
+                nativeIcon: entry.nativeIcon,
                 color: isSelected
                     ? context.luckyColors.onSurface
                     : context.luckyColors.n400,
@@ -136,6 +137,9 @@ class LuckyTabData {
   /// The icon of the tab.
   final LuckyIconData? icon;
 
+  /// The native icon of the tab. Only one of [icon] or [nativeIcon] should be provided.
+  final IconData? nativeIcon;
+
   /// The label of the tab.
   final String? label;
 
@@ -148,6 +152,7 @@ class LuckyTabData {
   /// Creates a new [LuckyTabData] data class.
   const LuckyTabData({
     this.icon,
+    this.nativeIcon,
     this.label,
     this.showRedDot = false,
     this.counter = 0,
