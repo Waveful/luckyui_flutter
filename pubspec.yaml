@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
 
   # Icons library.
-  hugeicons: 1.1.1
+  hugeicons: 1.1.2
 
   # Markdown parser.
   markdown_widget: 2.3.2+8
