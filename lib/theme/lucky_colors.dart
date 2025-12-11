@@ -160,7 +160,7 @@ class LuckyColors extends ThemeExtension<LuckyColors> {
     n900: gray100,
     n950: gray50,
     onSurface: white,
-    surfaceTint: black,
+    surfaceTint: gray900,
     primaryColor: blue,
     primaryColor300: blue300,
     primaryColor500: blue500,
