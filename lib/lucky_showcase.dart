@@ -5,6 +5,7 @@ import 'package:luckyui/components/buttons/lucky_button.dart';
 import 'package:luckyui/components/buttons/lucky_icon_button.dart';
 import 'package:luckyui/components/buttons/lucky_list_items.dart';
 import 'package:luckyui/components/buttons/lucky_radios.dart';
+import 'package:luckyui/components/buttons/lucky_segmented_tabs.dart';
 import 'package:luckyui/components/buttons/lucky_switch.dart';
 import 'package:luckyui/components/buttons/lucky_text_button.dart';
 import 'package:luckyui/components/fields/lucky_text_field.dart';
@@ -104,6 +105,13 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
 
   final LuckyRadioController _radioController = LuckyRadioController();
 
+  final LuckySegmentedTabsController _segmentedTabsController1 =
+      LuckySegmentedTabsController();
+  final LuckySegmentedTabsController _segmentedTabsController2 =
+      LuckySegmentedTabsController();
+  final LuckySegmentedTabsController _segmentedTabsController3 =
+      LuckySegmentedTabsController();
+
   @override
   void initState() {
     super.initState();
@@ -175,6 +183,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                     LuckyFilterData(text: "Markdown"),
                     LuckyFilterData(text: "Card"),
                     LuckyFilterData(text: "Avatar"),
+                    LuckyFilterData(text: "Segmented Tabs"),
                   ],
                 ),
                 const SizedBox(height: spaceMd),
@@ -1158,6 +1167,61 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                                 ),
                                 const SizedBox(width: spaceMd),
                                 LuckyAvatar(onTap: () {}, size: space4xl),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                if (_filtersController1.selectedIndex == 24)
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: spaceMd,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: spaceMd,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          spacing: spaceMd,
+                          children: [
+                            const LuckyHeading(text: "Segmented Tabs"),
+                            const LuckyDivider(),
+                            LuckySegmentedTabs(
+                              controller: _segmentedTabsController1,
+                              tabs: const [
+                                LuckySegmentedTabData(text: "Light"),
+                                LuckySegmentedTabData(text: "Dark"),
+                              ],
+                            ),
+                            LuckySegmentedTabs(
+                              controller: _segmentedTabsController2,
+                              tabs: const [
+                                LuckySegmentedTabData(text: "Light"),
+                                LuckySegmentedTabData(text: "Dark"),
+                                LuckySegmentedTabData(text: "System"),
+                              ],
+                            ),
+                            LuckySegmentedTabs(
+                              controller: _segmentedTabsController3,
+                              tabs: const [
+                                LuckySegmentedTabData(
+                                  text: "Light",
+                                  icon: LuckyStrokeIcons.sun03,
+                                ),
+                                LuckySegmentedTabData(
+                                  text: "Dark",
+                                  icon: LuckyStrokeIcons.moon01,
+                                ),
+                                LuckySegmentedTabData(
+                                  text: "System",
+                                  icon: LuckyStrokeIcons.settings01,
+                                ),
                               ],
                             ),
                           ],
