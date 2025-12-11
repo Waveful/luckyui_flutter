@@ -24,6 +24,7 @@ LuckyUI is a complete design system that offers a cohesive set of components, th
 - `LuckySwitch` - Customizable toggle switches
 - `LuckyAppBar` - Consistent app bar implementation
 - `LuckyRadios` - Radio button selection components
+- `LuckySegmentedTabs` - Segmented tab selection component
 
 #### Form & Input Components
 - `LuckyTextField` - Text field wrapper with validation support
