@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:luckyui/animations/lucky_tap_animation.dart';
+import 'package:luckyui/components/indicators/lucky_icons.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
@@ -16,6 +17,9 @@ enum LuckyButtonStyleEnum {
 
   /// [secondaryAlternative] - A secondary alternative button with a n100 background and onSurface text.
   secondaryAlternative,
+
+  /// [picker] - A picker button with a surface background, onSurface text and a border.
+  picker,
 }
 
 /// A widget that displays a button with a text.
@@ -89,18 +93,29 @@ class LuckyButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: disabled ? disabledColor : enabledColor,
           borderRadius: borderRadius ?? radius4xl,
-          border: style == LuckyButtonStyleEnum.secondary
+          border: style == LuckyButtonStyleEnum.secondary || style == LuckyButtonStyleEnum.picker
               ? Border.all(color: context.luckyColors.n150)
               : Border.all(color: Colors.transparent),
         ),
         alignment: Alignment.center,
-        child: Text(
-          text,
-          style: TextStyle(
-            color: textColor,
-            fontSize: textSize,
-            fontWeight: semiBoldFontWeight,
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              text,
+              style: TextStyle(
+                color: textColor,
+                fontSize: textSize,
+                fontWeight: semiBoldFontWeight,
+              ),
+            ),
+            if (style == LuckyButtonStyleEnum.picker)
+              LuckyIcon(
+                nativeIcon: Icons.arrow_drop_down_rounded,
+                size: iconMd,
+                color: textColor,
+              ),
+          ],
         ),
       ),
     );
