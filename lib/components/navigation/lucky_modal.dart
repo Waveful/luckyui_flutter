@@ -210,7 +210,7 @@ class LuckyModal extends StatelessWidget {
                         child: LuckyTextButton(
                           text: "Cancel",
                           onTap: () => Navigator.pop(context, false),
-                          color: black,
+                          color: context.luckyColors.onSurface,
                           fontWeight: normalFontWeight,
                           textAlign: TextAlign.end,
                         ),
