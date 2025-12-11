@@ -6,32 +6,62 @@ import 'package:flutter/material.dart';
 /// The white color.
 const Color white = Color(0xFFFFFFFF);
 
+/// The gray50 color.
+const Color gray50 = Color(0xFFF4F4F4);
+
 /// The gray100 color.
 const Color gray100 = Color(0xFFE6E6E6);
+
+/// The gray150 color.
+const Color gray150 = Color(0xFFD9D9D9);
 
 /// The gray200 color.
 const Color gray200 = Color(0xFFCCCCCC);
 
+/// The gray250 color.
+const Color gray250 = Color(0xFFC0C0C0);
+
 /// The gray300 color.
 const Color gray300 = Color(0xFFB3B3B3);
+
+/// The gray350 color.
+const Color gray350 = Color(0xFFA6A6A6);
 
 /// The gray400 color.
 const Color gray400 = Color(0xFF999999);
 
+/// The gray450 color.
+const Color gray450 = Color(0xFF8D8D8D);
+
 /// The gray500 color.
 const Color gray500 = Color(0xFF808080);
+
+/// The gray550 color.
+const Color gray550 = Color(0xFF737373);
 
 /// The gray600 color.
 const Color gray600 = Color(0xFF666666);
 
+/// The gray650 color.
+const Color gray650 = Color(0xFF5A5A5A);
+
 /// The gray700 color.
 const Color gray700 = Color(0xFF4D4D4D);
+
+/// The gray750 color.
+const Color gray750 = Color(0xFF404040);
 
 /// The gray800 color.
 const Color gray800 = Color(0xFF333333);
 
+/// The gray850 color.
+const Color gray850 = Color(0xFF262626);
+
 /// The gray900 color.
 const Color gray900 = Color(0xFF1A1A1A);
+
+/// The gray950 color.
+const Color gray950 = Color(0xFF0B0B0B);
 
 /// The black color.
 const Color black = Color(0xFF000000);
