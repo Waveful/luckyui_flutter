@@ -35,7 +35,8 @@ class LuckySegmentedTabsController extends ChangeNotifier {
   }
 
   /// Creates a new [LuckySegmentedTabsController] controller.
-  LuckySegmentedTabsController({int initialIndex = 0}) : _selectedIndex = initialIndex;
+  LuckySegmentedTabsController({int initialIndex = 0})
+    : _selectedIndex = initialIndex;
 }
 
 /// A widget that displays a segmented tabs.
@@ -58,7 +59,6 @@ class LuckySegmentedTabs extends StatefulWidget {
 }
 
 class _LuckySegmentedTabsState extends State<LuckySegmentedTabs> {
-
   @override
   void initState() {
     super.initState();
@@ -139,14 +139,16 @@ class LuckySegmentedTab extends StatelessWidget {
             padding: const EdgeInsets.all(spaceSm),
             child: Column(
               children: [
-                if(tab.icon != null || tab.nativeIcon != null)
+                if (tab.icon != null || tab.nativeIcon != null)
                   Padding(
                     padding: const EdgeInsets.only(bottom: spaceXs),
                     child: LuckyIcon(
                       icon: tab.icon,
                       nativeIcon: tab.nativeIcon,
                       size: iconMd,
-                      color: selected ? context.luckyColors.onSurface : context.luckyColors.n800,
+                      color: selected
+                          ? context.luckyColors.onSurface
+                          : context.luckyColors.n800,
                     ),
                   ),
                 LuckyBody(

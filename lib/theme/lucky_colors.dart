@@ -256,7 +256,11 @@ class LuckyColors extends ThemeExtension<LuckyColors> {
       n900: Color.lerp(n900, other.n900, t)!,
       n950: Color.lerp(n950, other.n950, t)!,
       onSurface: Color.lerp(onSurface, other.onSurface, t)!,
-      onSurfaceVariant: Color.lerp(onSurfaceVariant, other.onSurfaceVariant, t)!,
+      onSurfaceVariant: Color.lerp(
+        onSurfaceVariant,
+        other.onSurfaceVariant,
+        t,
+      )!,
       surfaceTint: Color.lerp(surfaceTint, other.surfaceTint, t)!,
       primaryColor: Color.lerp(primaryColor, other.primaryColor, t)!,
       primaryColor300: Color.lerp(primaryColor300, other.primaryColor300, t)!,

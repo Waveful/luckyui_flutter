@@ -51,7 +51,6 @@ class LuckyRadios extends StatefulWidget {
 }
 
 class _LuckyRadiosState extends State<LuckyRadios> {
-
   @override
   void initState() {
     super.initState();
