@@ -68,19 +68,13 @@ const Color black = Color(0xFF000000);
 
 // Brand colors
 /// The blue color.
-const Color blue = Color(0xFF024EFA);
+const Color blue = Color(0xFF0000FF);
 
 /// The blue500 color.
-const Color blue500 = Color(0xFF80A7FF);
+const Color blue500 = Color(0xFF8080FF);
 
 /// The blue300 color.
-const Color blue300 = Color(0xFFB3CAFF);
-
-/// The secondary blue color.
-const Color secondaryBlue = Color(0xFF00C1FF);
-
-/// The accent blue color.
-const Color accentBlue = Color(0xFF535AFF);
+const Color blue300 = Color(0xFFB3B3FF);
 
 // Accent colors
 /// The red color.

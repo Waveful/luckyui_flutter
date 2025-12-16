@@ -14,12 +14,6 @@ class LuckyTheme {
   /// The primary color 300.
   static const Color primaryColor300 = blue300;
 
-  /// The secondary color.
-  static const Color secondaryColor = secondaryBlue;
-
-  /// The accent color.
-  static const Color accentColor = accentBlue;
-
   /// The error color.
   static const Color errorColor = red;
 
@@ -31,7 +25,6 @@ class LuckyTheme {
           brightness: Brightness.light,
         ).copyWith(
           primary: primaryColor,
-          secondary: secondaryColor,
           error: errorColor,
           surface: white,
           onSurface: black,
@@ -81,7 +74,6 @@ class LuckyTheme {
           brightness: Brightness.dark,
         ).copyWith(
           primary: primaryColor,
-          secondary: secondaryColor,
           error: errorColor,
           surface: black,
           onSurface: white,
