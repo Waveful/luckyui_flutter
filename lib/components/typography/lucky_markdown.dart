@@ -8,11 +8,19 @@ class LuckyMarkdown extends StatelessWidget {
   /// The text to display.
   final String text;
 
+  /// The color of text links.
+  final Color? linkColor;
+
   /// The callback to be called when a link is tapped.
   final Function(String url)? onLinkTap;
 
   /// Creates a new [LuckyMarkdown] widget.
-  const LuckyMarkdown({super.key, required this.text, this.onLinkTap});
+  const LuckyMarkdown({
+    super.key,
+    required this.text,
+    this.linkColor,
+    this.onLinkTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +31,7 @@ class LuckyMarkdown extends StatelessWidget {
         configs: [
           LinkConfig(
             style: TextStyle(
-              color: context.luckyColors.primaryColor,
+              color: linkColor ?? context.luckyColors.primaryColor,
               decoration: TextDecoration.none,
             ),
             onTap: onLinkTap,
