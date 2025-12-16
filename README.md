@@ -1,4 +1,4 @@
-[![LuckyUI Flutter Banner](https://i.postimg.cc/CMWcYDhG/luckyui-banner-min.png)](https://lucky-ui.com)
+[![LuckyUI Flutter Banner](https://raw.githubusercontent.com/Waveful/.github/main/profile/images/lucky_ui_banner.png)](https://lucky-ui.com)
 # LuckyUI Flutter
 
 A comprehensive Flutter design system package created by Waveful, providing scalable and consistent UI components for modern Flutter applications.
