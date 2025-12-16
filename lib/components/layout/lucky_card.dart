@@ -11,6 +11,9 @@ class LuckyCard extends StatelessWidget {
   /// The padding of the card.
   final EdgeInsets padding;
 
+  /// The border radius of the card.
+  final BorderRadius? borderRadius;
+
   /// The child of the card.
   final Widget child;
 
@@ -18,6 +21,7 @@ class LuckyCard extends StatelessWidget {
   const LuckyCard({
     super.key,
     this.title,
+    this.borderRadius,
     this.padding = const EdgeInsets.symmetric(
       vertical: spaceSm,
       horizontal: spaceMd,
@@ -44,7 +48,7 @@ class LuckyCard extends StatelessWidget {
           padding: padding,
           decoration: BoxDecoration(
             color: context.luckyColors.n50,
-            borderRadius: radiusSm,
+            borderRadius: borderRadius ?? radiusSm,
           ),
           child: child,
         ),
