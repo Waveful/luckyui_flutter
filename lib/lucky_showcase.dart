@@ -273,6 +273,15 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                           icon: LuckyStrokeIcons.image01,
                           style: LuckyButtonStyleEnum.primary,
                         ),
+                        LuckyButton(
+                          onTap: () {},
+                          text: "Primary with Icon above",
+                          icon: LuckyStrokeIcons.image01,
+                          iconSize: iconLg,
+                          verticalIcon: true,
+                          expanded: false,
+                          style: LuckyButtonStyleEnum.primary,
+                        ),
                         Stack(
                           clipBehavior: Clip.none,
                           alignment: Alignment.center,

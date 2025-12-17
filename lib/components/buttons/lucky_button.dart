@@ -47,6 +47,9 @@ class LuckyButton extends StatelessWidget {
   /// The size of the icon.
   final double iconSize;
 
+  /// Whether to display the icon vertically.
+  final bool verticalIcon;
+
   /// The callback to be called when the button is tapped.
   final VoidCallback onTap;
 
@@ -74,6 +77,7 @@ class LuckyButton extends StatelessWidget {
     this.icon,
     this.nativeIcon,
     this.iconSize = iconMd,
+    this.verticalIcon = false,
     required this.onTap,
     this.disabled = false,
     this.expanded = true,
@@ -123,12 +127,11 @@ class LuckyButton extends StatelessWidget {
             : Border.all(color: Colors.transparent),
       ),
       alignment: Alignment.center,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
         children: [
-          if (icon != null || nativeIcon != null)
+          if ((icon != null || nativeIcon != null) && verticalIcon)
             Padding(
-              padding: const EdgeInsets.only(right: spaceSm),
+              padding: const EdgeInsets.only(bottom: spaceXs),
               child: LuckyIcon(
                 icon: icon,
                 nativeIcon: nativeIcon,
@@ -136,20 +139,35 @@ class LuckyButton extends StatelessWidget {
                 color: textColor,
               ),
             ),
-          Text(
-            text,
-            style: TextStyle(
-              color: textColor,
-              fontSize: textSize,
-              fontWeight: semiBoldFontWeight,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if ((icon != null || nativeIcon != null) && !verticalIcon)
+                Padding(
+                  padding: const EdgeInsets.only(right: spaceSm),
+                  child: LuckyIcon(
+                    icon: icon,
+                    nativeIcon: nativeIcon,
+                    size: iconSize,
+                    color: textColor,
+                  ),
+                ),
+              Text(
+                text,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: textSize,
+                  fontWeight: semiBoldFontWeight,
+                ),
+              ),
+              if (style == LuckyButtonStyleEnum.picker)
+                LuckyIcon(
+                  nativeIcon: Icons.arrow_drop_down_rounded,
+                  size: iconMd,
+                  color: textColor,
+                ),
+            ],
           ),
-          if (style == LuckyButtonStyleEnum.picker)
-            LuckyIcon(
-              nativeIcon: Icons.arrow_drop_down_rounded,
-              size: iconMd,
-              color: textColor,
-            ),
         ],
       ),
     );
