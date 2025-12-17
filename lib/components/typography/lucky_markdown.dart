@@ -14,12 +14,16 @@ class LuckyMarkdown extends StatelessWidget {
   /// The callback to be called when a link is tapped.
   final Function(String url)? onLinkTap;
 
+  /// The configs for the markdown text.
+  final List<WidgetConfig> configs;
+
   /// Creates a new [LuckyMarkdown] widget.
   const LuckyMarkdown({
     super.key,
     required this.text,
     this.linkColor,
     this.onLinkTap,
+    this.configs = const [],
   });
 
   @override
@@ -36,6 +40,7 @@ class LuckyMarkdown extends StatelessWidget {
             ),
             onTap: onLinkTap,
           ),
+          ...configs,
         ],
       ),
     );
