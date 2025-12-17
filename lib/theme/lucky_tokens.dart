@@ -137,6 +137,12 @@ final BorderRadius radius3xl = BorderRadius.circular(24.0);
 /// The radius of the 4xl border radius.
 final BorderRadius radius4xl = BorderRadius.circular(32.0);
 
+/// The radius of the 5xl border radius.
+final BorderRadius radius5xl = BorderRadius.circular(40.0);
+
+/// The radius of the 6xl border radius.
+final BorderRadius radius6xl = BorderRadius.circular(48.0);
+
 /// The radius of the none border radius.
 final BorderRadius radiusNone = BorderRadius.circular(0.0);
 

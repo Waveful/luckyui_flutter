@@ -36,7 +36,7 @@ class LuckyBottomSheet extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius:
             borderRadius ??
-            radius4xl.copyWith(
+            radius5xl.copyWith(
               bottomLeft: Radius.zero,
               bottomRight: Radius.zero,
             ),
@@ -145,7 +145,7 @@ class LuckyDraggableBottomSheet extends StatelessWidget {
             color: context.luckyColors.surfaceTint,
             borderRadius:
                 borderRadius ??
-                radius4xl.copyWith(
+                radius5xl.copyWith(
                   bottomLeft: Radius.zero,
                   bottomRight: Radius.zero,
                 ),

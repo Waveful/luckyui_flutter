@@ -300,7 +300,9 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: spaceMd),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: spaceMd,
+                              ),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -785,7 +787,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                             LuckyBottomSheet.show(
                               context: context,
                               children: [
-                                const SizedBox(height: spaceSm),
+                                const SizedBox(height: spaceMd),
                                 const LuckyHeading(
                                   text: "Earn with your friends",
                                 ),
