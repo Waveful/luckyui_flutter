@@ -26,6 +26,9 @@ class LuckyAvatar extends StatelessWidget {
   /// The size of the avatar.
   final double size;
 
+  /// Whether to show the border around the avatar.
+  final bool showBorder;
+
   /// The callback to be called when the avatar is tapped.
   final VoidCallback? onTap;
 
@@ -53,6 +56,7 @@ class LuckyAvatar extends StatelessWidget {
     this.imageFile,
     this.letter,
     this.size = space5xl,
+    this.showBorder = true,
     this.onTap,
     this.borderRadius,
     this.placeholder,
@@ -61,7 +65,7 @@ class LuckyAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isCircle = borderRadius == null;
+    final bool isCircle = borderRadius == null;
 
     return LuckyTapAnimation(
       onTap: onTap,
@@ -72,6 +76,10 @@ class LuckyAvatar extends StatelessWidget {
           color: backgroundColor ?? context.luckyColors.primaryColor,
           shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
           borderRadius: isCircle ? null : borderRadius,
+          border: showBorder ? BoxBorder.all(
+            color: context.luckyColors.n200.withAlpha(alpha50),
+            width: 1.5,
+          ) : null,
         ),
         clipBehavior: Clip.antiAlias,
         child: _buildContent(),
