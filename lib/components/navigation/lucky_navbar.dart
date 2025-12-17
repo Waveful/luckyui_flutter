@@ -119,10 +119,11 @@ class _LuckyNavBarState extends State<LuckyNavBar> {
       decoration: BoxDecoration(color: context.luckyColors.surface),
       child: Padding(
         padding: EdgeInsets.only(bottom: bottomPadding),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+        child: IntrinsicHeight(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
             ...widget.items.map((item) {
               if (item.specialItem) {
                 return LuckyNavBarMainItem(
@@ -153,7 +154,8 @@ class _LuckyNavBarState extends State<LuckyNavBar> {
                 );
               }
             }),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -245,30 +247,18 @@ class LuckyNavBarIconOnlyItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final displayIcon = selected && selectedIcon != null ? selectedIcon! : icon;
-    // Match the structure of LuckyNavBarMainItem but without the colored background
     return Expanded(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          LuckyTapAnimation(
-            onTap: onTap,
-            onLongPress: onLongPress,
-            pressedScale: 0.95,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: spaceMd,
-                vertical: spaceXs,
-              ),
-              margin: const EdgeInsets.only(bottom: textXs * 0.5),
-              child: LuckyIcon(
-                icon: displayIcon,
-                size: iconXl,
-                color: context.luckyColors.onSurface,
-              ),
-            ),
+      child: LuckyTapAnimation(
+        onTap: onTap,
+        onLongPress: onLongPress,
+        pressedScale: 0.95,
+        child: Center(
+          child: LuckyIcon(
+            icon: displayIcon,
+            size: iconXl,
+            color: context.luckyColors.onSurface,
           ),
-        ],
+        ),
       ),
     );
   }
