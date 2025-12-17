@@ -255,7 +255,7 @@ class LuckyNavBarIconOnlyItem extends StatelessWidget {
           child: Center(
             child: LuckyIcon(
               icon: displayIcon,
-              size: iconXl,
+              size: icon2xl,
               color: context.luckyColors.onSurface,
             ),
           ),
