@@ -256,10 +256,14 @@ class LuckyNavBarIconOnlyItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              LuckyIcon(
-                icon: displayIcon,
-                size: iconXl,
-                color: context.luckyColors.onSurface,
+              SizedBox(
+                width: iconXl,
+                height: iconXl,
+                child: LuckyIcon(
+                  icon: displayIcon,
+                  size: iconXl,
+                  color: context.luckyColors.onSurface,
+                ),
               ),
             ],
           ),
