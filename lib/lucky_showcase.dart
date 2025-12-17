@@ -445,7 +445,7 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                     ),
                   ),
                 if (_filtersController1.selectedIndex == 5)
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: spaceMd),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -458,6 +458,43 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                         LuckyBadge(
                           icon: LuckyStrokeIcons.checkmarkBadge01,
                           text: "Verified",
+                        ),
+                        Stack(
+                          alignment: Alignment.centerLeft,
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    "https://i.ibb.co/j9MjXMkF/ocean-2.jpg",
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
+                                borderRadius: radius2xl,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: spaceMd),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                spacing: spaceMd,
+                                children: [
+                                  LuckyBadge(
+                                    text: "Los Angeles, CA",
+                                    style: LuckyBadgeStyleEnum.transparent,
+                                  ),
+                                  LuckyBadge(
+                                    icon: LuckyStrokeIcons.location01,
+                                    text: "Los Angeles, CA",
+                                    style: LuckyBadgeStyleEnum.glassmorphism,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
