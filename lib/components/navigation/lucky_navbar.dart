@@ -252,18 +252,12 @@ class LuckyNavBarIconOnlyItem extends StatelessWidget {
         pressedScale: 0.95,
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: spaceXs),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              LuckyIcon(
-                icon: displayIcon,
-                size: iconLg,
-                color: context.luckyColors.onSurface,
-              ),
-              // Empty space to match height of items with text
-              const SizedBox(height: textSm),
-            ],
+          child: Center(
+            child: LuckyIcon(
+              icon: displayIcon,
+              size: iconXl,
+              color: context.luckyColors.onSurface,
+            ),
           ),
         ),
       ),
