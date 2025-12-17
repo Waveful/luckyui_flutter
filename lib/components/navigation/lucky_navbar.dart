@@ -26,8 +26,15 @@ class LuckyNavBarItemData {
   /// The callback to be called when the navbar item is long pressed.
   final VoidCallback? onLongPress;
 
-  /// Whether to show the item as icon-only (larger icon, no text, no background).
+  /// Whether to show the item as icon-only (no text).
   final bool iconOnly;
+
+  /// Custom icon size (defaults to iconLg for regular items, iconLg for special/iconOnly items).
+  final double? iconSize;
+
+  /// Whether to show the colored background (only applies to special items).
+  /// Defaults to true for special items.
+  final bool showBackground;
 
   /// Whether the navbar item is a special item.
   const LuckyNavBarItemData({
@@ -38,9 +45,11 @@ class LuckyNavBarItemData {
     required this.onTap,
     this.onLongPress,
     this.iconOnly = false,
+    this.iconSize,
+    this.showBackground = true,
   });
 
-  /// Whether the navbar item is a special item (blue background).
+  /// Whether the navbar item is a special item (centered with container).
   bool get specialItem => selectedIcon == null && text == null && !iconOnly;
 }
 
@@ -129,6 +138,8 @@ class _LuckyNavBarState extends State<LuckyNavBar> {
                   icon: item.icon,
                   onTap: item.onTap,
                   onLongPress: item.onLongPress,
+                  iconSize: item.iconSize,
+                  showBackground: item.showBackground,
                 );
               } else if (item.iconOnly) {
                 return LuckyNavBarIconOnlyItem(
@@ -137,6 +148,7 @@ class _LuckyNavBarState extends State<LuckyNavBar> {
                   onTap: item.onTap,
                   onLongPress: item.onLongPress,
                   selected: _selectedIndex == widget.items.indexOf(item),
+                  iconSize: item.iconSize,
                 );
               } else {
                 return LuckyNavBarItem(
@@ -177,39 +189,77 @@ class LuckyNavBarMainItem extends StatelessWidget {
   /// The callback to be called when the main navbar item is long pressed.
   final VoidCallback? onLongPress;
 
+  /// Custom icon size (defaults to iconLg).
+  final double? iconSize;
+
+  /// Whether to show the colored background.
+  final bool showBackground;
+
   /// Creates a new [LuckyNavBarMainItem] widget.
   const LuckyNavBarMainItem({
     super.key,
     required this.icon,
     required this.onTap,
     this.onLongPress,
+    this.iconSize,
+    this.showBackground = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          LuckyTapAnimation(
-            onTap: onTap,
-            onLongPress: onLongPress,
-            pressedScale: 0.95,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: spaceMd,
-                vertical: spaceXs,
+    final size = iconSize ?? iconLg;
+    final iconColor = showBackground ? white : context.luckyColors.onSurface;
+
+    // When showing background, use centered Row layout (original blue button style)
+    if (showBackground) {
+      return Expanded(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            LuckyTapAnimation(
+              onTap: onTap,
+              onLongPress: onLongPress,
+              pressedScale: 0.95,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: spaceMd,
+                  vertical: spaceXs,
+                ),
+                margin: const EdgeInsets.only(bottom: textXs * 0.5),
+                decoration: BoxDecoration(
+                  color: context.luckyColors.primaryColor,
+                  borderRadius: radius2xl,
+                ),
+                child: LuckyIcon(icon: icon, size: size, color: iconColor),
               ),
-              margin: const EdgeInsets.only(bottom: textXs * 0.5),
-              decoration: BoxDecoration(
-                color: context.luckyColors.primaryColor,
-                borderRadius: radius2xl,
-              ),
-              child: LuckyIcon(icon: icon, size: iconLg, color: white),
             ),
+          ],
+        ),
+      );
+    }
+
+    // When not showing background, use Column layout to align with other navbar items
+    return Expanded(
+      child: LuckyTapAnimation(
+        onTap: onTap,
+        onLongPress: onLongPress,
+        pressedScale: 0.95,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: spaceXs),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              LuckyIcon(icon: icon, size: size, color: iconColor),
+              // Invisible text placeholder to match height of items with text
+              Opacity(
+                opacity: 0,
+                child: LuckySmallBody(text: ''),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -232,6 +282,9 @@ class LuckyNavBarIconOnlyItem extends StatelessWidget {
   /// Whether the navbar item is selected.
   final bool selected;
 
+  /// Custom icon size (defaults to iconLg).
+  final double? iconSize;
+
   /// Creates a new [LuckyNavBarIconOnlyItem] widget.
   const LuckyNavBarIconOnlyItem({
     super.key,
@@ -240,34 +293,37 @@ class LuckyNavBarIconOnlyItem extends StatelessWidget {
     required this.onTap,
     this.onLongPress,
     this.selected = false,
+    this.iconSize,
   });
 
   @override
   Widget build(BuildContext context) {
     final displayIcon = selected && selectedIcon != null ? selectedIcon! : icon;
+    final size = iconSize ?? iconLg;
+    // Use same structure as LuckyNavBarMainItem but without the colored background
     return Expanded(
-      child: LuckyTapAnimation(
-        onTap: onTap,
-        onLongPress: onLongPress,
-        pressedScale: 0.95,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: spaceXs),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: iconXl,
-                height: iconXl,
-                child: LuckyIcon(
-                  icon: displayIcon,
-                  size: iconXl,
-                  color: context.luckyColors.onSurface,
-                ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          LuckyTapAnimation(
+            onTap: onTap,
+            onLongPress: onLongPress,
+            pressedScale: 0.95,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: spaceMd,
+                vertical: spaceXs,
               ),
-            ],
+              margin: const EdgeInsets.only(bottom: textXs * 0.5),
+              child: LuckyIcon(
+                icon: displayIcon,
+                size: size,
+                color: context.luckyColors.onSurface,
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
