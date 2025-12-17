@@ -245,30 +245,30 @@ class LuckyNavBarIconOnlyItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final displayIcon = selected && selectedIcon != null ? selectedIcon! : icon;
+    // Match the structure of LuckyNavBarMainItem but without the colored background
     return Expanded(
-      child: LuckyTapAnimation(
-        onTap: onTap,
-        onLongPress: onLongPress,
-        pressedScale: 0.95,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: spaceXs),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              LuckyIcon(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          LuckyTapAnimation(
+            onTap: onTap,
+            onLongPress: onLongPress,
+            pressedScale: 0.95,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: spaceMd,
+                vertical: spaceXs,
+              ),
+              margin: const EdgeInsets.only(bottom: textXs * 0.5),
+              child: LuckyIcon(
                 icon: displayIcon,
-                size: icon2xl,
+                size: iconXl,
                 color: context.luckyColors.onSurface,
               ),
-              // Invisible placeholder to match height of items with text
-              const Opacity(
-                opacity: 0,
-                child: LuckySmallBody(text: ''),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
