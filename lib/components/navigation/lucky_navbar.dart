@@ -26,6 +26,9 @@ class LuckyNavBarItemData {
   /// The callback to be called when the navbar item is long pressed.
   final VoidCallback? onLongPress;
 
+  /// Whether to show the item as icon-only (larger icon, no text, no background).
+  final bool iconOnly;
+
   /// Whether the navbar item is a special item.
   const LuckyNavBarItemData({
     required this.icon,
@@ -34,10 +37,11 @@ class LuckyNavBarItemData {
     this.counter,
     required this.onTap,
     this.onLongPress,
+    this.iconOnly = false,
   });
 
-  /// Whether the navbar item is a special item.
-  bool get specialItem => selectedIcon == null && text == null;
+  /// Whether the navbar item is a special item (blue background).
+  bool get specialItem => selectedIcon == null && text == null && !iconOnly;
 }
 
 /// A controller that manages the selected navbar item.
@@ -126,6 +130,14 @@ class _LuckyNavBarState extends State<LuckyNavBar> {
                   onTap: item.onTap,
                   onLongPress: item.onLongPress,
                 );
+              } else if (item.iconOnly) {
+                return LuckyNavBarIconOnlyItem(
+                  icon: item.icon,
+                  selectedIcon: item.selectedIcon,
+                  onTap: item.onTap,
+                  onLongPress: item.onLongPress,
+                  selected: _selectedIndex == widget.items.indexOf(item),
+                );
               } else {
                 return LuckyNavBarItem(
                   icon: item.icon,
@@ -198,6 +210,56 @@ class LuckyNavBarMainItem extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// A widget that displays an icon-only navbar item (no text, no background).
+class LuckyNavBarIconOnlyItem extends StatelessWidget {
+  /// The icon of the navbar item.
+  final LuckyIconData icon;
+
+  /// The selected icon of the navbar item.
+  final LuckyIconData? selectedIcon;
+
+  /// The callback to be called when the navbar item is tapped.
+  final VoidCallback onTap;
+
+  /// The callback to be called when the navbar item is long pressed.
+  final VoidCallback? onLongPress;
+
+  /// Whether the navbar item is selected.
+  final bool selected;
+
+  /// Creates a new [LuckyNavBarIconOnlyItem] widget.
+  const LuckyNavBarIconOnlyItem({
+    super.key,
+    required this.icon,
+    this.selectedIcon,
+    required this.onTap,
+    this.onLongPress,
+    this.selected = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final displayIcon = selected && selectedIcon != null ? selectedIcon! : icon;
+    return Expanded(
+      child: LuckyTapAnimation(
+        onTap: onTap,
+        onLongPress: onLongPress,
+        pressedScale: 0.95,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: spaceXs),
+          child: Center(
+            child: LuckyIcon(
+              icon: displayIcon,
+              size: iconXl,
+              color: context.luckyColors.onSurface,
+            ),
+          ),
+        ),
       ),
     );
   }
