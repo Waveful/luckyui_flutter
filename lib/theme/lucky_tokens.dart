@@ -86,6 +86,32 @@ const Color green = Color(0xFF10B981);
 /// The orange color.
 const Color orange = Color(0xFFF97316);
 
+// Alpha values
+/// The alpha value of ~12.6%.
+const int alpha12 = 32;
+
+/// The alpha value of ~25.1%.
+const int alpha25 = 64;
+
+/// The alpha value of ~50.2%.
+const int alpha50 = 128;
+
+/// The alpha value of ~62.6%.
+const int alpha62 = 160;
+
+/// The alpha value of ~75.3%.
+const int alpha75 = 192;
+
+/// The alpha value of ~87.4%.
+const int alpha87 = 224;
+
+/// The alpha value of 100%.
+const int alpha100 = 255;
+
+// Glassmorphism blur values
+/// The blur value of the glassmorphism.
+const double glassmorphismBlur = 8.0;
+
 // Border radius
 /// The radius of the xs border radius.
 final BorderRadius radiusXs = BorderRadius.circular(2.0);

@@ -273,6 +273,44 @@ class _LuckyShowcaseState extends State<LuckyShowcase>
                           icon: LuckyStrokeIcons.image01,
                           style: LuckyButtonStyleEnum.primary,
                         ),
+                        Stack(
+                          clipBehavior: Clip.none,
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: 160,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    "https://i.ibb.co/j9MjXMkF/ocean-2.jpg",
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
+                                borderRadius: radius4xl,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: spaceMd),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  LuckyButton(
+                                    onTap: () {},
+                                    text: "Transparent",
+                                    style: LuckyButtonStyleEnum.transparent,
+                                  ),
+                                  const SizedBox(height: spaceMd),
+                                  LuckyButton(
+                                    onTap: () {},
+                                    text: "Glassmorphism",
+                                    style: LuckyButtonStyleEnum.glassmorphism,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),

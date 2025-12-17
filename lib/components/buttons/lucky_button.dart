@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:luckyui/animations/lucky_tap_animation.dart';
 import 'package:luckyui/components/indicators/lucky_icons.dart';
@@ -20,6 +22,12 @@ enum LuckyButtonStyleEnum {
 
   /// [picker] - A picker button with a surface background, onSurface text and a border.
   picker,
+
+  /// [transparent] - A secondary button with a transparent background and onSurface text.
+  transparent,
+
+  /// [glassmorphism] - A secondary button with a transparent background with glassmorphism effect and onSurface text.
+  glassmorphism,
 }
 
 /// A widget that displays a button with a text.
@@ -82,7 +90,11 @@ class LuckyButton extends StatelessWidget {
               ? context.luckyColors.onSurface
               : (style == LuckyButtonStyleEnum.secondaryAlternative
                     ? context.luckyColors.n100
-                    : context.luckyColors.surface));
+                    : (style == LuckyButtonStyleEnum.transparent
+                          ? context.luckyColors.n200.withAlpha(alpha75)
+                          : (style == LuckyButtonStyleEnum.glassmorphism
+                                ? context.luckyColors.n200.withAlpha(alpha50)
+                                : context.luckyColors.surface))));
     final Color disabledColor = style == LuckyButtonStyleEnum.primary
         ? context.luckyColors.primaryColor300
         : context.luckyColors.n100;
@@ -92,57 +104,74 @@ class LuckyButton extends StatelessWidget {
               ? context.luckyColors.surface
               : context.luckyColors.onSurface);
 
-    return LuckyTapAnimation(
-      onTap: disabled ? null : onTap,
-      child: AnimatedContainer(
-        duration: fastDuration,
-        curve: Curves.easeIn,
-        width: expanded ? double.infinity : null,
-        height: height,
-        padding: EdgeInsets.symmetric(
-          horizontal: spaceMd,
-          vertical: expanded ? spaceMd : spaceSm,
-        ),
-        decoration: BoxDecoration(
-          color: disabled ? disabledColor : enabledColor,
-          borderRadius: borderRadius ?? radius4xl,
-          border:
-              style == LuckyButtonStyleEnum.secondary ||
-                  style == LuckyButtonStyleEnum.picker
-              ? Border.all(color: context.luckyColors.n150)
-              : Border.all(color: Colors.transparent),
-        ),
-        alignment: Alignment.center,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (icon != null || nativeIcon != null)
-              Padding(
-                padding: const EdgeInsets.only(right: spaceSm),
-                child: LuckyIcon(
-                  icon: icon,
-                  nativeIcon: nativeIcon,
-                  size: iconSize,
-                  color: textColor,
-                ),
-              ),
-            Text(
-              text,
-              style: TextStyle(
+    final Widget buttonContent = AnimatedContainer(
+      duration: fastDuration,
+      curve: Curves.easeIn,
+      width: expanded ? double.infinity : null,
+      height: height,
+      padding: EdgeInsets.symmetric(
+        horizontal: spaceMd,
+        vertical: expanded ? spaceMd : spaceSm,
+      ),
+      decoration: BoxDecoration(
+        color: disabled ? disabledColor : enabledColor,
+        borderRadius: borderRadius ?? radius4xl,
+        border:
+            style == LuckyButtonStyleEnum.secondary ||
+                style == LuckyButtonStyleEnum.picker
+            ? Border.all(color: context.luckyColors.n150)
+            : Border.all(color: Colors.transparent),
+      ),
+      alignment: Alignment.center,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (icon != null || nativeIcon != null)
+            Padding(
+              padding: const EdgeInsets.only(right: spaceSm),
+              child: LuckyIcon(
+                icon: icon,
+                nativeIcon: nativeIcon,
+                size: iconSize,
                 color: textColor,
-                fontSize: textSize,
-                fontWeight: semiBoldFontWeight,
               ),
             ),
-            if (style == LuckyButtonStyleEnum.picker)
-              LuckyIcon(
-                nativeIcon: Icons.arrow_drop_down_rounded,
-                size: iconMd,
-                color: textColor,
-              ),
-          ],
-        ),
+          Text(
+            text,
+            style: TextStyle(
+              color: textColor,
+              fontSize: textSize,
+              fontWeight: semiBoldFontWeight,
+            ),
+          ),
+          if (style == LuckyButtonStyleEnum.picker)
+            LuckyIcon(
+              nativeIcon: Icons.arrow_drop_down_rounded,
+              size: iconMd,
+              color: textColor,
+            ),
+        ],
       ),
     );
+
+    Widget child;
+    if (style == LuckyButtonStyleEnum.glassmorphism) {
+      child = RepaintBoundary(
+        child: ClipRRect(
+          borderRadius: borderRadius ?? radius4xl,
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: glassmorphismBlur,
+              sigmaY: glassmorphismBlur,
+            ),
+            child: buttonContent,
+          ),
+        ),
+      );
+    } else {
+      child = buttonContent;
+    }
+
+    return LuckyTapAnimation(onTap: disabled ? null : onTap, child: child);
   }
 }
