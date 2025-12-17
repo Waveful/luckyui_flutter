@@ -76,10 +76,12 @@ class LuckyAvatar extends StatelessWidget {
           color: backgroundColor ?? context.luckyColors.primaryColor,
           shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
           borderRadius: isCircle ? null : borderRadius,
-          border: showBorder ? BoxBorder.all(
-            color: context.luckyColors.n200.withAlpha(alpha75),
-            width: 1.5,
-          ) : null,
+          border: showBorder
+              ? BoxBorder.all(
+                  color: context.luckyColors.n200.withAlpha(alpha75),
+                  width: 1.5,
+                )
+              : null,
         ),
         clipBehavior: Clip.antiAlias,
         child: _buildContent(),

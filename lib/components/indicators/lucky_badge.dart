@@ -125,9 +125,6 @@ class LuckyBadge extends StatelessWidget {
       );
     }
 
-    return LuckyTapAnimation(
-      onTap: onTap,
-      child: badge,
-    );
+    return LuckyTapAnimation(onTap: onTap, child: badge);
   }
 }
