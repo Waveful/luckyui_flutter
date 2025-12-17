@@ -1,3 +1,9 @@
+## 1.1.0
+Others:
+- Implement transparent and glassmorphism style for buttons and badges
+- Implement border for avatar
+- Implement missing parameters for various components
+
 ## 1.0.8
 Implement missing parameters for various components.
 
