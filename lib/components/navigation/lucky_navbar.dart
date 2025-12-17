@@ -253,10 +253,7 @@ class LuckyNavBarMainItem extends StatelessWidget {
             children: [
               LuckyIcon(icon: icon, size: size, color: iconColor),
               // Invisible text placeholder to match height of items with text
-              Opacity(
-                opacity: 0,
-                child: LuckySmallBody(text: ''),
-              ),
+              Opacity(opacity: 0, child: LuckySmallBody(text: '')),
             ],
           ),
         ),
