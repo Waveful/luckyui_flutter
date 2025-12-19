@@ -49,6 +49,11 @@ class LuckyAvatar extends StatelessWidget {
   /// Defaults to primary color from theme.
   final Color? backgroundColor;
 
+  /// How to inscribe the image into the avatar bounds.
+  ///
+  /// Defaults to [BoxFit.contain] to show the full image without cropping.
+  final BoxFit fit;
+
   /// Creates a new [LuckyAvatar] widget.
   const LuckyAvatar({
     super.key,
@@ -61,6 +66,7 @@ class LuckyAvatar extends StatelessWidget {
     this.borderRadius,
     this.placeholder,
     this.backgroundColor,
+    this.fit = BoxFit.contain,
   });
 
   @override
@@ -92,11 +98,11 @@ class LuckyAvatar extends StatelessWidget {
   Widget _buildContent() {
     // Priority: imageFile > image > letter > placeholder > default icon
     if (imageFile != null) {
-      return Image.file(imageFile!, fit: BoxFit.cover);
+      return Image.file(imageFile!, fit: fit);
     }
 
     if (image != null) {
-      return Image(image: image!, fit: BoxFit.cover);
+      return Image(image: image!, fit: fit);
     }
 
     if (letter != null) {
