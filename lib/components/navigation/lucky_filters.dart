@@ -13,8 +13,14 @@ class LuckyFilterData {
   /// The icon of the filter.
   final LuckyIconData? icon;
 
+  /// A custom image widget to display instead of an icon.
+  ///
+  /// When provided, this takes precedence over [icon].
+  /// The widget should be sized appropriately (recommended: 16x16).
+  final Widget? imageWidget;
+
   /// Creates a new [LuckyFilterData] data class.
-  const LuckyFilterData({required this.text, this.icon});
+  const LuckyFilterData({required this.text, this.icon, this.imageWidget});
 }
 
 /// A controller that manages the selected filter.
@@ -91,6 +97,7 @@ class _LuckyFiltersState extends State<LuckyFilters> {
               LuckyFilter(
                 selected: index == selectedIndex,
                 icon: filter.icon,
+                imageWidget: filter.imageWidget,
                 text: filter.text,
                 onTap: () => widget.controller.selectFilter(index),
               ),
@@ -118,6 +125,11 @@ class LuckyFilter extends StatelessWidget {
   /// The icon of the filter.
   final LuckyIconData? icon;
 
+  /// A custom image widget to display instead of an icon.
+  ///
+  /// When provided, this takes precedence over [icon].
+  final Widget? imageWidget;
+
   /// The text of the filter.
   final String text;
 
@@ -129,6 +141,7 @@ class LuckyFilter extends StatelessWidget {
     super.key,
     required this.selected,
     this.icon,
+    this.imageWidget,
     required this.text,
     required this.onTap,
   });
@@ -155,7 +168,15 @@ class LuckyFilter extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (icon != null)
+            // Use imageWidget if provided, otherwise use icon
+            if (imageWidget != null) ...[
+              SizedBox(
+                width: iconSm,
+                height: iconSm,
+                child: imageWidget,
+              ),
+              const SizedBox(width: spaceXs),
+            ] else if (icon != null) ...[
               LuckyIcon(
                 icon: icon,
                 color: selected
@@ -163,7 +184,8 @@ class LuckyFilter extends StatelessWidget {
                     : context.luckyColors.n800,
                 size: iconSm,
               ),
-            if (icon != null) const SizedBox(width: spaceXs),
+              const SizedBox(width: spaceXs),
+            ],
             LuckyBody(
               text: text,
               color: selected
