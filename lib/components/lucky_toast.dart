@@ -86,6 +86,9 @@ class LuckyToastMessenger extends StatefulWidget {
 
     /// The alignment of the toast.
     LuckyToastAlignmentEnum alignment = LuckyToastAlignmentEnum.bottom,
+
+    /// The maximum number of lines for the body text.
+    int? maxLines,
   }) {
     // Support both widget/widgetWidth and leading/leadingWidth parameter names
     final Widget? effectiveWidget = widget ?? leading;
@@ -108,6 +111,7 @@ class LuckyToastMessenger extends StatefulWidget {
         onTap,
         type.duration,
         alignment,
+        maxLines,
       );
     } else {
       _states["toast"]?._showToast(
@@ -120,6 +124,7 @@ class LuckyToastMessenger extends StatefulWidget {
         onTap,
         type.duration,
         alignment,
+        maxLines,
       );
     }
   }
@@ -145,6 +150,7 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
   double? _widgetWidth;
   late LuckyToastAlignmentEnum _alignment;
   VoidCallback? _onTap;
+  int? _maxLines;
 
   /// Whether the toast is aligned at the bottom of the screen.
   bool get isBottom => _alignment == LuckyToastAlignmentEnum.bottom;
@@ -265,7 +271,13 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
                                       fontSize: textLg,
                                       lineHeight: lineHeightLg,
                                     ),
-                            LuckyBody(text: _text),
+                            LuckyBody(
+                              text: _text,
+                              maxLines: _maxLines,
+                              overflow: _maxLines != null
+                                  ? TextOverflow.ellipsis
+                                  : null,
+                            ),
                           ],
                         ),
                       ),
@@ -290,6 +302,7 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
     VoidCallback? onTap,
     Duration duration,
     LuckyToastAlignmentEnum alignment,
+    int? maxLines,
   ) async {
     final String randomId = Random().nextDouble().toString();
     _randomId = randomId;
@@ -312,6 +325,7 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
         _widgetWidth = widgetWidth;
         _onTap = onTap;
         _alignment = alignment;
+        _maxLines = maxLines;
       });
 
       Future.delayed(duration, () {
@@ -335,6 +349,7 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
       _widget = null;
       _widgetHeight = null;
       _widgetWidth = null;
+      _maxLines = null;
     });
   }
 }
