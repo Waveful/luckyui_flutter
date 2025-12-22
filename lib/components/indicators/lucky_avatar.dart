@@ -51,7 +51,7 @@ class LuckyAvatar extends StatelessWidget {
 
   /// How to inscribe the image into the avatar bounds.
   ///
-  /// Defaults to [BoxFit.contain] to show the full image without cropping.
+  /// Defaults to [BoxFit.cover] to fill the avatar and crop if needed.
   final BoxFit fit;
 
   /// Creates a new [LuckyAvatar] widget.
@@ -66,7 +66,7 @@ class LuckyAvatar extends StatelessWidget {
     this.borderRadius,
     this.placeholder,
     this.backgroundColor,
-    this.fit = BoxFit.contain,
+    this.fit = BoxFit.cover,
   });
 
   @override
