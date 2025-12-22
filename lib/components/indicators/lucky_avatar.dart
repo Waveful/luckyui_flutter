@@ -98,11 +98,21 @@ class LuckyAvatar extends StatelessWidget {
   Widget _buildContent() {
     // Priority: imageFile > image > letter > placeholder > default icon
     if (imageFile != null) {
-      return Image.file(imageFile!, fit: fit);
+      return Image.file(
+        imageFile!,
+        fit: fit,
+        width: double.infinity,
+        height: double.infinity,
+      );
     }
 
     if (image != null) {
-      return Image(image: image!, fit: fit);
+      return Image(
+        image: image!,
+        fit: fit,
+        width: double.infinity,
+        height: double.infinity,
+      );
     }
 
     if (letter != null) {
