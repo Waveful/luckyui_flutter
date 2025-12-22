@@ -73,6 +73,9 @@ class LuckyAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isCircle = borderRadius == null;
 
+    // Get image provider for DecorationImage
+    final ImageProvider? imageProvider = _getImageProvider();
+
     return LuckyTapAnimation(
       onTap: onTap,
       child: Container(
@@ -88,33 +91,32 @@ class LuckyAvatar extends StatelessWidget {
                   width: 1.5,
                 )
               : null,
+          // Use DecorationImage for proper circular clipping (like FullScreenImageViewer)
+          image: imageProvider != null
+              ? DecorationImage(
+                  image: imageProvider,
+                  fit: fit,
+                )
+              : null,
         ),
-        clipBehavior: Clip.antiAlias,
-        child: _buildContent(),
+        child: imageProvider == null ? _buildPlaceholderContent() : null,
       ),
     );
   }
 
-  Widget _buildContent() {
-    // Priority: imageFile > image > letter > placeholder > default icon
+  /// Gets the image provider from imageFile or image parameter.
+  ImageProvider? _getImageProvider() {
     if (imageFile != null) {
-      return Image.file(
-        imageFile!,
-        fit: fit,
-        width: double.infinity,
-        height: double.infinity,
-      );
+      return FileImage(imageFile!);
     }
-
     if (image != null) {
-      return Image(
-        image: image!,
-        fit: fit,
-        width: double.infinity,
-        height: double.infinity,
-      );
+      return image;
     }
+    return null;
+  }
 
+  /// Builds placeholder content when no image is available.
+  Widget _buildPlaceholderContent() {
     if (letter != null) {
       return Center(
         child: LuckyHeading(
