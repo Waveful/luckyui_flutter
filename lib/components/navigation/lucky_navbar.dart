@@ -384,7 +384,7 @@ class LuckyNavBarItem extends StatelessWidget {
                         ? context.luckyColors.onSurface
                         : context.luckyColors.n600,
                   ),
-                  if (counter != null && counter! > 0)
+                  if (counter != null)
                     Positioned(
                       top: -spaceXs,
                       right: -spaceXs,
