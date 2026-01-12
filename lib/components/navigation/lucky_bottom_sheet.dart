@@ -51,27 +51,36 @@ class LuckyBottomSheet extends StatelessWidget {
       enableDrag: true,
       backgroundColor: Colors.transparent,
       barrierColor: black.withAlpha(200),
-      builder: (context) {
-        return DraggableScrollableSheet(
-          initialChildSize: initialChildSize,
-          minChildSize: minChildSize,
-          maxChildSize: maxChildSize,
-          snap: snap,
-          snapSizes: effectiveSnapSizes,
-          builder: (context, scrollController) {
-            return Container(
-              decoration: BoxDecoration(
-                color: backgroundColor ?? context.luckyColors.surfaceTint,
-                borderRadius:
-                    borderRadius ??
-                    radius5xl.copyWith(
-                      bottomLeft: Radius.zero,
-                      bottomRight: Radius.zero,
-                    ),
-              ),
-              child: builder(context, scrollController),
-            );
-          },
+      builder: (modalContext) {
+        return GestureDetector(
+          // Tap on empty area above sheet to dismiss
+          onTap: () => Navigator.of(modalContext).pop(),
+          behavior: HitTestBehavior.opaque,
+          child: DraggableScrollableSheet(
+            initialChildSize: initialChildSize,
+            minChildSize: minChildSize,
+            maxChildSize: maxChildSize,
+            snap: snap,
+            snapSizes: effectiveSnapSizes,
+            builder: (context, scrollController) {
+              return GestureDetector(
+                // Prevent taps on sheet content from closing
+                onTap: () {},
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: backgroundColor ?? context.luckyColors.surfaceTint,
+                    borderRadius:
+                        borderRadius ??
+                        radius5xl.copyWith(
+                          bottomLeft: Radius.zero,
+                          bottomRight: Radius.zero,
+                        ),
+                  ),
+                  child: builder(context, scrollController),
+                ),
+              );
+            },
+          ),
         );
       },
     );
