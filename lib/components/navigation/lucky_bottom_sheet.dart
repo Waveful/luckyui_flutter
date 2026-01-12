@@ -47,6 +47,8 @@ class LuckyBottomSheet extends StatelessWidget {
       useRootNavigator: useRootNavigator,
       useSafeArea: true,
       isScrollControlled: true,
+      isDismissible: true,
+      enableDrag: true,
       backgroundColor: Colors.transparent,
       barrierColor: black.withAlpha(200),
       builder: (context) {
