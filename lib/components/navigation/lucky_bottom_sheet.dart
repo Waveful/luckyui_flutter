@@ -5,6 +5,76 @@ import 'package:luckyui/theme/lucky_tokens.dart';
 
 /// A widget that displays a bottom sheet.
 class LuckyBottomSheet extends StatelessWidget {
+  /// Shows a draggable bottom sheet with scroll controller exposed.
+  ///
+  /// Use this when you need scrollable content that also supports
+  /// drag-to-dismiss. The [builder] receives a [ScrollController] that
+  /// MUST be passed to your scrollable widget (ListView, CustomScrollView, etc.)
+  /// for proper drag-to-dismiss behavior.
+  ///
+  /// When the scroll position is at the top, dragging down dismisses the sheet.
+  /// When scrolled, dragging down scrolls the content.
+  ///
+  /// Example:
+  /// ```dart
+  /// LuckyBottomSheet.showDraggable(
+  ///   context: context,
+  ///   maxChildSize: 0.75,
+  ///   builder: (context, scrollController) {
+  ///     return CustomScrollView(
+  ///       controller: scrollController,
+  ///       slivers: [...],
+  ///     );
+  ///   },
+  /// );
+  /// ```
+  static Future<T?> showDraggable<T>({
+    required BuildContext context,
+    required Widget Function(BuildContext context, ScrollController scrollController) builder,
+    double initialChildSize = 0.5,
+    double minChildSize = 0.0,
+    double maxChildSize = 0.9,
+    bool snap = true,
+    List<double>? snapSizes,
+    bool useRootNavigator = true,
+    BorderRadiusGeometry? borderRadius,
+    Color? backgroundColor,
+  }) {
+    final effectiveSnapSizes = snapSizes ?? [minChildSize, maxChildSize];
+
+    return showModalBottomSheet<T?>(
+      context: context,
+      useRootNavigator: useRootNavigator,
+      useSafeArea: true,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      barrierColor: black.withAlpha(200),
+      builder: (context) {
+        return DraggableScrollableSheet(
+          initialChildSize: initialChildSize,
+          minChildSize: minChildSize,
+          maxChildSize: maxChildSize,
+          snap: snap,
+          snapSizes: effectiveSnapSizes,
+          builder: (context, scrollController) {
+            return Container(
+              decoration: BoxDecoration(
+                color: backgroundColor ?? context.luckyColors.surfaceTint,
+                borderRadius:
+                    borderRadius ??
+                    radius5xl.copyWith(
+                      bottomLeft: Radius.zero,
+                      bottomRight: Radius.zero,
+                    ),
+              ),
+              child: builder(context, scrollController),
+            );
+          },
+        );
+      },
+    );
+  }
+
   /// Shows a bottom sheet.
   ///
   /// Set [useRootNavigator] to true to display the bottom sheet above
