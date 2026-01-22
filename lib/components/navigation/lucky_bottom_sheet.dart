@@ -96,11 +96,15 @@ class LuckyBottomSheet extends StatelessWidget {
   ///
   /// Set [borderRadius] to override the default border radius
   /// (defaults to [radius4xl]).
+  ///
+  /// Set [keyboardAware] to true to enable the bottom sheet to resize
+  /// when the keyboard appears (useful when the sheet contains text inputs).
   static Future<T?> show<T>({
     required BuildContext context,
     required List<Widget> children,
     bool showClose = true,
     bool expanded = false,
+    bool keyboardAware = false,
     bool useRootNavigator = true,
     EdgeInsetsGeometry padding = const EdgeInsets.symmetric(
       horizontal: spaceMd,
@@ -112,7 +116,7 @@ class LuckyBottomSheet extends StatelessWidget {
       context: context,
       useRootNavigator: useRootNavigator,
       useSafeArea: true,
-      isScrollControlled: expanded,
+      isScrollControlled: expanded || keyboardAware,
       scrollControlDisabledMaxHeightRatio: 1.0,
       shape: RoundedRectangleBorder(
         borderRadius:
@@ -128,6 +132,7 @@ class LuckyBottomSheet extends StatelessWidget {
         return LuckyBottomSheet(
           padding: padding,
           showClose: showClose,
+          keyboardAware: keyboardAware,
           children: children,
         );
       },
@@ -143,29 +148,40 @@ class LuckyBottomSheet extends StatelessWidget {
   /// Whether to show the close button.
   final bool showClose;
 
+  /// Whether the bottom sheet should adapt to keyboard appearance.
+  final bool keyboardAware;
+
   /// Creates a new [LuckyBottomSheet] widget.
   const LuckyBottomSheet({
     super.key,
     required this.children,
     required this.padding,
     this.showClose = true,
+    this.keyboardAware = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final bottomPadding = keyboardAware
+        ? MediaQuery.of(context).viewInsets.bottom
+        : 0.0;
+
     return Stack(
       alignment: Alignment.topRight,
       clipBehavior: Clip.none,
       children: [
-        SingleChildScrollView(
-          padding: padding,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ...children,
-              SizedBox(height: MediaQuery.of(context).padding.bottom),
-            ],
+        Padding(
+          padding: EdgeInsets.only(bottom: bottomPadding),
+          child: SingleChildScrollView(
+            padding: padding,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ...children,
+                SizedBox(height: MediaQuery.of(context).padding.bottom),
+              ],
+            ),
           ),
         ),
         if (showClose)
