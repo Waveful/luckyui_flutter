@@ -78,6 +78,9 @@ class LuckyModal extends StatelessWidget {
 
     /// When false, the modal cannot be dismissed by tapping outside or using the close button.
     bool barrierDismissible = true,
+
+    /// Custom border radius for the modal. Defaults to radius4xl.
+    BorderRadius? borderRadius,
   }) {
     return showDialog<T?>(
       context: context,
@@ -88,6 +91,7 @@ class LuckyModal extends StatelessWidget {
         width: size.width(context),
         height: wrapContent ? null : size.height(context),
         showCloseButton: barrierDismissible,
+        borderRadius: borderRadius,
         child: child,
       ),
     );
@@ -131,6 +135,9 @@ class LuckyModal extends StatelessWidget {
   /// Whether to show the close button. Defaults to true.
   final bool showCloseButton;
 
+  /// Custom border radius for the modal. Defaults to radius4xl.
+  final BorderRadius? borderRadius;
+
   /// Creates a new [LuckyModal] widget.
   const LuckyModal({
     super.key,
@@ -140,6 +147,7 @@ class LuckyModal extends StatelessWidget {
     this.body,
     this.child,
     this.showCloseButton = true,
+    this.borderRadius,
   });
 
   /// Whether the modal is a confirmation modal.
@@ -158,7 +166,7 @@ class LuckyModal extends StatelessWidget {
           color: width == MediaQuery.of(context).size.width
               ? context.luckyColors.surface
               : context.luckyColors.surfaceTint,
-          borderRadius: radius2xl,
+          borderRadius: borderRadius ?? radius4xl,
         ),
         child: Padding(
           padding: isConfirmation
