@@ -131,7 +131,7 @@ class LuckyBottomSheet extends StatelessWidget {
       barrierColor: black.withAlpha(200),
       builder: (context) {
         return SafeArea(
-          bottom: safeAreaBottom,
+          bottom: false,
           child: LuckyBottomSheet(
             padding: padding,
             showClose: showClose,
