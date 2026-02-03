@@ -106,6 +106,7 @@ class LuckyBottomSheet extends StatelessWidget {
     bool expanded = false,
     bool keyboardAware = false,
     bool useRootNavigator = true,
+    bool safeAreaBottom = true,
     EdgeInsetsGeometry padding = const EdgeInsets.symmetric(
       horizontal: spaceMd,
     ),
@@ -133,6 +134,7 @@ class LuckyBottomSheet extends StatelessWidget {
           padding: padding,
           showClose: showClose,
           keyboardAware: keyboardAware,
+          safeAreaBottom: safeAreaBottom,
           children: children,
         );
       },
@@ -151,6 +153,9 @@ class LuckyBottomSheet extends StatelessWidget {
   /// Whether the bottom sheet should adapt to keyboard appearance.
   final bool keyboardAware;
 
+  /// Whether to add safe area bottom padding.
+  final bool safeAreaBottom;
+
   /// Creates a new [LuckyBottomSheet] widget.
   const LuckyBottomSheet({
     super.key,
@@ -158,6 +163,7 @@ class LuckyBottomSheet extends StatelessWidget {
     required this.padding,
     this.showClose = true,
     this.keyboardAware = false,
+    this.safeAreaBottom = true,
   });
 
   @override
@@ -179,7 +185,8 @@ class LuckyBottomSheet extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ...children,
-                SizedBox(height: MediaQuery.of(context).padding.bottom),
+                if (safeAreaBottom)
+                  SizedBox(height: MediaQuery.of(context).padding.bottom),
               ],
             ),
           ),
