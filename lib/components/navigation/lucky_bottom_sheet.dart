@@ -116,7 +116,7 @@ class LuckyBottomSheet extends StatelessWidget {
     return showModalBottomSheet<T?>(
       context: context,
       useRootNavigator: useRootNavigator,
-      useSafeArea: true,
+      useSafeArea: false,
       isScrollControlled: expanded || keyboardAware,
       scrollControlDisabledMaxHeightRatio: 1.0,
       shape: RoundedRectangleBorder(
@@ -130,12 +130,15 @@ class LuckyBottomSheet extends StatelessWidget {
       backgroundColor: backgroundColor ?? context.luckyColors.surfaceTint,
       barrierColor: black.withAlpha(200),
       builder: (context) {
-        return LuckyBottomSheet(
-          padding: padding,
-          showClose: showClose,
-          keyboardAware: keyboardAware,
-          safeAreaBottom: safeAreaBottom,
-          children: children,
+        return SafeArea(
+          bottom: false,
+          child: LuckyBottomSheet(
+            padding: padding,
+            showClose: showClose,
+            keyboardAware: keyboardAware,
+            safeAreaBottom: safeAreaBottom,
+            children: children,
+          ),
         );
       },
     );
