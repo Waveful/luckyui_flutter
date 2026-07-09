@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:luckyui/animations/lucky_tap_animation.dart';
 import 'package:luckyui/components/indicators/lucky_icons.dart';
+import 'package:luckyui/effects/lucky_glass.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
-/// A widget that displays an icon button.
+/// A widget that displays a bare icon button (no background surface).
+///
+/// ## Glass policy
+///
+/// [LuckyIconButton] carries no surface of its own, so there is nothing for
+/// the glass tier to paint. Do **not** add a surface here to unlock glass —
+/// if a group of icon buttons needs a shared glass chrome, wrap them together
+/// in a single [LuckyGlassSurface]. Icon clusters must share **one**
+/// surface/tier; stacking N individually-surfaced icon buttons is never
+/// correct (the rims and fills pile up visually and break the blur budget).
 class LuckyIconButton extends StatelessWidget {
   /// The icon to display in the button.
   final LuckyIconData? icon;

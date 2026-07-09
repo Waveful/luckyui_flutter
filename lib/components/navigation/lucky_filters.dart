@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:luckyui/animations/lucky_tap_animation.dart';
 import 'package:luckyui/components/indicators/lucky_icons.dart';
 import 'package:luckyui/components/typography/lucky_body.dart';
+import 'package:luckyui/effects/lucky_glass.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
@@ -148,55 +149,68 @@ class LuckyFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LuckyTapAnimation(
-      onTap: onTap,
-      pressedScale: 0.95,
-      child: AnimatedContainer(
-        duration: fastDuration,
-        curve: Curves.easeIn,
-        decoration: BoxDecoration(
-          color: selected
-              ? context.luckyColors.onSurface
-              : context.luckyColors.n100,
-          borderRadius: radius2xl,
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: spaceSm,
-          vertical: spaceXs,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Use imageWidget if provided, otherwise use icon
-            if (imageWidget != null) ...[
-              SizedBox(
-                width: iconSm,
-                height: iconSm,
-                child: imageWidget,
-              ),
-              const SizedBox(width: spaceXs),
-            ] else if (icon != null) ...[
-              LuckyIcon(
-                icon: icon,
-                color: selected
-                    ? context.luckyColors.surface
-                    : context.luckyColors.n800,
-                size: iconSm,
-              ),
-              const SizedBox(width: spaceXs),
-            ],
-            LuckyBody(
-              text: text,
+    final bool highContrast = MediaQuery.highContrastOf(context);
+    // Ghost glass is iOS-only and disabled under high contrast (Reduce
+    // Transparency parity). Only unselected chips go ghost; the selected pill
+    // keeps its solid onSurface fill for clear affordance.
+    final bool glassEnabled =
+        !selected && luckyGlassPlatform && !highContrast;
+
+    final Color fillColor = selected
+        ? context.luckyColors.onSurface
+        : glassEnabled
+        ? context.luckyColors.n200.withValues(alpha: kGlassGhostAlpha)
+        : context.luckyColors.n100;
+
+    Widget chip = AnimatedContainer(
+      duration: fastDuration,
+      curve: Curves.easeIn,
+      decoration: BoxDecoration(color: fillColor, borderRadius: radius2xl),
+      padding: const EdgeInsets.symmetric(
+        horizontal: spaceSm,
+        vertical: spaceXs,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Use imageWidget if provided, otherwise use icon
+          if (imageWidget != null) ...[
+            SizedBox(width: iconSm, height: iconSm, child: imageWidget),
+            const SizedBox(width: spaceXs),
+          ] else if (icon != null) ...[
+            LuckyIcon(
+              icon: icon,
               color: selected
                   ? context.luckyColors.surface
                   : context.luckyColors.n800,
-              fontWeight: semiBoldFontWeight,
-              lineHeight: lineHeightXs,
+              size: iconSm,
             ),
+            const SizedBox(width: spaceXs),
           ],
-        ),
+          LuckyBody(
+            text: text,
+            color: selected
+                ? context.luckyColors.surface
+                : context.luckyColors.n800,
+            fontWeight: semiBoldFontWeight,
+            lineHeight: lineHeightXs,
+          ),
+        ],
       ),
     );
+
+    if (glassEnabled) {
+      chip = CustomPaint(
+        foregroundPainter: GlassRimPainter(
+          borderRadius: radius2xl,
+          rimColor: context.luckyColors.onSurface,
+          alphas: kGlassRimGhost,
+        ),
+        child: chip,
+      );
+    }
+
+    return LuckyTapAnimation(onTap: onTap, pressedScale: 0.95, child: chip);
   }
 }
