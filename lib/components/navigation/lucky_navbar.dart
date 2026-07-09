@@ -3,6 +3,7 @@ import 'package:luckyui/animations/lucky_tap_animation.dart';
 import 'package:luckyui/components/indicators/lucky_icons.dart';
 import 'package:luckyui/components/indicators/lucky_red_dot.dart';
 import 'package:luckyui/components/typography/lucky_small_body.dart';
+import 'package:luckyui/effects/lucky_glass.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
@@ -79,6 +80,28 @@ enum LuckyNavBarType {
   compact,
 }
 
+/// Surface style applied to the [LuckyNavBar] background.
+enum LuckyNavBarStyle {
+  /// Solid surface fill — the default. Byte-identical to pre-style rendering
+  /// and safe on all platforms.
+  solid,
+
+  /// Translucent surface fill (~0.85 alpha) with a top-edge-only hairline rim
+  /// (theme onSurface at 0.08 alpha). Applied on iOS only when
+  /// high-contrast mode is off; falls back to [solid] otherwise.
+  /// No [BackdropFilter] — safe as a steady-state chrome surface.
+  translucent,
+
+  /// Like [translucent] but adds a [BackdropFilter] backed by
+  /// [luckyGlassFilter] inside a [ClipRect].
+  ///
+  /// **BLOCKED for app adoption** until the consuming app completes an
+  /// `extendBody` + per-page bottom-padding audit and resolves the
+  /// one-blur-per-screen conflict with a glass tab bar ([BackdropGroup]).
+  /// The app ships [translucent] only for now.
+  glass,
+}
+
 /// A widget that displays a navbar.
 class LuckyNavBar extends StatefulWidget {
   /// The controller that manages the selected navbar item.
@@ -93,6 +116,12 @@ class LuckyNavBar extends StatefulWidget {
   /// The type of navbar.
   final LuckyNavBarType type;
 
+  /// The surface style of the navbar background.
+  ///
+  /// Defaults to [LuckyNavBarStyle.solid], which is byte-identical to the
+  /// pre-style rendering — no call-site changes required.
+  final LuckyNavBarStyle style;
+
   /// Creates a new [LuckyNavBar] widget.
   const LuckyNavBar({
     super.key,
@@ -100,6 +129,7 @@ class LuckyNavBar extends StatefulWidget {
     required this.items,
     this.themeMode,
     this.type = LuckyNavBarType.standard,
+    this.style = LuckyNavBarStyle.solid,
   });
 
   @override
@@ -124,51 +154,89 @@ class _LuckyNavBarState extends State<LuckyNavBar> {
   @override
   Widget build(BuildContext context) {
     final double bottomPadding = MediaQuery.of(context).padding.bottom;
-    return Container(
-      decoration: BoxDecoration(color: context.luckyColors.surface),
-      child: Padding(
-        padding: EdgeInsets.only(bottom: bottomPadding),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ...widget.items.map((item) {
-              if (item.specialItem) {
-                return LuckyNavBarMainItem(
-                  icon: item.icon,
-                  onTap: item.onTap,
-                  onLongPress: item.onLongPress,
-                  iconSize: item.iconSize,
-                  showBackground: item.showBackground,
-                );
-              } else if (item.iconOnly) {
-                return LuckyNavBarIconOnlyItem(
-                  icon: item.icon,
-                  selectedIcon: item.selectedIcon,
-                  onTap: item.onTap,
-                  onLongPress: item.onLongPress,
-                  selected: _selectedIndex == widget.items.indexOf(item),
-                  iconSize: item.iconSize,
-                );
-              } else {
-                return LuckyNavBarItem(
-                  icon: item.icon,
-                  selectedIcon: item.selectedIcon!,
-                  text: item.text!,
-                  counter: item.counter,
-                  onTap: () {
-                    widget.controller.changeIndex(widget.items.indexOf(item));
-                    item.onTap();
-                  },
-                  onLongPress: item.onLongPress,
-                  selected: _selectedIndex == widget.items.indexOf(item),
-                );
-              }
-            }),
-          ],
-        ),
+    final bool highContrast = MediaQuery.highContrastOf(context);
+
+    // Translucent/glass only engage on iOS without high-contrast mode.
+    final bool useTranslucent =
+        widget.style != LuckyNavBarStyle.solid &&
+        luckyGlassPlatform &&
+        !highContrast;
+
+    final Widget content = Padding(
+      padding: EdgeInsets.only(bottom: bottomPadding),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ...widget.items.map((item) {
+            if (item.specialItem) {
+              return LuckyNavBarMainItem(
+                icon: item.icon,
+                onTap: item.onTap,
+                onLongPress: item.onLongPress,
+                iconSize: item.iconSize,
+                showBackground: item.showBackground,
+              );
+            } else if (item.iconOnly) {
+              return LuckyNavBarIconOnlyItem(
+                icon: item.icon,
+                selectedIcon: item.selectedIcon,
+                onTap: item.onTap,
+                onLongPress: item.onLongPress,
+                selected: _selectedIndex == widget.items.indexOf(item),
+                iconSize: item.iconSize,
+              );
+            } else {
+              return LuckyNavBarItem(
+                icon: item.icon,
+                selectedIcon: item.selectedIcon!,
+                text: item.text!,
+                counter: item.counter,
+                onTap: () {
+                  widget.controller.changeIndex(widget.items.indexOf(item));
+                  item.onTap();
+                },
+                onLongPress: item.onLongPress,
+                selected: _selectedIndex == widget.items.indexOf(item),
+              );
+            }
+          }),
+        ],
       ),
     );
+
+    if (!useTranslucent) {
+      // solid (or non-iOS / high-contrast fallback): byte-identical to the
+      // original rendering.
+      return Container(
+        decoration: BoxDecoration(color: context.luckyColors.surface),
+        child: content,
+      );
+    }
+
+    // translucent: ~0.85-alpha surface fill + top-edge-only hairline rim.
+    Widget result = Container(
+      decoration: BoxDecoration(
+        color: context.luckyColors.surface.withValues(alpha: 0.85),
+        border: Border(
+          top: BorderSide(
+            color: context.luckyColors.onSurface.withValues(alpha: 0.08),
+          ),
+        ),
+      ),
+      child: content,
+    );
+
+    if (widget.style == LuckyNavBarStyle.glass) {
+      result = ClipRect(
+        child: BackdropFilter(
+          filter: luckyGlassFilter(),
+          child: result,
+        ),
+      );
+    }
+
+    return result;
   }
 
   void _updateState() {
