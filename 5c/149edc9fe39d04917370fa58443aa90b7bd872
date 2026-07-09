@@ -1,0 +1,26 @@
+lib/components/navigation/lucky_tab_bar.dart
+  s_7a259de577ec0e::t_fe860712386cd7 158-183
+  s_7a259de577ec0e::t_704a49c0c23fac 5,23-42,50
+  s_7a259de577ec0e::t_588c9cdc433f24 80-84
+lib/components/navigation/lucky_navbar.dart
+  s_7a259de577ec0e::t_7bf13b6d9a3d4b 119-124,132
+  s_7a259de577ec0e::t_1c7e53cfc55fe1 157-224,227,229-239
+  s_7a259de577ec0e::t_8d8d22be662a2c 83-104
+  s_7a259de577ec0e::t_11feecae11e4f5 6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "5c149edc9fe39d04917370fa58443aa90b7bd872",
+  "prompts": {},
+  "sessions": {
+    "s_7a259de577ec0e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a13b95d0-617c-4259-9032-5e3947e5849e",
+        "model": "claude-fable-5"
+      },
+      "human_author": "xFlaviews <155723308+xFlaviews@users.noreply.github.com>"
+    }
+  }
+}
