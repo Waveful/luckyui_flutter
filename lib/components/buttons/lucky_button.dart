@@ -1,9 +1,7 @@
-import 'dart:ui';
-
-import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:luckyui/animations/lucky_tap_animation.dart';
 import 'package:luckyui/components/indicators/lucky_icons.dart';
+import 'package:luckyui/effects/lucky_glass.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
@@ -34,15 +32,6 @@ enum LuckyButtonStyleEnum {
   /// [glassmorphism] - Neutral glass with backdrop blur, onSurface text.
   glassmorphism,
 }
-
-/// Saturation boost composed into the backdrop blur — the reason native
-/// glass looks vivid instead of muddy. 1.4x, standard luminance weights.
-const List<double> _glassSaturationMatrix = <double>[
-  1.2882, -0.2862, -0.0202, 0, 0, //
-  -0.0852, 1.0868, -0.0202, 0, 0, //
-  -0.0852, -0.2862, 1.3714, 0, 0, //
-  0, 0, 0, 1, 0,
-];
 
 /// A widget that displays a button with a text.
 class LuckyButton extends StatelessWidget {
@@ -112,7 +101,7 @@ class LuckyButton extends StatelessWidget {
   /// Glass look is iOS-only by design decision; other platforms keep the
   /// legacy solid styles (glassmorphism excluded — it predates the glass
   /// tiers and keeps its blur look everywhere).
-  bool get _glassPlatform => defaultTargetPlatform == TargetPlatform.iOS;
+  bool get _glassPlatform => luckyGlassPlatform;
 
   bool get _isGlassTier =>
       style == LuckyButtonStyleEnum.primary ||
@@ -159,11 +148,11 @@ class LuckyButton extends StatelessWidget {
   List<double> get _rimAlphas {
     switch (style) {
       case LuckyButtonStyleEnum.primary:
-        return const [0.28, 0.10, 0.04];
+        return kGlassRimPrimary;
       case LuckyButtonStyleEnum.glassmorphism:
-        return const [0.18, 0.08, 0.04];
+        return kGlassRimNeutral;
       default:
-        return const [0.12, 0.06, 0.03];
+        return kGlassRimGhost;
     }
   }
 
@@ -274,13 +263,7 @@ class LuckyButton extends StatelessWidget {
       result = ClipRRect(
         borderRadius: resolvedRadius,
         child: BackdropFilter(
-          filter: ImageFilter.compose(
-            outer: ImageFilter.blur(
-              sigmaX: glassmorphismBlur,
-              sigmaY: glassmorphismBlur,
-            ),
-            inner: const ColorFilter.matrix(_glassSaturationMatrix),
-          ),
+          filter: luckyGlassFilter(),
           child: result,
         ),
       );
@@ -291,7 +274,7 @@ class LuckyButton extends StatelessWidget {
     // neutral tiers flip with the theme so the rim stays visible on light.
     if (glassEnabled) {
       result = CustomPaint(
-        foregroundPainter: _GlassRimPainter(
+        foregroundPainter: GlassRimPainter(
           borderRadius: resolvedRadius,
           rimColor: style == LuckyButtonStyleEnum.primary
               ? white
@@ -307,48 +290,4 @@ class LuckyButton extends StatelessWidget {
       child: result,
     );
   }
-}
-
-/// Paints a 1px rounded-rect stroke with a vertical gradient — the specular
-/// rim of the glass look (bright at the top, fading down).
-class _GlassRimPainter extends CustomPainter {
-  const _GlassRimPainter({
-    required this.borderRadius,
-    required this.rimColor,
-    required this.alphas,
-  });
-
-  final BorderRadius borderRadius;
-  final Color rimColor;
-
-  /// Top / middle / bottom stroke alphas.
-  final List<double> alphas;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Rect rect = Offset.zero & size;
-    final Paint paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1
-      ..shader = LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [
-          for (final alpha in alphas) rimColor.withValues(alpha: alpha),
-        ],
-        stops: const [0.0, 0.5, 1.0],
-      ).createShader(rect);
-    // Deflate by half the stroke so the 1px line hugs the edge without
-    // getting clipped.
-    canvas.drawRRect(
-      borderRadius.toRRect(rect).deflate(0.5),
-      paint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(_GlassRimPainter oldDelegate) =>
-      oldDelegate.borderRadius != borderRadius ||
-      oldDelegate.rimColor != rimColor ||
-      oldDelegate.alphas != alphas;
 }
