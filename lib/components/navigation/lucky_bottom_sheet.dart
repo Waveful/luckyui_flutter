@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:luckyui/components/buttons/lucky_icon_button.dart';
+import 'package:luckyui/effects/lucky_glass.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
@@ -113,22 +114,38 @@ class LuckyBottomSheet extends StatelessWidget {
     BorderRadiusGeometry? borderRadius,
     Color? backgroundColor,
   }) {
+    final BorderRadius effectiveRadius =
+        (borderRadius as BorderRadius?) ??
+        radius5xl.copyWith(
+          bottomLeft: Radius.zero,
+          bottomRight: Radius.zero,
+        );
+
+    // Glass is iOS-only, disabled when the caller supplies an explicit
+    // background colour or when the system high-contrast flag is on.
+    final bool glassEnabled =
+        luckyGlassPlatform &&
+        backgroundColor == null &&
+        !MediaQuery.highContrastOf(context);
+
     return showModalBottomSheet<T?>(
       context: context,
       useRootNavigator: useRootNavigator,
       useSafeArea: false,
       isScrollControlled: expanded || keyboardAware,
       scrollControlDisabledMaxHeightRatio: 1.0,
-      shape: RoundedRectangleBorder(
-        borderRadius:
-            borderRadius ??
-            radius5xl.copyWith(
-              bottomLeft: Radius.zero,
-              bottomRight: Radius.zero,
-            ),
-      ),
-      backgroundColor: backgroundColor ?? context.luckyColors.surfaceTint,
-      barrierColor: black.withAlpha(200),
+      // When glass is active the LuckyGlassSurface handles clipping and fill;
+      // keep the Material layer transparent and unrounded so it doesn't
+      // clip the specular rim painted outside the ClipRRect.
+      shape: glassEnabled
+          ? null
+          : RoundedRectangleBorder(borderRadius: effectiveRadius),
+      backgroundColor: glassEnabled
+          ? Colors.transparent
+          : (backgroundColor ?? context.luckyColors.surfaceTint),
+      barrierColor: glassEnabled
+          ? Colors.black.withValues(alpha: kGlassBarrierAlpha)
+          : black.withAlpha(200),
       builder: (context) {
         return SafeArea(
           bottom: false,
@@ -137,6 +154,8 @@ class LuckyBottomSheet extends StatelessWidget {
             showClose: showClose,
             keyboardAware: keyboardAware,
             safeAreaBottom: safeAreaBottom,
+            glassEnabled: glassEnabled,
+            glassRadius: effectiveRadius,
             children: children,
           ),
         );
@@ -159,6 +178,18 @@ class LuckyBottomSheet extends StatelessWidget {
   /// Whether to add safe area bottom padding.
   final bool safeAreaBottom;
 
+  /// Whether the glass look is active for this sheet instance.
+  ///
+  /// Set by [show] when the platform is iOS, no explicit background colour was
+  /// supplied, and the system high-contrast flag is off. Defaults to `false`
+  /// so direct widget instantiation keeps the legacy opaque look.
+  final bool glassEnabled;
+
+  /// Corner radius applied to the [LuckyGlassSurface] when [glassEnabled].
+  ///
+  /// Ignored when [glassEnabled] is `false`.
+  final BorderRadius glassRadius;
+
   /// Creates a new [LuckyBottomSheet] widget.
   const LuckyBottomSheet({
     super.key,
@@ -167,6 +198,8 @@ class LuckyBottomSheet extends StatelessWidget {
     this.showClose = true,
     this.keyboardAware = false,
     this.safeAreaBottom = true,
+    this.glassEnabled = false,
+    this.glassRadius = BorderRadius.zero,
   });
 
   @override
@@ -175,7 +208,7 @@ class LuckyBottomSheet extends StatelessWidget {
         ? MediaQuery.of(context).viewInsets.bottom
         : 0.0;
 
-    return Stack(
+    final Widget stack = Stack(
       alignment: Alignment.topRight,
       clipBehavior: Clip.none,
       children: [
@@ -206,6 +239,22 @@ class LuckyBottomSheet extends StatelessWidget {
           ),
       ],
     );
+
+    if (glassEnabled) {
+      final bool isLightTheme =
+          Theme.of(context).brightness == Brightness.light;
+      return LuckyGlassSurface(
+        fill: context.luckyColors.surfaceTint
+            .withValues(alpha: kGlassRegularAlpha(isLightTheme)),
+        borderRadius: glassRadius,
+        blur: true,
+        rimColor: Theme.of(context).colorScheme.onSurface,
+        rimAlphas: kGlassRimNeutral,
+        child: stack,
+      );
+    }
+
+    return stack;
   }
 }
 
