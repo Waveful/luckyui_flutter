@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:luckyui/components/indicators/lucky_icons.dart';
 import 'package:luckyui/components/indicators/lucky_red_dot.dart';
 import 'package:luckyui/components/typography/lucky_body.dart';
-import 'package:luckyui/effects/lucky_glass.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
@@ -20,26 +19,6 @@ class LuckyTabBar extends StatefulWidget {
   /// Whether the tab bar is scrollable.
   final bool isScrollable;
 
-  /// Whether to render the tab bar inside a frosted-glass pill capsule
-  /// (iOS-only, opt-in).
-  ///
-  /// When `true` and [luckyGlassPlatform] is `true` and the device is not in
-  /// high-contrast mode, the tab bar is wrapped in a stadium-shaped neutral
-  /// glass surface: n200 fill at [kGlassNeutralAlpha], a [luckyGlassFilter]
-  /// [BackdropFilter], and a [GlassRimPainter] rim using [kGlassRimNeutral].
-  ///
-  /// **Blur-budget warning:** this capsule owns the screen's steady-state blur
-  /// budget (max 1 live [BackdropFilter] per screen per the policy in
-  /// `lucky_glass.dart`). It is incompatible with another steady-state glass
-  /// bar on the same screen unless both are wrapped in a `BackdropGroup`.
-  /// When fading this bar out, wrap the fade in a [Visibility] that fully
-  /// removes the widget after the animation completes — an [AnimatedOpacity]
-  /// at 0 still pays the `saveLayer` cost.
-  ///
-  /// When `false` (default), or on non-iOS platforms, or in high-contrast
-  /// mode, rendering is byte-identical to the original.
-  final bool glassCapsule;
-
   /// Creates a new [LuckyTabBar] widget.
   const LuckyTabBar({
     super.key,
@@ -47,7 +26,6 @@ class LuckyTabBar extends StatefulWidget {
     required this.tabs,
     this.insets = EdgeInsets.zero,
     this.isScrollable = false,
-    this.glassCapsule = false,
   }) : assert(tabs.length == tabController.length);
 
   @override
@@ -77,11 +55,7 @@ class _LuckyTabBarState extends State<LuckyTabBar> {
 
   @override
   Widget build(BuildContext context) {
-    final bool capsuleEnabled = widget.glassCapsule &&
-        luckyGlassPlatform &&
-        !MediaQuery.highContrastOf(context);
-
-    Widget bar = TabBar(
+    return TabBar(
       controller: widget.tabController,
       dividerColor: Colors.transparent,
       labelPadding: EdgeInsets.zero,
@@ -154,32 +128,6 @@ class _LuckyTabBarState extends State<LuckyTabBar> {
           ),
         );
       }).toList(),
-    );
-
-    if (!capsuleEnabled) return bar;
-
-    // Canonical glass layer order (lucky_glass.dart):
-    // rim OUTSIDE → ClipRRect → BackdropFilter → fill → child.
-    final Color fill =
-        context.luckyColors.n200.withValues(alpha: kGlassNeutralAlpha);
-    Widget capsule = DecoratedBox(
-      decoration: BoxDecoration(color: fill, borderRadius: radiusFull),
-      child: bar,
-    );
-    capsule = ClipRRect(
-      borderRadius: radiusFull,
-      child: BackdropFilter(
-        filter: luckyGlassFilter(),
-        child: capsule,
-      ),
-    );
-    return CustomPaint(
-      foregroundPainter: GlassRimPainter(
-        borderRadius: radiusFull,
-        rimColor: Theme.of(context).colorScheme.onSurface,
-        alphas: kGlassRimNeutral,
-      ),
-      child: capsule,
     );
   }
 }
