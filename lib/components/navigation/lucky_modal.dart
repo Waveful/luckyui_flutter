@@ -3,6 +3,7 @@ import 'package:luckyui/components/buttons/lucky_icon_button.dart';
 import 'package:luckyui/components/buttons/lucky_text_button.dart';
 import 'package:luckyui/components/typography/lucky_body.dart';
 import 'package:luckyui/components/typography/lucky_heading.dart';
+import 'package:luckyui/effects/lucky_glass.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
@@ -84,7 +85,9 @@ class LuckyModal extends StatelessWidget {
   }) {
     return showDialog<T?>(
       context: context,
-      barrierColor: black.withAlpha(200),
+      barrierColor: luckyGlassPlatform
+          ? black.withValues(alpha: kGlassBarrierAlpha)
+          : black.withAlpha(200),
       barrierDismissible: barrierDismissible,
       useSafeArea: size == LuckyModalSizeEnum.full ? false : true,
       builder: (BuildContext context) => LuckyModal(
@@ -106,7 +109,9 @@ class LuckyModal extends StatelessWidget {
   }) {
     return showDialog<T?>(
       context: context,
-      barrierColor: black.withAlpha(200),
+      barrierColor: luckyGlassPlatform
+          ? black.withValues(alpha: kGlassBarrierAlpha)
+          : black.withAlpha(200),
       barrierDismissible: true,
       builder: (BuildContext context) => LuckyModal(
         width: LuckyModalSizeEnum.lg.width(context),
@@ -155,89 +160,128 @@ class LuckyModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool highContrast = MediaQuery.highContrastOf(context);
+    final bool isFullScreen = width == MediaQuery.of(context).size.width;
+    // Glass applies only on iOS, for floating (non-full-screen) dialogs, and
+    // falls back to solid when the system Reduce Transparency / high-contrast
+    // accessibility setting is active.
+    final bool glassEnabled =
+        luckyGlassPlatform && !isFullScreen && !highContrast;
+    final bool isLightTheme =
+        Theme.of(context).brightness == Brightness.light;
+    final BorderRadius resolvedRadius = borderRadius ?? radius4xl;
+
+    final Color fillColor;
+    if (isFullScreen) {
+      fillColor = context.luckyColors.surface;
+    } else if (glassEnabled) {
+      fillColor = context.luckyColors.surfaceTint
+          .withValues(alpha: kGlassRegularAlpha(isLightTheme));
+    } else {
+      fillColor = context.luckyColors.surfaceTint;
+    }
+
+    final Widget content = Padding(
+      padding: isConfirmation
+          ? const EdgeInsets.symmetric(
+              horizontal: spaceLg,
+              vertical: spaceMd,
+            )
+          : EdgeInsets.zero,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: isConfirmation
+            ? CrossAxisAlignment.start
+            : CrossAxisAlignment.center,
+        children: [
+          if (isFullScreen)
+            SizedBox(height: MediaQuery.of(context).padding.top),
+          if (!isConfirmation && showCloseButton)
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  right: spaceSm,
+                  top: spaceSm,
+                ),
+                child: LuckyIconButton(
+                  nativeIcon: Icons.close_rounded,
+                  size: iconLg,
+                  color: context.luckyColors.n600,
+                  onTap: () => Navigator.pop(context),
+                ),
+              ),
+            ),
+          if (title != null)
+            LuckyHeading(
+              text: title!,
+              fontSize: textLg,
+              lineHeight: lineHeightLg,
+            ),
+          if (body != null) LuckyBody(text: body!),
+          if (child != null) child!,
+          if (isConfirmation)
+            Padding(
+              padding: const EdgeInsets.only(top: spaceMd),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: LuckyTextButton(
+                      text: "Cancel",
+                      onTap: () => Navigator.pop(context, false),
+                      color: context.luckyColors.onSurface,
+                      fontWeight: normalFontWeight,
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                  Expanded(
+                    child: LuckyTextButton(
+                      text: "Confirm",
+                      color: red,
+                      onTap: () => Navigator.pop(context, true),
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+
+    // Canonical layer order (glass): rim OUTSIDE → ClipRRect → BackdropFilter
+    // → fill → content. On non-iOS or high-contrast the solid Container path
+    // is used unchanged so non-iOS callers see exactly the original look.
+    final Widget surface = glassEnabled
+        ? LuckyGlassSurface(
+            fill: fillColor,
+            borderRadius: resolvedRadius,
+            blur: true,
+            rimColor: Theme.of(context).colorScheme.onSurface,
+            rimAlphas: kGlassRimNeutral,
+            child: SizedBox(
+              width: width,
+              height: height,
+              child: content,
+            ),
+          )
+        : Container(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              color: fillColor,
+              borderRadius: resolvedRadius,
+            ),
+            child: content,
+          );
+
     return Dialog(
       elevation: 0,
       insetPadding: EdgeInsets.zero,
       backgroundColor: Colors.transparent,
-      child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          color: width == MediaQuery.of(context).size.width
-              ? context.luckyColors.surface
-              : context.luckyColors.surfaceTint,
-          borderRadius: borderRadius ?? radius4xl,
-        ),
-        child: Padding(
-          padding: isConfirmation
-              ? const EdgeInsets.symmetric(
-                  horizontal: spaceLg,
-                  vertical: spaceMd,
-                )
-              : EdgeInsets.zero,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: isConfirmation
-                ? CrossAxisAlignment.start
-                : CrossAxisAlignment.center,
-            children: [
-              if (width == MediaQuery.of(context).size.width)
-                SizedBox(height: MediaQuery.of(context).padding.top),
-              if (!isConfirmation && showCloseButton)
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      right: spaceSm,
-                      top: spaceSm,
-                    ),
-                    child: LuckyIconButton(
-                      nativeIcon: Icons.close_rounded,
-                      size: iconLg,
-                      color: context.luckyColors.n600,
-                      onTap: () => Navigator.pop(context), // Close modal.
-                    ),
-                  ),
-                ),
-              if (title != null)
-                LuckyHeading(
-                  text: title!,
-                  fontSize: textLg,
-                  lineHeight: lineHeightLg,
-                ),
-              if (body != null) LuckyBody(text: body!),
-              if (child != null) child!,
-              if (isConfirmation)
-                Padding(
-                  padding: const EdgeInsets.only(top: spaceMd),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: LuckyTextButton(
-                          text: "Cancel",
-                          onTap: () => Navigator.pop(context, false),
-                          color: context.luckyColors.onSurface,
-                          fontWeight: normalFontWeight,
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                      Expanded(
-                        child: LuckyTextButton(
-                          text: "Confirm",
-                          color: red,
-                          onTap: () => Navigator.pop(context, true),
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-            ],
-          ),
-        ),
-      ),
+      child: surface,
     );
   }
 }
