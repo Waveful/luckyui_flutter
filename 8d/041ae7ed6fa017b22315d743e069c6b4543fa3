@@ -1,0 +1,22 @@
+lib/components/navigation/lucky_bottom_sheet.dart
+  s_7a259de577ec0e::t_64008cfde054d8 211,242-257
+  s_7a259de577ec0e::t_2f4225a18499cc 117-130,137-148,157-158
+  s_7a259de577ec0e::t_0135fd5f210e39 181-192,201-202
+  s_7a259de577ec0e::t_0ab762341f6a44 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "8d041ae7ed6fa017b22315d743e069c6b4543fa3",
+  "prompts": {},
+  "sessions": {
+    "s_7a259de577ec0e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a13b95d0-617c-4259-9032-5e3947e5849e",
+        "model": "claude-fable-5"
+      },
+      "human_author": "xFlaviews <155723308+xFlaviews@users.noreply.github.com>"
+    }
+  }
+}
