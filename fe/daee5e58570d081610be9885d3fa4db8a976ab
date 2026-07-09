@@ -1,0 +1,19 @@
+lib/components/lucky_toast.dart
+  s_7a259de577ec0e::t_18912b1180cb0e 8,146-152,168-179,242-281,296-297,304,307-320,322-332,365,382,401
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "fedaee5e58570d081610be9885d3fa4db8a976ab",
+  "prompts": {},
+  "sessions": {
+    "s_7a259de577ec0e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a13b95d0-617c-4259-9032-5e3947e5849e",
+        "model": "claude-fable-5"
+      },
+      "human_author": "xFlaviews <155723308+xFlaviews@users.noreply.github.com>"
+    }
+  }
+}
