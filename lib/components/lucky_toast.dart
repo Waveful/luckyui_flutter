@@ -5,7 +5,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:luckyui/animations/lucky_tap_animation.dart';
 import 'package:luckyui/components/typography/lucky_body.dart';
 import 'package:luckyui/components/typography/lucky_heading.dart';
-import 'package:luckyui/effects/lucky_glass.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
@@ -143,13 +142,6 @@ class LuckyToastMessenger extends StatefulWidget {
 /// The state of the [LuckyToastMessenger] widget.
 class LuckyToastMessengerState extends State<LuckyToastMessenger> {
   bool _snackbarVisible = false;
-
-  // Stays true from show through the exit animation so the BackdropFilter
-  // remains mounted while the toast slides out; drops to false only after
-  // normalDuration elapses and no new toast has appeared (blur-budget rule:
-  // transient overlays must fully unmount their filter when hidden).
-  bool _backdropFilterActive = false;
-
   String _text = "";
   String? _title;
   TextStyle? _titleTextStyle;
@@ -164,18 +156,6 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
   bool get isBottom => _alignment == LuckyToastAlignmentEnum.bottom;
 
   String? _randomId;
-
-  // Delays unmounting the BackdropFilter until after the exit animation
-  // completes. Skipped when a new toast has appeared mid-flight.
-  void _scheduleFilterUnmount() {
-    Future.delayed(normalDuration, () {
-      if (mounted && !_snackbarVisible) {
-        setState(() {
-          _backdropFilterActive = false;
-        });
-      }
-    });
-  }
 
   @override
   void initState() {
@@ -239,46 +219,6 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
         ? Alignment(0.0, 1.0 + alignmentAdjustment)
         : Alignment(0.0, -1.0 - alignmentAdjustment);
 
-    // Glass is iOS-only and degrades to solid when high-contrast is active.
-    final bool glassEnabled =
-        luckyGlassPlatform && !MediaQuery.highContrastOf(context);
-
-    // Shared content for both glass and solid surface paths.
-    final Widget content = Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: spaceMd,
-        vertical: spaceSm,
-      ),
-      child: Row(
-        children: [
-          if (_widget != null) _widget!,
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (_title != null)
-                  _titleTextStyle != null
-                      ? Text(_title!, style: _titleTextStyle)
-                      : LuckyHeading(
-                          text: _title!,
-                          fontSize: textLg,
-                          lineHeight: lineHeightLg,
-                        ),
-                LuckyBody(
-                  text: _text,
-                  maxLines: _maxLines,
-                  overflow: _maxLines != null
-                      ? TextOverflow.ellipsis
-                      : null,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-
     return Positioned(
       child: AnimatedAlign(
         alignment: _snackbarVisible ? visibleAlignment : hiddenAlignment,
@@ -293,43 +233,58 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
               onVerticalDragEnd: (details) {
                 final double vy = details.velocity.pixelsPerSecond.dy;
                 const minV = 600;
-                if ((vy < -minV &&
-                        _alignment == LuckyToastAlignmentEnum.top) ||
+                if ((vy < -minV && _alignment == LuckyToastAlignmentEnum.top) ||
                     (vy > minV &&
                         _alignment == LuckyToastAlignmentEnum.bottom)) {
                   // Close toast on swipe up or down, based on alignment.
                   setState(() {
                     _snackbarVisible = false;
                   });
-                  _scheduleFilterUnmount();
                 }
               },
-              child: glassEnabled
-                  ? Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.symmetric(horizontal: spaceSm),
-                      child: LuckyGlassSurface(
-                        fill: context.luckyColors.n200
-                            .withValues(alpha: kGlassToastAlpha),
-                        borderRadius: radius2xl,
-                        // BackdropFilter is absent at rest; mounted on show
-                        // and kept alive through the exit slide.
-                        blur: _backdropFilterActive,
-                        rimColor: Theme.of(context).colorScheme.onSurface,
-                        rimAlphas: kGlassRimNeutral,
-                        child: content,
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: context.luckyColors.surface,
+                  border: Border.all(color: context.luckyColors.n150),
+                  borderRadius: radius2xl,
+                ),
+                margin: const EdgeInsets.symmetric(horizontal: spaceSm),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: spaceMd,
+                    vertical: spaceSm,
+                  ),
+                  child: Row(
+                    children: [
+                      if (_widget != null) _widget!,
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (_title != null)
+                              _titleTextStyle != null
+                                  ? Text(_title!, style: _titleTextStyle)
+                                  : LuckyHeading(
+                                      text: _title!,
+                                      fontSize: textLg,
+                                      lineHeight: lineHeightLg,
+                                    ),
+                            LuckyBody(
+                              text: _text,
+                              maxLines: _maxLines,
+                              overflow: _maxLines != null
+                                  ? TextOverflow.ellipsis
+                                  : null,
+                            ),
+                          ],
+                        ),
                       ),
-                    )
-                  : Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: context.luckyColors.surface,
-                        border: Border.all(color: context.luckyColors.n150),
-                        borderRadius: radius2xl,
-                      ),
-                      margin: const EdgeInsets.symmetric(horizontal: spaceSm),
-                      child: content,
-                    ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
         ),
@@ -362,7 +317,6 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
     if (mounted) {
       setState(() {
         _snackbarVisible = true;
-        _backdropFilterActive = true;
         _text = text;
         _title = title;
         _titleTextStyle = titleTextStyle;
@@ -379,7 +333,6 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
           setState(() {
             _snackbarVisible = false;
           });
-          _scheduleFilterUnmount();
         }
       });
     }
@@ -398,6 +351,5 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
       _widgetWidth = null;
       _maxLines = null;
     });
-    _scheduleFilterUnmount();
   }
 }
