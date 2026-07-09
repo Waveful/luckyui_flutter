@@ -1,0 +1,29 @@
+lib/effects/lucky_glass.dart
+  s_7a259de577ec0e::t_850ba1fc1a0e8b 70,77,79-80
+  s_7a259de577ec0e::t_5a86cb0cb45a70 124
+  s_7a259de577ec0e::t_0be23d545ea9d7 1-23,25,28,31-69,71-76,78,81-123,125-186
+  s_7a259de577ec0e::t_b1f505947c35e0 24,26-27,29-30
+lib/components/buttons/lucky_button.dart
+  s_7a259de577ec0e::t_e88164b2460597 266,277
+  s_7a259de577ec0e::t_f06efb8222a6ac 4
+  s_7a259de577ec0e::t_e4e87062c6443e 151,153,155
+  s_7a259de577ec0e::t_5e88ce1d322b74 104
+lib/luckyui.dart
+  s_7a259de577ec0e::t_5fa67d53ae86d6 44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "6c8375a6c02f359c71d92a46c6789f72b1fb734f",
+  "prompts": {},
+  "sessions": {
+    "s_7a259de577ec0e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a13b95d0-617c-4259-9032-5e3947e5849e",
+        "model": "claude-fable-5"
+      },
+      "human_author": "xFlaviews <155723308+xFlaviews@users.noreply.github.com>"
+    }
+  }
+}
