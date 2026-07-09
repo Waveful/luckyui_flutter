@@ -1,0 +1,23 @@
+lib/components/navigation/lucky_filters.dart
+  s_7a259de577ec0e::t_324523c10b8e75 5
+  s_7a259de577ec0e::t_968d855de3ccb1 152-183,187,189,191-199,202-214
+lib/components/buttons/lucky_icon_button.dart
+  s_7a259de577ec0e::t_c4b5db9fcfcdf8 8-17
+  s_7a259de577ec0e::t_7dae9b52c7418f 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "cc5fc116f50bd92ccacd974168ad941f1eda35c4",
+  "prompts": {},
+  "sessions": {
+    "s_7a259de577ec0e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a13b95d0-617c-4259-9032-5e3947e5849e",
+        "model": "claude-fable-5"
+      },
+      "human_author": "xFlaviews <155723308+xFlaviews@users.noreply.github.com>"
+    }
+  }
+}
