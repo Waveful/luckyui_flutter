@@ -117,11 +117,11 @@ class LuckyButton extends StatelessWidget {
         Theme.of(context).brightness == Brightness.light;
     switch (style) {
       case LuckyButtonStyleEnum.primary:
-        // 0.44 holds up on dark backgrounds under bold white text; light
-        // backgrounds wash the tint out, so raise it (the iOS beta-3 lesson).
-        return _glassPlatform
-            ? context.luckyColors.primaryColor
-                .withValues(alpha: isLightTheme ? 0.60 : 0.44)
+        // Dark backgrounds carry the translucent glass tint (0.44 holds up
+        // under bold white text). Light backgrounds wash any tint out, so the
+        // primary CTA stays the solid default lucky blue there.
+        return _glassPlatform && !isLightTheme
+            ? context.luckyColors.primaryColor.withValues(alpha: 0.44)
             : context.luckyColors.primaryColor;
       case LuckyButtonStyleEnum.primaryAlternative:
         return context.luckyColors.onSurface;
@@ -173,8 +173,17 @@ class LuckyButton extends StatelessWidget {
     // Accessibility: high contrast strips the glass (solid fill, strong
     // border, no blur) — mirrors the platform Reduce Transparency fallback.
     // Glass is also iOS-only (_glassPlatform).
-    final bool glassEnabled =
-        _isGlassTier && !disabled && !highContrast && _glassPlatform;
+    //
+    // The primary CTA is a solid blue fill in light mode (see _enabledColor),
+    // so it drops the specular rim there too — a white gloss over solid blue
+    // would read as glass again. Neutral tiers keep their theme-aware rim.
+    final bool primaryLight = style == LuckyButtonStyleEnum.primary &&
+        Theme.of(context).brightness == Brightness.light;
+    final bool glassEnabled = _isGlassTier &&
+        !disabled &&
+        !highContrast &&
+        _glassPlatform &&
+        !primaryLight;
 
     final Color fill;
     if (disabled) {
