@@ -1,39 +1,47 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:luckyui/animations/lucky_tap_animation.dart';
 import 'package:luckyui/components/indicators/lucky_icons.dart';
+import 'package:luckyui/effects/lucky_glass.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
 /// An enumeration of button styles.
 enum LuckyButtonStyleEnum {
-  /// [primary] - A primary button with a primary color background and white text.
+  /// [primary] - The single glass CTA: tinted translucent primary fill and
+  /// specular rim. At most one per view.
   primary,
 
   /// [primaryAlternative] - A primary alternative button with a onSurface background and surface text.
   primaryAlternative,
 
-  /// [secondary] - A secondary button with a surface background, onSurface text and a border.
+  /// [secondary] - Neutral glass: translucent fill, theme-aware specular rim,
+  /// onSurface text. No backdrop blur (safe inside lists).
   secondary,
 
-  /// [secondaryAlternative] - A secondary alternative button with a n100 background and onSurface text.
+  /// [secondaryAlternative] - Neutral glass ghost: translucent fill and rim,
+  /// no backdrop blur (safe inside lists).
   secondaryAlternative,
 
   /// [picker] - A picker button with a surface background, onSurface text and a border.
   picker,
 
-  /// [transparent] - A secondary button with a transparent background and onSurface text.
+  /// [transparent] - Neutral glass ghost: translucent fill and rim,
+  /// no backdrop blur (safe inside lists).
   transparent,
 
-  /// [glassmorphism] - A secondary button with a transparent background with glassmorphism effect and onSurface text.
+  /// [glassmorphism] - Neutral glass with backdrop blur, onSurface text.
   glassmorphism,
 }
 
 /// A widget that displays a button with a text.
 class LuckyButton extends StatelessWidget {
-  /// The text to display in the button.
-  final String text;
+  /// The text to display in the button. Optional when [child] is provided.
+  final String? text;
+
+  /// Custom content replacing the default text/icon label. Use for pills
+  /// whose content isn't a plain text+icon row (e.g. stacked icons), so
+  /// call sites don't hand-roll the glass surface.
+  final Widget? child;
 
   /// The size of the text.
   final double textSize;
@@ -72,7 +80,8 @@ class LuckyButton extends StatelessWidget {
   /// Creates a new [LuckyButton] widget.
   const LuckyButton({
     super.key,
-    required this.text,
+    this.text,
+    this.child,
     this.textSize = textBase,
     this.icon,
     this.nativeIcon,
@@ -84,21 +93,74 @@ class LuckyButton extends StatelessWidget {
     this.style = LuckyButtonStyleEnum.primary,
     this.borderRadius,
     this.height,
-  });
+  }) : assert(
+          text != null || child != null,
+          'Provide text and/or child',
+        );
+
+  /// Glass look is iOS-only by design decision; other platforms keep the
+  /// legacy solid styles (glassmorphism excluded — it predates the glass
+  /// tiers and keeps its blur look everywhere).
+  bool get _glassPlatform => luckyGlassPlatform;
+
+  bool get _isGlassTier =>
+      style == LuckyButtonStyleEnum.primary ||
+      style == LuckyButtonStyleEnum.glassmorphism ||
+      style == LuckyButtonStyleEnum.secondary ||
+      style == LuckyButtonStyleEnum.secondaryAlternative ||
+      style == LuckyButtonStyleEnum.transparent;
+
+  /// Base fill for the enabled state. Glass tiers (iOS) are translucent;
+  /// other platforms keep the legacy solid fills.
+  Color _enabledColor(BuildContext context) {
+    final bool isLightTheme =
+        Theme.of(context).brightness == Brightness.light;
+    switch (style) {
+      case LuckyButtonStyleEnum.primary:
+        // Dark backgrounds carry the translucent glass tint (0.44 holds up
+        // under bold white text). Light backgrounds wash any tint out, so the
+        // primary CTA stays the solid default lucky blue there.
+        return _glassPlatform && !isLightTheme
+            ? context.luckyColors.primaryColor.withValues(alpha: 0.44)
+            : context.luckyColors.primaryColor;
+      case LuckyButtonStyleEnum.primaryAlternative:
+        return context.luckyColors.onSurface;
+      case LuckyButtonStyleEnum.secondary:
+        return _glassPlatform
+            ? context.luckyColors.n200.withValues(alpha: 0.55)
+            : context.luckyColors.surface;
+      case LuckyButtonStyleEnum.secondaryAlternative:
+        return _glassPlatform
+            ? context.luckyColors.n200.withValues(alpha: 0.55)
+            : context.luckyColors.n100;
+      case LuckyButtonStyleEnum.glassmorphism:
+        return context.luckyColors.n200
+            .withAlpha(_glassPlatform ? (255 * 0.55).round() : alpha50);
+      case LuckyButtonStyleEnum.transparent:
+        return context.luckyColors.n200.withAlpha(alpha75);
+      case LuckyButtonStyleEnum.picker:
+        return context.luckyColors.surface;
+    }
+  }
+
+  /// Specular rim gradient (top-weighted highlight). Uniform strokes read
+  /// as a plain border; the vertical falloff is what reads as glass.
+  List<double> get _rimAlphas {
+    switch (style) {
+      case LuckyButtonStyleEnum.primary:
+        return kGlassRimPrimary;
+      case LuckyButtonStyleEnum.glassmorphism:
+        return kGlassRimNeutral;
+      default:
+        return kGlassRimGhost;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final Color enabledColor = style == LuckyButtonStyleEnum.primary
-        ? context.luckyColors.primaryColor
-        : (style == LuckyButtonStyleEnum.primaryAlternative
-              ? context.luckyColors.onSurface
-              : (style == LuckyButtonStyleEnum.secondaryAlternative
-                    ? context.luckyColors.n100
-                    : (style == LuckyButtonStyleEnum.transparent
-                          ? context.luckyColors.n200.withAlpha(alpha75)
-                          : (style == LuckyButtonStyleEnum.glassmorphism
-                                ? context.luckyColors.n200.withAlpha(alpha50)
-                                : context.luckyColors.surface))));
+    final bool highContrast = MediaQuery.highContrastOf(context);
+    final BorderRadius resolvedRadius = borderRadius ?? radius4xl;
+
     final Color disabledColor = style == LuckyButtonStyleEnum.primary
         ? context.luckyColors.primaryColor300
         : context.luckyColors.n100;
@@ -108,7 +170,78 @@ class LuckyButton extends StatelessWidget {
               ? context.luckyColors.surface
               : context.luckyColors.onSurface);
 
-    final Widget buttonContent = AnimatedContainer(
+    // Accessibility: high contrast strips the glass (solid fill, strong
+    // border, no blur) — mirrors the platform Reduce Transparency fallback.
+    // Glass is also iOS-only (_glassPlatform).
+    //
+    // The primary CTA is a solid blue fill in light mode (see _enabledColor),
+    // so it drops the specular rim there too — a white gloss over solid blue
+    // would read as glass again. Neutral tiers keep their theme-aware rim.
+    final bool primaryLight = style == LuckyButtonStyleEnum.primary &&
+        Theme.of(context).brightness == Brightness.light;
+    final bool glassEnabled = _isGlassTier &&
+        !disabled &&
+        !highContrast &&
+        _glassPlatform &&
+        !primaryLight;
+
+    final Color fill;
+    if (disabled) {
+      fill = disabledColor;
+    } else if (highContrast && style == LuckyButtonStyleEnum.primary) {
+      fill = context.luckyColors.primaryColor;
+    } else {
+      fill = _enabledColor(context);
+    }
+
+    final Widget label = child ??
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if ((icon != null || nativeIcon != null) && verticalIcon)
+              Padding(
+                padding: const EdgeInsets.only(bottom: spaceXs),
+                child: LuckyIcon(
+                  icon: icon,
+                  nativeIcon: nativeIcon,
+                  size: iconSize,
+                  color: textColor,
+                ),
+              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if ((icon != null || nativeIcon != null) && !verticalIcon)
+                  Padding(
+                    padding: const EdgeInsets.only(right: spaceSm),
+                    child: LuckyIcon(
+                      icon: icon,
+                      nativeIcon: nativeIcon,
+                      size: iconSize,
+                      color: textColor,
+                    ),
+                  ),
+                Text(
+                  text!,
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: textSize,
+                    fontWeight: semiBoldFontWeight,
+                  ),
+                ),
+                if (style == LuckyButtonStyleEnum.picker)
+                  LuckyIcon(
+                    nativeIcon: Icons.arrow_drop_down_rounded,
+                    size: iconMd,
+                    color: textColor,
+                  ),
+              ],
+            ),
+          ],
+        );
+
+    Widget result = AnimatedContainer(
       duration: fastDuration,
       curve: Curves.easeIn,
       width: expanded ? double.infinity : null,
@@ -118,80 +251,52 @@ class LuckyButton extends StatelessWidget {
         vertical: expanded ? spaceMd : spaceSm,
       ),
       decoration: BoxDecoration(
-        color: disabled ? disabledColor : enabledColor,
-        borderRadius: borderRadius ?? radius4xl,
-        border:
-            style == LuckyButtonStyleEnum.secondary ||
-                style == LuckyButtonStyleEnum.picker
+        color: fill,
+        borderRadius: resolvedRadius,
+        border: style == LuckyButtonStyleEnum.picker ||
+                (!_glassPlatform && style == LuckyButtonStyleEnum.secondary)
             ? Border.all(color: context.luckyColors.n150)
+            : highContrast && style == LuckyButtonStyleEnum.primary
+            ? Border.all(color: white.withValues(alpha: 0.40))
             : Border.all(color: Colors.transparent),
       ),
       alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if ((icon != null || nativeIcon != null) && verticalIcon)
-            Padding(
-              padding: const EdgeInsets.only(bottom: spaceXs),
-              child: LuckyIcon(
-                icon: icon,
-                nativeIcon: nativeIcon,
-                size: iconSize,
-                color: textColor,
-              ),
-            ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if ((icon != null || nativeIcon != null) && !verticalIcon)
-                Padding(
-                  padding: const EdgeInsets.only(right: spaceSm),
-                  child: LuckyIcon(
-                    icon: icon,
-                    nativeIcon: nativeIcon,
-                    size: iconSize,
-                    color: textColor,
-                  ),
-                ),
-              Text(
-                text,
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: textSize,
-                  fontWeight: semiBoldFontWeight,
-                ),
-              ),
-              if (style == LuckyButtonStyleEnum.picker)
-                LuckyIcon(
-                  nativeIcon: Icons.arrow_drop_down_rounded,
-                  size: iconMd,
-                  color: textColor,
-                ),
-            ],
-          ),
-        ],
-      ),
+      child: label,
     );
 
-    Widget child;
-    if (style == LuckyButtonStyleEnum.glassmorphism) {
-      child = RepaintBoundary(
-        child: ClipRRect(
-          borderRadius: borderRadius ?? radius4xl,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: glassmorphismBlur,
-              sigmaY: glassmorphismBlur,
-            ),
-            child: buttonContent,
-          ),
+    // Backdrop blur: intrinsic to glassmorphism (its pre-existing contract,
+    // every platform). Saturation rides the same saveLayer for free.
+    if (style == LuckyButtonStyleEnum.glassmorphism &&
+        !disabled &&
+        !highContrast) {
+      result = ClipRRect(
+        borderRadius: resolvedRadius,
+        child: BackdropFilter(
+          filter: luckyGlassFilter(),
+          child: result,
         ),
       );
-    } else {
-      child = buttonContent;
     }
 
-    return LuckyTapAnimation(onTap: disabled ? null : onTap, child: child);
+    // Specular rim, painted above the (possibly blurred) fill.
+    // Primary keeps a white rim in both themes (highlight on tinted glass);
+    // neutral tiers flip with the theme so the rim stays visible on light.
+    if (glassEnabled) {
+      result = CustomPaint(
+        foregroundPainter: GlassRimPainter(
+          borderRadius: resolvedRadius,
+          rimColor: style == LuckyButtonStyleEnum.primary
+              ? white
+              : context.luckyColors.onSurface,
+          alphas: _rimAlphas,
+        ),
+        child: result,
+      );
+    }
+
+    return LuckyTapAnimation(
+      onTap: disabled ? null : onTap,
+      child: result,
+    );
   }
 }
