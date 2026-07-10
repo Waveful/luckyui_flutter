@@ -1,0 +1,20 @@
+lib/components/buttons/lucky_button.dart
+  s_52529f186d1eb2::t_359942a71c1b97 176-186
+  s_52529f186d1eb2::t_dea22df7b31c7a 120-124
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.11",
+  "base_commit_sha": "330bc8be2da5bb09c85699e42f4e4b8c1d3f6a90",
+  "prompts": {},
+  "sessions": {
+    "s_52529f186d1eb2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3cdfe362-d27c-473e-8a6f-ffc327c12e1b",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "xFlaviews <155723308+xFlaviews@users.noreply.github.com>"
+    }
+  }
+}
