@@ -1,0 +1,23 @@
+lib/components/navigation/lucky_modal.dart
+  s_9d29fb6516fe51::t_a88b7ea2815115 105-106,117-118
+  s_9d29fb6516fe51::t_3a2685c440c8bb 159-160
+  s_9d29fb6516fe51::t_f9e46868f9a6c5 139-144
+  s_9d29fb6516fe51::t_161160cab1aa45 231
+  s_9d29fb6516fe51::t_26a28c59bf04c1 240
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "d0a5f8b1c1ca0fd2d17e746cde2562412a02410f",
+  "prompts": {},
+  "sessions": {
+    "s_9d29fb6516fe51": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d7846aef-cee5-40bc-86b5-8647440de0e0",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "xFlaviews <155723308+xFlaviews@users.noreply.github.com>"
+    }
+  }
+}
