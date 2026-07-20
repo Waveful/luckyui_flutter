@@ -102,6 +102,8 @@ class LuckyModal extends StatelessWidget {
     required BuildContext context,
     required String title,
     required String body,
+    String confirmText = 'Confirm',
+    String cancelText = 'Cancel',
     Widget? child,
   }) {
     return showDialog<T?>(
@@ -112,6 +114,8 @@ class LuckyModal extends StatelessWidget {
         width: LuckyModalSizeEnum.lg.width(context),
         title: title,
         body: body,
+        confirmText: confirmText,
+        cancelText: cancelText,
         child: child,
       ),
     );
@@ -132,6 +136,12 @@ class LuckyModal extends StatelessWidget {
   /// The child to display in the modal.
   final Widget? child;
 
+  /// The label of the confirm button. Defaults to 'Confirm'.
+  final String confirmText;
+
+  /// The label of the cancel button. Defaults to 'Cancel'.
+  final String cancelText;
+
   /// Whether to show the close button. Defaults to true.
   final bool showCloseButton;
 
@@ -146,6 +156,8 @@ class LuckyModal extends StatelessWidget {
     this.title,
     this.body,
     this.child,
+    this.confirmText = 'Confirm',
+    this.cancelText = 'Cancel',
     this.showCloseButton = true,
     this.borderRadius,
   });
@@ -216,7 +228,7 @@ class LuckyModal extends StatelessWidget {
                     children: [
                       Expanded(
                         child: LuckyTextButton(
-                          text: "Cancel",
+                          text: cancelText,
                           onTap: () => Navigator.pop(context, false),
                           color: context.luckyColors.onSurface,
                           fontWeight: normalFontWeight,
@@ -225,7 +237,7 @@ class LuckyModal extends StatelessWidget {
                       ),
                       Expanded(
                         child: LuckyTextButton(
-                          text: "Confirm",
+                          text: confirmText,
                           color: red,
                           onTap: () => Navigator.pop(context, true),
                           textAlign: TextAlign.end,
