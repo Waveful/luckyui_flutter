@@ -4,6 +4,7 @@ import 'package:luckyui/components/indicators/lucky_icons.dart';
 import 'package:luckyui/components/layout/lucky_divider.dart';
 import 'package:luckyui/components/typography/lucky_body.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
+import 'package:luckyui/effects/lucky_glass_overlays.dart';
 
 /// A widget that displays a list of items with a divider between them.
 class LuckyListItems extends StatelessWidget {
@@ -34,6 +35,31 @@ class LuckyListItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final glassControls = LuckyGlassOverlays.maybeOf(context)?.controls;
+    if (glassControls != null) {
+      final Widget section = glassControls.listSection(
+        context,
+        onGlass: LuckyOnGlass.isOn(context),
+        tiles: [
+          for (final item in items)
+            LuckyListItem(
+              icon: item.icon,
+              nativeIcon: item.nativeIcon,
+              text: item.text,
+              onTap: item.onTap,
+              textColor: item.textColor,
+              showTrailingArrow: item.showTrailingArrow,
+            ),
+        ],
+      );
+      // Keep the list's own scrolling contract.
+      return ListView(
+        shrinkWrap: shrinkWrap,
+        physics: physics ??
+            (scrollable ? null : const NeverScrollableScrollPhysics()),
+        children: [section],
+      );
+    }
     return ListView.builder(
       itemCount: items.length * 2 - 1, // Account for dividers
       shrinkWrap: shrinkWrap,
@@ -93,6 +119,22 @@ class LuckyListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final glassControls = LuckyGlassOverlays.maybeOf(context)?.controls;
+    if (glassControls != null) {
+      return glassControls.listTile(
+        context,
+        leading: LuckyIcon(
+          icon: icon,
+          nativeIcon: nativeIcon,
+          size: iconLg,
+          color: textColor,
+        ),
+        text: text,
+        textColor: textColor,
+        showTrailingArrow: showTrailingArrow,
+        onTap: onTap,
+      );
+    }
     return LuckyTapAnimation(
       onTap: onTap,
       pressedScale: 0.975,

@@ -145,6 +145,25 @@ abstract class LuckyGlassControls {
     required String placeholder,
   });
 
+  /// A `LuckyListItem` row. Also used on glass surfaces: a list tile has no
+  /// glass layer of its own.
+  Widget listTile(
+    BuildContext context, {
+    required Widget leading,
+    required String text,
+    Color? textColor,
+    required bool showTrailingArrow,
+    required VoidCallback onTap,
+  });
+
+  /// The rows of a `LuckyListItems` group. [onGlass] when the group already
+  /// sits on a glass surface (then it must not add a glass section).
+  Widget listSection(
+    BuildContext context, {
+    required List<Widget> tiles,
+    required bool onGlass,
+  });
+
   /// One `LuckyFilter` pill; [leading] is its icon or image, if any.
   Widget filter(
     BuildContext context, {
