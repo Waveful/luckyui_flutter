@@ -1,0 +1,19 @@
+lib/components/buttons/lucky_appbar.dart
+  s_bbe9244d7a306d::t_91cfd8ce23558d 7,39-40,44-45,137-141,146-150,156-157
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "2403ec272786bc44ed4a484eec298160e35c36a2",
+  "prompts": {},
+  "sessions": {
+    "s_bbe9244d7a306d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f7b9d87d-8d93-45a2-9ad8-dcc925867580",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xFlaviews <flaviusmironcatalin@gmail.com>"
+    }
+  }
+}
