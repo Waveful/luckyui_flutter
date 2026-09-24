@@ -164,6 +164,9 @@ class LuckyAppBar extends StatelessWidget implements PreferredSizeWidget {
       return glassControls.appBar(
         context,
         leading: effectiveLeading,
+        onBack: leading == null && automaticallyImplyLeading
+            ? () => Navigator.maybePop(context)
+            : null,
         title: titleTextStyle != null && effectiveTitle != null
             ? DefaultTextStyle.merge(style: titleTextStyle, child: effectiveTitle)
             : effectiveTitle,

@@ -10,6 +10,9 @@ enum LuckyOverlayKind {
 
   /// `LuckyToastMessenger` toast / notification body.
   toast,
+
+  /// A card-style surface (`LuckyTextField`'s field card).
+  card,
 }
 
 /// Paints [child] on a glass surface of the given [kind] and [radius].
@@ -32,6 +35,48 @@ typedef LuckyGlassConfirmationPresenter = Future<bool?> Function(
   Widget? child,
 });
 
+/// What `LuckyBottomSheet.show` was asked to present.
+class LuckySheetRequest {
+  /// Creates a request.
+  const LuckySheetRequest({
+    required this.children,
+    required this.showClose,
+    required this.expanded,
+    required this.keyboardAware,
+    required this.useRootNavigator,
+    required this.safeAreaBottom,
+    required this.padding,
+  });
+
+  /// The sheet's children, as passed to `LuckyBottomSheet.show`.
+  final List<Widget> children;
+
+  /// Whether to show the close button.
+  final bool showClose;
+
+  /// Full-height sheet.
+  final bool expanded;
+
+  /// Resizes with the keyboard.
+  final bool keyboardAware;
+
+  /// Pushes on the root navigator.
+  final bool useRootNavigator;
+
+  /// Adds the bottom safe area under the content.
+  final bool safeAreaBottom;
+
+  /// Horizontal content padding.
+  final EdgeInsetsGeometry padding;
+}
+
+/// Presents a `LuckyBottomSheet` with the host's own sheet; completes with
+/// the value the sheet was popped with.
+typedef LuckyGlassSheetPresenter = Future<Object?> Function(
+  BuildContext context,
+  LuckySheetRequest request,
+);
+
 /// Lets the host app render LuckyUI's floating overlays (sheets, popups,
 /// confirmations, toasts) with its own glass implementation.
 ///
@@ -48,6 +93,7 @@ class LuckyGlassOverlays extends InheritedWidget {
     required this.surface,
     required this.confirmation,
     this.controls,
+    this.sheet,
     required super.child,
   });
 
@@ -60,10 +106,14 @@ class LuckyGlassOverlays extends InheritedWidget {
   /// Replaces the confirmation modal.
   final LuckyGlassConfirmationPresenter confirmation;
 
-  /// Renders LuckyUI's navigation-layer controls (app bars, search, filters,
-  /// grouped lists) as glass. Content-layer controls (buttons, switches in
-  /// forms, cards and lists) keep their LuckyUI look: glass is for the
-  /// navigation/control layer only.
+  /// Presents `LuckyBottomSheet.show` sheets with the host's own sheet
+  /// (e.g. a detented glass modal sheet). Null keeps LuckyUI's modal route
+  /// with the [surface] builder.
+  final LuckyGlassSheetPresenter? sheet;
+
+  /// Renders LuckyUI's controls as glass. `controlsOf` withholds it from
+  /// controls on a glass surface ([LuckyOnGlass]) and from dense list items,
+  /// the two places glass must not go.
   /// Null keeps every control on its own look.
   final LuckyGlassControls? controls;
 
@@ -72,8 +122,27 @@ class LuckyGlassOverlays extends InheritedWidget {
   /// on a glass surface ([LuckyOnGlass]) — refractive glass never nests.
   static LuckyGlassControls? controlsOf(BuildContext context) {
     final scope = maybeOf(context);
-    if (scope == null || LuckyOnGlass.isOn(context)) return null;
+    if (scope == null ||
+        scope.controls == null ||
+        LuckyOnGlass.isOn(context) ||
+        _inDenseList(context)) {
+      return null;
+    }
     return scope.controls;
+  }
+
+  /// Whether [context] is an item of a lazily built list or grid (ListView,
+  /// GridView, SliverList...): liquid glass stays off dense list items.
+  static bool _inDenseList(BuildContext context) {
+    var found = false;
+    context.visitAncestorElements((element) {
+      if (element.widget is SliverMultiBoxAdaptorWidget) {
+        found = true;
+        return false;
+      }
+      return true;
+    });
+    return found;
   }
 
   /// The enabled scope above [context], or null.
@@ -88,7 +157,8 @@ class LuckyGlassOverlays extends InheritedWidget {
       enabled != oldWidget.enabled ||
       surface != oldWidget.surface ||
       confirmation != oldWidget.confirmation ||
-      controls != oldWidget.controls;
+      controls != oldWidget.controls ||
+      sheet != oldWidget.sheet;
 }
 
 /// Marks a subtree painted on a glass surface (sheet, dialog, card, toast,
@@ -113,11 +183,50 @@ abstract class LuckyGlassControls {
   /// Allows const subclasses.
   const LuckyGlassControls();
 
+  /// `LuckyButton`: [label] is the button's own content. [onTap] is null
+  /// when disabled. [prominent] marks the primary call to action.
+  Widget button(
+    BuildContext context, {
+    required Widget label,
+    required VoidCallback? onTap,
+    required BorderRadius radius,
+    required EdgeInsets padding,
+    double? width,
+    double? height,
+    required bool prominent,
+  });
+
+  /// `LuckyIconButton`: [icon] is the button's own glyph.
+  Widget iconButton(
+    BuildContext context, {
+    required Widget icon,
+    required VoidCallback onTap,
+    required double size,
+  });
+
+  /// `LuckySwitch`.
+  Widget toggle(
+    BuildContext context, {
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  });
+
+  /// The visual of a `LuckyToastMessenger` toast (LuckyUI keeps its own
+  /// timing, stacking, tap and swipe).
+  Widget toast(
+    BuildContext context, {
+    required String text,
+    String? title,
+    Widget? leading,
+  });
+
   /// `LuckyAppBar` / `LuckyActionsAppBar` (when not given an explicit
   /// backgroundColor). [leading] and [actions] are the bar's own widgets; the
   /// host puts the leading control and the actions group on glass (iOS 26
   /// bars: transparent, controls grouped in capsules). [toolbarHeight] must
-  /// be honoured: it is the LuckyUI bar's preferredSize.
+  /// be honoured: it is the LuckyUI bar's preferredSize. [onBack] is set
+  /// when [leading] is LuckyUI's implied back button, so a host bar with its
+  /// own back button can use it instead.
   Widget appBar(
     BuildContext context, {
     Widget? leading,
@@ -125,6 +234,7 @@ abstract class LuckyGlassControls {
     List<Widget>? actions,
     required bool centerTitle,
     required double toolbarHeight,
+    VoidCallback? onBack,
   });
 
   /// `LuckySearchBar`.

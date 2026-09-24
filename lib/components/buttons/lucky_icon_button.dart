@@ -4,6 +4,7 @@ import 'package:luckyui/components/indicators/lucky_icons.dart';
 import 'package:luckyui/effects/lucky_glass.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
+import 'package:luckyui/effects/lucky_glass_overlays.dart';
 
 /// A widget that displays a bare icon button (no background surface).
 ///
@@ -43,17 +44,27 @@ class LuckyIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Widget glyph = LuckyIcon(
+      icon: icon,
+      nativeIcon: nativeIcon,
+      size: size,
+      color: color ?? context.luckyColors.onSurface,
+    );
+    final glassControls = LuckyGlassOverlays.controlsOf(context);
+    if (glassControls != null) {
+      return glassControls.iconButton(
+        context,
+        icon: glyph,
+        onTap: onTap,
+        size: size,
+      );
+    }
     return LuckyTapAnimation(
       onTap: onTap,
       pressedScale: 0.925,
       child: Padding(
         padding: EdgeInsets.all((tapArea - size).clamp(0.0, tapArea) / 2),
-        child: LuckyIcon(
-          icon: icon,
-          nativeIcon: nativeIcon,
-          size: size,
-          color: color ?? context.luckyColors.onSurface,
-        ),
+        child: glyph,
       ),
     );
   }

@@ -120,6 +120,22 @@ class LuckyBottomSheet extends StatelessWidget {
     final glass = backgroundColor == null
         ? LuckyGlassOverlays.maybeOf(context)
         : null;
+    // Host sheet (e.g. a detented glass modal sheet) when it provides one.
+    final presenter = glass?.sheet;
+    if (presenter != null) {
+      return presenter(
+        context,
+        LuckySheetRequest(
+          children: children,
+          showClose: showClose,
+          expanded: expanded,
+          keyboardAware: keyboardAware,
+          useRootNavigator: useRootNavigator,
+          safeAreaBottom: safeAreaBottom,
+          padding: padding,
+        ),
+      ).then((value) => value as T?);
+    }
     final radius = (borderRadius ??
             radius5xl.copyWith(
               bottomLeft: Radius.zero,

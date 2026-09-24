@@ -214,6 +214,8 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
         ((padding + spaceSm) / screenHeight) * 2;
 
     final glass = LuckyGlassOverlays.maybeOf(context);
+    // Host glass toast visual; LuckyUI keeps timing, stacking and gestures.
+    final glassControls = glass?.controls;
 
     final AlignmentGeometry visibleAlignment = isBottom
         ? Alignment(0.0, 1.0 - paddingAlignmentAdjustment)
@@ -245,7 +247,17 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
                   });
                 }
               },
-              child: Container(
+              child: glassControls != null
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: spaceSm),
+                      child: glassControls.toast(
+                        context,
+                        text: _text,
+                        title: _title,
+                        leading: _widget,
+                      ),
+                    )
+                  : Container(
                 width: double.infinity,
                 decoration: glass != null
                     ? null
