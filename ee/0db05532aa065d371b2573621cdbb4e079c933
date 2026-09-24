@@ -1,0 +1,33 @@
+lib/components/buttons/lucky_appbar.dart
+  s_bbe9244d7a306d::t_5357b7425265ec 167-169
+lib/components/buttons/lucky_button.dart
+  s_bbe9244d7a306d::t_ee7535bb69420c 7,245-267,273
+lib/components/buttons/lucky_icon_button.dart
+  s_bbe9244d7a306d::t_3fc0cb0487c62c 7,47-61,67
+lib/components/buttons/lucky_switch.dart
+  s_bbe9244d7a306d::t_4075ccf63b5b38 5,61-68
+lib/components/fields/lucky_text_field.dart
+  s_bbe9244d7a306d::t_0745593af46262 8,224-229,236-246,351-356
+lib/components/lucky_toast.dart
+  s_bbe9244d7a306d::t_3bc9cc4bf1325d 217-218,250-260
+lib/components/navigation/lucky_bottom_sheet.dart
+  s_bbe9244d7a306d::t_2b5d57a7ea3daa 123-138
+lib/effects/lucky_glass_overlays.dart
+  s_bbe9244d7a306d::t_92c6937d6389c9 13-15,38-79,96,109-116,125-130,134-147,160-161,186-222,227-229,237
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "ee0db05532aa065d371b2573621cdbb4e079c933",
+  "prompts": {},
+  "sessions": {
+    "s_bbe9244d7a306d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f7b9d87d-8d93-45a2-9ad8-dcc925867580",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xFlaviews <flaviusmironcatalin@gmail.com>"
+    }
+  }
+}
