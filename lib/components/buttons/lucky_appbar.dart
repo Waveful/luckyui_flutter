@@ -4,6 +4,7 @@ import 'package:luckyui/components/buttons/lucky_text_button.dart';
 import 'package:luckyui/components/typography/lucky_heading.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
+import 'package:luckyui/effects/lucky_glass_overlays.dart';
 
 /// A widget that displays a toolbar with primary and negative actions.
 class LuckyActionsAppBar extends StatelessWidget
@@ -35,27 +36,40 @@ class LuckyActionsAppBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    final Widget negative = LuckyTextButton(
+      text: negativeText,
+      color: context.luckyColors.onSurface,
+      fontWeight: normalFontWeight,
+      onTap: onNegativeAction ?? () => Navigator.maybePop(context),
+    );
+    final Widget primary = LuckyTextButton(
+      text: primaryText,
+      onTap: onPrimaryAction ?? () => Navigator.maybePop(context),
+    );
+
+    // Host glass: cancel / confirm become the bar's leading and trailing
+    // glass controls. An explicit backgroundColor keeps the solid bar.
+    final glassControls =
+        backgroundColor == null ? LuckyGlassOverlays.controlsOf(context) : null;
+    if (glassControls != null) {
+      return glassControls.appBar(
+        context,
+        leading: negative,
+        actions: [primary],
+        centerTitle: true,
+        toolbarHeight: kToolbarHeight,
+      );
+    }
+
     return AppBar(
       automaticallyImplyLeading: false,
       elevation: 0,
       backgroundColor: backgroundColor ?? context.luckyColors.surface,
       actions: [
         const SizedBox(width: spaceMd),
-        Center(
-          child: LuckyTextButton(
-            text: negativeText,
-            color: context.luckyColors.onSurface,
-            fontWeight: normalFontWeight,
-            onTap: onNegativeAction ?? () => Navigator.maybePop(context),
-          ),
-        ),
+        Center(child: negative),
         const Spacer(),
-        Center(
-          child: LuckyTextButton(
-            text: primaryText,
-            onTap: onPrimaryAction ?? () => Navigator.maybePop(context),
-          ),
-        ),
+        Center(child: primary),
       ],
       actionsPadding: const EdgeInsets.only(right: spaceMd),
     );
@@ -130,6 +144,38 @@ class LuckyAppBar extends StatelessWidget implements PreferredSizeWidget {
       );
     }
 
+    final Widget? effectiveTitle =
+        titleWidget ??
+        (title != null
+            ? LuckyHeading(
+                text: title!,
+                fontSize: textLg,
+                fontWeight: boldFontWeight,
+                lineHeight: lineHeightXs,
+              )
+            : null);
+
+    // Host glass (iOS 26 bar): transparent, back button and actions on glass
+    // capsules. An explicit backgroundColor (e.g. a black media bar) keeps
+    // the solid Material bar.
+    final glassControls =
+        backgroundColor == null ? LuckyGlassOverlays.controlsOf(context) : null;
+    if (glassControls != null) {
+      return glassControls.appBar(
+        context,
+        leading: effectiveLeading,
+        onBack: leading == null && automaticallyImplyLeading
+            ? () => Navigator.maybePop(context)
+            : null,
+        title: titleTextStyle != null && effectiveTitle != null
+            ? DefaultTextStyle.merge(style: titleTextStyle, child: effectiveTitle)
+            : effectiveTitle,
+        actions: actions,
+        centerTitle: centerTitle,
+        toolbarHeight: kToolbarHeight,
+      );
+    }
+
     return AppBar(
       automaticallyImplyLeading: false,
       leading: effectiveLeading,
@@ -142,16 +188,7 @@ class LuckyAppBar extends StatelessWidget implements PreferredSizeWidget {
       actionsPadding: const EdgeInsets.only(right: spaceSm),
       backgroundColor: backgroundColor ?? context.luckyColors.surface,
       titleTextStyle: titleTextStyle,
-      title:
-          titleWidget ??
-          (title != null
-              ? LuckyHeading(
-                  text: title!,
-                  fontSize: textLg,
-                  fontWeight: boldFontWeight,
-                  lineHeight: lineHeightXs,
-                )
-              : null),
+      title: effectiveTitle,
     );
   }
 

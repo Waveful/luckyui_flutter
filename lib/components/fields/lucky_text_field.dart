@@ -5,6 +5,7 @@ import 'package:luckyui/components/typography/lucky_heading.dart';
 import 'package:luckyui/components/typography/lucky_small_body.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
+import 'package:luckyui/effects/lucky_glass_overlays.dart';
 
 /// An enumeration of text field styles.
 enum LuckyTextFieldStyleEnum {
@@ -220,23 +221,29 @@ class _LuckyTextFieldState extends State<LuckyTextField> {
         widget.maxLines ??
         (widget.style == LuckyTextFieldStyleEnum.big ? 5 : 1);
 
-    return Container(
-      margin: const EdgeInsets.all(spaceXs),
+    // Host glass: the field card is a glass card (the field inside is
+    // unchanged — capitalization, validation, error text all intact).
+    final glass = LuckyGlassOverlays.controlsOf(context) != null
+        ? LuckyGlassOverlays.maybeOf(context)
+        : null;
+    final Widget card = Container(
       padding: const EdgeInsets.only(
         left: spaceMd,
         top: spaceSm,
         right: spaceMd,
         bottom: spaceXs,
       ),
-      decoration: BoxDecoration(
-        color: widget.enabled
-            ? context.luckyColors.surface
-            : context.luckyColors.n100,
-        borderRadius: radiusMd,
-        border: Border.all(
-          color: widget.errorText != null ? red : context.luckyColors.n100,
-        ),
-      ),
+      decoration: glass != null
+          ? null
+          : BoxDecoration(
+              color: widget.enabled
+                  ? context.luckyColors.surface
+                  : context.luckyColors.n100,
+              borderRadius: radiusMd,
+              border: Border.all(
+                color: widget.errorText != null ? red : context.luckyColors.n100,
+              ),
+            ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -340,6 +347,12 @@ class _LuckyTextFieldState extends State<LuckyTextField> {
           ],
         ],
       ),
+    );
+    return Padding(
+      padding: const EdgeInsets.all(spaceXs),
+      child: glass == null
+          ? card
+          : glass.surface(context, LuckyOverlayKind.card, radiusMd, card),
     );
   }
 }
