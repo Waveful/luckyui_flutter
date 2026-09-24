@@ -1,0 +1,27 @@
+lib/effects/lucky_glass_overlays.dart
+  s_bbe9244d7a306d::t_85fb20cf52daa2 1-74
+lib/components/lucky_toast.dart
+  s_bbe9244d7a306d::t_2a60f6615bb3f2 8,216-217,250-256,258,291,300-309
+lib/components/navigation/lucky_bottom_sheet.dart
+  s_bbe9244d7a306d::t_c328fbff56bb1e 2-3,118-128,143-150,152,162-164
+lib/components/navigation/lucky_modal.dart
+  s_bbe9244d7a306d::t_d0fdefaf00eb0a 2-3,89-92,114-126,188-192,195-202,272-279
+lib/luckyui.dart
+  s_bbe9244d7a306d::t_7c39ca8da2deb9 45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "c92fcf4a324cb304c49795571466a89a4c8c08b8",
+  "prompts": {},
+  "sessions": {
+    "s_bbe9244d7a306d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f7b9d87d-8d93-45a2-9ad8-dcc925867580",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xFlaviews <flaviusmironcatalin@gmail.com>"
+    }
+  }
+}
