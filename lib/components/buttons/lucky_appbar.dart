@@ -4,6 +4,7 @@ import 'package:luckyui/components/buttons/lucky_text_button.dart';
 import 'package:luckyui/components/typography/lucky_heading.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
+import 'package:luckyui/effects/lucky_glass_overlays.dart';
 
 /// A widget that displays a toolbar with primary and negative actions.
 class LuckyActionsAppBar extends StatelessWidget
@@ -35,10 +36,13 @@ class LuckyActionsAppBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    // Host glass: iOS 26 bars are transparent, the controls carry the glass.
+    final bool glass = LuckyGlassOverlays.controlsOf(context) != null;
     return AppBar(
       automaticallyImplyLeading: false,
       elevation: 0,
-      backgroundColor: backgroundColor ?? context.luckyColors.surface,
+      backgroundColor: backgroundColor ??
+          (glass ? Colors.transparent : context.luckyColors.surface),
       actions: [
         const SizedBox(width: spaceMd),
         Center(
@@ -130,17 +134,27 @@ class LuckyAppBar extends StatelessWidget implements PreferredSizeWidget {
       );
     }
 
+    // Host glass: iOS 26 bars are transparent and the controls (the back
+    // button included) carry the glass. An explicit backgroundColor (e.g. a
+    // black media bar) stays solid.
+    final bool glass = LuckyGlassOverlays.controlsOf(context) != null;
+
     return AppBar(
       automaticallyImplyLeading: false,
       leading: effectiveLeading,
       leadingWidth: effectiveLeading != null
-          ? (leadingWidth ?? (iconMd + spaceLg))
+          ? (leadingWidth ??
+                // The glass back button is a capsule, wider than the glyph.
+                (glass && leading == null
+                    ? kToolbarHeight
+                    : iconMd + spaceLg))
           : 0,
       centerTitle: centerTitle,
       elevation: 0,
       actions: actions,
       actionsPadding: const EdgeInsets.only(right: spaceSm),
-      backgroundColor: backgroundColor ?? context.luckyColors.surface,
+      backgroundColor: backgroundColor ??
+          (glass ? Colors.transparent : context.luckyColors.surface),
       titleTextStyle: titleTextStyle,
       title:
           titleWidget ??
