@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:luckyui/components/indicators/lucky_icons.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
+import 'package:luckyui/effects/lucky_glass_overlays.dart';
 
 /// A widget that displays a search bar.
 class LuckySearchBar extends StatelessWidget {
@@ -24,6 +25,14 @@ class LuckySearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final glassControls = LuckyGlassOverlays.controlsOf(context);
+    if (glassControls != null) {
+      return glassControls.searchBar(
+        context,
+        controller: controller,
+        placeholder: hintText,
+      );
+    }
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(

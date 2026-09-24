@@ -5,6 +5,7 @@ import 'package:luckyui/components/typography/lucky_body.dart';
 import 'package:luckyui/effects/lucky_glass.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
+import 'package:luckyui/effects/lucky_glass_overlays.dart';
 
 /// A data class that represents a filter.
 class LuckyFilterData {
@@ -149,6 +150,20 @@ class LuckyFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final glassControls = LuckyGlassOverlays.controlsOf(context);
+    if (glassControls != null) {
+      return glassControls.filter(
+        context,
+        label: text,
+        selected: selected,
+        onTap: onTap,
+        leading: imageWidget != null
+            ? SizedBox(width: iconSm, height: iconSm, child: imageWidget)
+            : icon != null
+            ? LuckyIcon(icon: icon, size: iconSm)
+            : null,
+      );
+    }
     final bool highContrast = MediaQuery.highContrastOf(context);
     // Ghost glass is iOS-only and disabled under high contrast (Reduce
     // Transparency parity). Only unselected chips go ghost; the selected pill
