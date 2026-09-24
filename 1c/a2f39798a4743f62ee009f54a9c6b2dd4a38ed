@@ -1,0 +1,29 @@
+lib/components/buttons/lucky_button.dart
+  s_7d65e866d4cfe2::t_36c8e0a7bb6d88 7,245-267,273
+lib/components/buttons/lucky_icon_button.dart
+  s_7d65e866d4cfe2::t_7859235ebc3fb0 7,47-61,67
+lib/components/buttons/lucky_switch.dart
+  s_7d65e866d4cfe2::t_8992659bdb548f 5,61-68
+lib/components/fields/lucky_search_bar.dart
+  s_7d65e866d4cfe2::t_e82f7aa2b39c54 5,28-35
+lib/components/navigation/lucky_filters.dart
+  s_7d65e866d4cfe2::t_dd16bcc52efa8d 8,153-166
+lib/effects/lucky_glass_overlays.dart
+  s_7d65e866d4cfe2::t_fe64d65a3df8f9 50,63-75,87-155
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "1ca2f39798a4743f62ee009f54a9c6b2dd4a38ed",
+  "prompts": {},
+  "sessions": {
+    "s_7d65e866d4cfe2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "76103998-3a24-4b95-a57c-75d7ce7fc438",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xFlaviews <flaviusmironcatalin@gmail.com>"
+    }
+  }
+}
