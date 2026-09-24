@@ -60,7 +60,10 @@ class LuckyGlassOverlays extends InheritedWidget {
   /// Replaces the confirmation modal.
   final LuckyGlassConfirmationPresenter confirmation;
 
-  /// Renders LuckyUI's controls (buttons, switches, search, filters) as glass.
+  /// Renders LuckyUI's navigation-layer controls (app bars, search, filters,
+  /// grouped lists) as glass. Content-layer controls (buttons, switches in
+  /// forms, cards and lists) keep their LuckyUI look: glass is for the
+  /// navigation/control layer only.
   /// Null keeps every control on its own look.
   final LuckyGlassControls? controls;
 
@@ -103,39 +106,25 @@ class LuckyOnGlass extends InheritedWidget {
   bool updateShouldNotify(LuckyOnGlass oldWidget) => false;
 }
 
-/// Host-provided glass renderings of LuckyUI controls. Each method receives
-/// what the LuckyUI control would draw inside (its label, icon, colors) plus
-/// its behaviour, and returns the glass control.
+/// Host-provided glass renderings of LuckyUI's navigation-layer controls.
+/// Each method receives what the LuckyUI control would draw inside plus its
+/// behaviour, and returns the glass version.
 abstract class LuckyGlassControls {
   /// Allows const subclasses.
   const LuckyGlassControls();
 
-  /// `LuckyButton`: [label] is the button's own content. [onTap] is null
-  /// when disabled. [prominent] marks the primary call to action.
-  Widget button(
+  /// `LuckyAppBar` / `LuckyActionsAppBar` (when not given an explicit
+  /// backgroundColor). [leading] and [actions] are the bar's own widgets; the
+  /// host puts the leading control and the actions group on glass (iOS 26
+  /// bars: transparent, controls grouped in capsules). [toolbarHeight] must
+  /// be honoured: it is the LuckyUI bar's preferredSize.
+  Widget appBar(
     BuildContext context, {
-    required Widget label,
-    required VoidCallback? onTap,
-    required BorderRadius radius,
-    required EdgeInsets padding,
-    double? width,
-    double? height,
-    required bool prominent,
-  });
-
-  /// `LuckyIconButton`: [icon] is the button's own glyph.
-  Widget iconButton(
-    BuildContext context, {
-    required Widget icon,
-    required VoidCallback onTap,
-    required double size,
-  });
-
-  /// `LuckySwitch`.
-  Widget toggle(
-    BuildContext context, {
-    required bool value,
-    required ValueChanged<bool> onChanged,
+    Widget? leading,
+    Widget? title,
+    List<Widget>? actions,
+    required bool centerTitle,
+    required double toolbarHeight,
   });
 
   /// `LuckySearchBar`.

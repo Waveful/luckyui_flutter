@@ -36,30 +36,40 @@ class LuckyActionsAppBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    // Host glass: iOS 26 bars are transparent, the controls carry the glass.
-    final bool glass = LuckyGlassOverlays.controlsOf(context) != null;
+    final Widget negative = LuckyTextButton(
+      text: negativeText,
+      color: context.luckyColors.onSurface,
+      fontWeight: normalFontWeight,
+      onTap: onNegativeAction ?? () => Navigator.maybePop(context),
+    );
+    final Widget primary = LuckyTextButton(
+      text: primaryText,
+      onTap: onPrimaryAction ?? () => Navigator.maybePop(context),
+    );
+
+    // Host glass: cancel / confirm become the bar's leading and trailing
+    // glass controls. An explicit backgroundColor keeps the solid bar.
+    final glassControls =
+        backgroundColor == null ? LuckyGlassOverlays.controlsOf(context) : null;
+    if (glassControls != null) {
+      return glassControls.appBar(
+        context,
+        leading: negative,
+        actions: [primary],
+        centerTitle: true,
+        toolbarHeight: kToolbarHeight,
+      );
+    }
+
     return AppBar(
       automaticallyImplyLeading: false,
       elevation: 0,
-      backgroundColor: backgroundColor ??
-          (glass ? Colors.transparent : context.luckyColors.surface),
+      backgroundColor: backgroundColor ?? context.luckyColors.surface,
       actions: [
         const SizedBox(width: spaceMd),
-        Center(
-          child: LuckyTextButton(
-            text: negativeText,
-            color: context.luckyColors.onSurface,
-            fontWeight: normalFontWeight,
-            onTap: onNegativeAction ?? () => Navigator.maybePop(context),
-          ),
-        ),
+        Center(child: negative),
         const Spacer(),
-        Center(
-          child: LuckyTextButton(
-            text: primaryText,
-            onTap: onPrimaryAction ?? () => Navigator.maybePop(context),
-          ),
-        ),
+        Center(child: primary),
       ],
       actionsPadding: const EdgeInsets.only(right: spaceMd),
     );
@@ -134,38 +144,48 @@ class LuckyAppBar extends StatelessWidget implements PreferredSizeWidget {
       );
     }
 
-    // Host glass: iOS 26 bars are transparent and the controls (the back
-    // button included) carry the glass. An explicit backgroundColor (e.g. a
-    // black media bar) stays solid.
-    final bool glass = LuckyGlassOverlays.controlsOf(context) != null;
+    final Widget? effectiveTitle =
+        titleWidget ??
+        (title != null
+            ? LuckyHeading(
+                text: title!,
+                fontSize: textLg,
+                fontWeight: boldFontWeight,
+                lineHeight: lineHeightXs,
+              )
+            : null);
+
+    // Host glass (iOS 26 bar): transparent, back button and actions on glass
+    // capsules. An explicit backgroundColor (e.g. a black media bar) keeps
+    // the solid Material bar.
+    final glassControls =
+        backgroundColor == null ? LuckyGlassOverlays.controlsOf(context) : null;
+    if (glassControls != null) {
+      return glassControls.appBar(
+        context,
+        leading: effectiveLeading,
+        title: titleTextStyle != null && effectiveTitle != null
+            ? DefaultTextStyle.merge(style: titleTextStyle, child: effectiveTitle)
+            : effectiveTitle,
+        actions: actions,
+        centerTitle: centerTitle,
+        toolbarHeight: kToolbarHeight,
+      );
+    }
 
     return AppBar(
       automaticallyImplyLeading: false,
       leading: effectiveLeading,
       leadingWidth: effectiveLeading != null
-          ? (leadingWidth ??
-                // The glass back button is a capsule, wider than the glyph.
-                (glass && leading == null
-                    ? kToolbarHeight
-                    : iconMd + spaceLg))
+          ? (leadingWidth ?? (iconMd + spaceLg))
           : 0,
       centerTitle: centerTitle,
       elevation: 0,
       actions: actions,
       actionsPadding: const EdgeInsets.only(right: spaceSm),
-      backgroundColor: backgroundColor ??
-          (glass ? Colors.transparent : context.luckyColors.surface),
+      backgroundColor: backgroundColor ?? context.luckyColors.surface,
       titleTextStyle: titleTextStyle,
-      title:
-          titleWidget ??
-          (title != null
-              ? LuckyHeading(
-                  text: title!,
-                  fontSize: textLg,
-                  fontWeight: boldFontWeight,
-                  lineHeight: lineHeightXs,
-                )
-              : null),
+      title: effectiveTitle,
     );
   }
 

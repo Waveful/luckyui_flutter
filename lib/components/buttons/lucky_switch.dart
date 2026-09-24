@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:luckyui/animations/lucky_tap_animation.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
-import 'package:luckyui/effects/lucky_glass_overlays.dart';
 
 /// A widget that displays a switch.
 class LuckySwitch extends StatefulWidget {
@@ -58,14 +57,6 @@ class _LuckySwitchState extends State<LuckySwitch> {
 
   @override
   Widget build(BuildContext context) {
-    final glassControls = LuckyGlassOverlays.controlsOf(context);
-    if (glassControls != null) {
-      return glassControls.toggle(
-        context,
-        value: _currentValue,
-        onChanged: _onChanged,
-      );
-    }
     return LuckyTapAnimation(
       onTap: () => _onChanged(!_currentValue),
       pressedScale: 0.925,

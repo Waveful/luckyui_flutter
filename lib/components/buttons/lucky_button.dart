@@ -4,7 +4,6 @@ import 'package:luckyui/components/indicators/lucky_icons.dart';
 import 'package:luckyui/effects/lucky_glass.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
-import 'package:luckyui/effects/lucky_glass_overlays.dart';
 
 /// An enumeration of button styles.
 enum LuckyButtonStyleEnum {
@@ -242,35 +241,15 @@ class LuckyButton extends StatelessWidget {
           ],
         );
 
-    final EdgeInsets padding = EdgeInsets.symmetric(
-      horizontal: spaceMd,
-      vertical: expanded ? spaceMd : spaceSm,
-    );
-
-    // Host glass (liquid glass rollout): same label, the host's glass button.
-    // The picker keeps its bordered field look.
-    final glassControls = style == LuckyButtonStyleEnum.picker
-        ? null
-        : LuckyGlassOverlays.controlsOf(context);
-    if (glassControls != null) {
-      return glassControls.button(
-        context,
-        label: label,
-        onTap: disabled ? null : onTap,
-        radius: resolvedRadius,
-        padding: padding,
-        width: expanded ? double.infinity : null,
-        height: height,
-        prominent: style == LuckyButtonStyleEnum.primary,
-      );
-    }
-
     Widget result = AnimatedContainer(
       duration: fastDuration,
       curve: Curves.easeIn,
       width: expanded ? double.infinity : null,
       height: height,
-      padding: padding,
+      padding: EdgeInsets.symmetric(
+        horizontal: spaceMd,
+        vertical: expanded ? spaceMd : spaceSm,
+      ),
       decoration: BoxDecoration(
         color: fill,
         borderRadius: resolvedRadius,
