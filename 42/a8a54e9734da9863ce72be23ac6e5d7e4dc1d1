@@ -1,0 +1,21 @@
+lib/components/buttons/lucky_list_items.dart
+  s_bbe9244d7a306d::t_1fc5e6caa7fc8b 7,38-62,122-137
+lib/effects/lucky_glass_overlays.dart
+  s_bbe9244d7a306d::t_681e07e0ca67a6 148-166
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "42a8a54e9734da9863ce72be23ac6e5d7e4dc1d1",
+  "prompts": {},
+  "sessions": {
+    "s_bbe9244d7a306d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f7b9d87d-8d93-45a2-9ad8-dcc925867580",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xFlaviews <flaviusmironcatalin@gmail.com>"
+    }
+  }
+}
