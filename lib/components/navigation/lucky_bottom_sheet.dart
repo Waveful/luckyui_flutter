@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:luckyui/effects/lucky_glass.dart';
+import 'package:luckyui/effects/lucky_glass_overlays.dart';
 import 'package:luckyui/components/buttons/lucky_icon_button.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
@@ -113,6 +115,17 @@ class LuckyBottomSheet extends StatelessWidget {
     BorderRadiusGeometry? borderRadius,
     Color? backgroundColor,
   }) {
+    // An explicit backgroundColor marks a deliberately solid sheet (e.g.
+    // always-black over media), so it keeps its fill.
+    final glass = backgroundColor == null
+        ? LuckyGlassOverlays.maybeOf(context)
+        : null;
+    final radius = (borderRadius ??
+            radius5xl.copyWith(
+              bottomLeft: Radius.zero,
+              bottomRight: Radius.zero,
+            ))
+        .resolve(Directionality.of(context));
     return showModalBottomSheet<T?>(
       context: context,
       useRootNavigator: useRootNavigator,
@@ -127,10 +140,16 @@ class LuckyBottomSheet extends StatelessWidget {
               bottomRight: Radius.zero,
             ),
       ),
-      backgroundColor: backgroundColor ?? context.luckyColors.surfaceTint,
-      barrierColor: black.withAlpha(200),
+      backgroundColor: glass != null
+          ? Colors.transparent
+          : backgroundColor ?? context.luckyColors.surfaceTint,
+      elevation: glass != null ? 0 : null,
+      // Glass needs the page behind it visible; kGlassBarrierAlpha dim.
+      barrierColor: glass != null
+          ? black.withValues(alpha: kGlassBarrierAlpha)
+          : black.withAlpha(200),
       builder: (context) {
-        return SafeArea(
+        final Widget sheet = SafeArea(
           bottom: false,
           child: LuckyBottomSheet(
             padding: padding,
@@ -140,6 +159,9 @@ class LuckyBottomSheet extends StatelessWidget {
             children: children,
           ),
         );
+        return glass == null
+            ? sheet
+            : glass.surface(context, LuckyOverlayKind.sheet, radius, sheet);
       },
     );
   }

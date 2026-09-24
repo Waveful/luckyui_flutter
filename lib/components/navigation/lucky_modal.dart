@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:luckyui/effects/lucky_glass.dart';
+import 'package:luckyui/effects/lucky_glass_overlays.dart';
 import 'package:luckyui/components/buttons/lucky_icon_button.dart';
 import 'package:luckyui/components/buttons/lucky_text_button.dart';
 import 'package:luckyui/components/typography/lucky_body.dart';
@@ -84,7 +86,10 @@ class LuckyModal extends StatelessWidget {
   }) {
     return showDialog<T?>(
       context: context,
-      barrierColor: black.withAlpha(200),
+      barrierColor: size != LuckyModalSizeEnum.full &&
+              LuckyGlassOverlays.maybeOf(context) != null
+          ? black.withValues(alpha: kGlassBarrierAlpha)
+          : black.withAlpha(200),
       barrierDismissible: barrierDismissible,
       useSafeArea: size == LuckyModalSizeEnum.full ? false : true,
       builder: (BuildContext context) => LuckyModal(
@@ -106,6 +111,19 @@ class LuckyModal extends StatelessWidget {
     String cancelText = 'Cancel',
     Widget? child,
   }) {
+    final glass = LuckyGlassOverlays.maybeOf(context);
+    if (glass != null) {
+      return glass
+          .confirmation(
+            context,
+            title: title,
+            body: body,
+            confirmText: confirmText,
+            cancelText: cancelText,
+            child: child,
+          )
+          .then((confirmed) => confirmed as T?);
+    }
     return showDialog<T?>(
       context: context,
       barrierColor: black.withAlpha(200),
@@ -167,19 +185,21 @@ class LuckyModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      elevation: 0,
-      insetPadding: EdgeInsets.zero,
-      backgroundColor: Colors.transparent,
-      child: Container(
+    final bool fullScreen = width == MediaQuery.of(context).size.width;
+    // Full-screen modals stay opaque: glass is for floating surfaces.
+    final glass = fullScreen ? null : LuckyGlassOverlays.maybeOf(context);
+    final BorderRadius radius = borderRadius ?? radius4xl;
+    final Widget modal = Container(
         width: width,
         height: height,
-        decoration: BoxDecoration(
-          color: width == MediaQuery.of(context).size.width
-              ? context.luckyColors.surface
-              : context.luckyColors.surfaceTint,
-          borderRadius: borderRadius ?? radius4xl,
-        ),
+        decoration: glass != null
+            ? null
+            : BoxDecoration(
+                color: fullScreen
+                    ? context.luckyColors.surface
+                    : context.luckyColors.surfaceTint,
+                borderRadius: radius,
+              ),
         child: Padding(
           padding: isConfirmation
               ? const EdgeInsets.symmetric(
@@ -249,7 +269,14 @@ class LuckyModal extends StatelessWidget {
             ],
           ),
         ),
-      ),
+      );
+    return Dialog(
+      elevation: 0,
+      insetPadding: EdgeInsets.zero,
+      backgroundColor: Colors.transparent,
+      child: glass == null
+          ? modal
+          : glass.surface(context, LuckyOverlayKind.popup, radius, modal),
     );
   }
 }

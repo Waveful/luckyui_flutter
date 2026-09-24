@@ -5,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:luckyui/animations/lucky_tap_animation.dart';
 import 'package:luckyui/components/typography/lucky_body.dart';
 import 'package:luckyui/components/typography/lucky_heading.dart';
+import 'package:luckyui/effects/lucky_glass_overlays.dart';
 import 'package:luckyui/theme/lucky_colors.dart';
 import 'package:luckyui/theme/lucky_tokens.dart';
 
@@ -212,6 +213,8 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
     final double paddingAlignmentAdjustment =
         ((padding + spaceSm) / screenHeight) * 2;
 
+    final glass = LuckyGlassOverlays.maybeOf(context);
+
     final AlignmentGeometry visibleAlignment = isBottom
         ? Alignment(0.0, 1.0 - paddingAlignmentAdjustment)
         : Alignment(0.0, -1.0 + paddingAlignmentAdjustment);
@@ -244,13 +247,15 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
               },
               child: Container(
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  color: context.luckyColors.surface,
-                  border: Border.all(color: context.luckyColors.n150),
-                  borderRadius: radius2xl,
-                ),
+                decoration: glass != null
+                    ? null
+                    : BoxDecoration(
+                        color: context.luckyColors.surface,
+                        border: Border.all(color: context.luckyColors.n150),
+                        borderRadius: radius2xl,
+                      ),
                 margin: const EdgeInsets.symmetric(horizontal: spaceSm),
-                child: Padding(
+                child: _onSurface(glass, context, Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: spaceMd,
                     vertical: spaceSm,
@@ -283,7 +288,7 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
                       ),
                     ],
                   ),
-                ),
+                )),
               ),
             ),
           ),
@@ -291,6 +296,16 @@ class LuckyToastMessengerState extends State<LuckyToastMessenger> {
       ),
     );
   }
+
+  /// Puts the toast body on the host app's glass surface when enabled.
+  Widget _onSurface(
+    LuckyGlassOverlays? glass,
+    BuildContext context,
+    Widget body,
+  ) =>
+      glass == null
+          ? body
+          : glass.surface(context, LuckyOverlayKind.toast, radius2xl, body);
 
   Future<void> _showToast(
     String text,
